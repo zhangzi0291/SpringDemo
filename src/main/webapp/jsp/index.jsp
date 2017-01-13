@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Document</title>
-<%@include file="cssTool.jsp"%>
+<%@include file="csstool.jsp"%>
 <style type="text/css">
 	
 </style>
@@ -19,9 +19,11 @@
 <aside class="control-sidebar control-sidebar-dark"></aside>
 <div class="control-sidebar-bg"></div>
 
-<div class="content-wrapper">123<pre></pre></div>
+<div class="content-wrapper">
+	
+</div>
 </body>  
-<%@include file="jsTool.jsp"%>
+<%@include file="jstool.jsp"%>
 <script type="text/javascript">
 	
 </script>

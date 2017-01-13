@@ -19,11 +19,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class SqLiteUtil {
 
 	private static Connection c;
 	
+	private static Logger log = LoggerFactory.getLogger(SqLiteUtil.class);
 	/**
 	 * 
 	  * 打开数据库连接
@@ -67,12 +71,37 @@ public class SqLiteUtil {
 	 */
 	public static List<Map<String, String>>  getRowValue(String sql,List<String> param){
 		getConnection();
+		printSQL(sql, param);
 		List<Map<String, String>> list=new LinkedList<>();
 		try {
 			PreparedStatement pst=c.prepareStatement(sql);
 			for(int i=0;i<param.size();i++){
 				pst.setString(i+1, param.get(i));
 			}
+			ResultSet rs=pst.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+//		getColumnCount(); 返回 ResultSet 中的列数。 
+//		getColumnName(int); 返回列序号为 int 的列名。 
+			while(rs.next()){
+				Map<String, String> map=new LinkedHashMap<>();
+				for(int i=0;i<rsmd.getColumnCount();i++){
+					map.put(rsmd.getColumnName(i+1), rs.getString(i+1));
+				}
+				list.add(map);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			closeConnection();
+		}
+		return list;
+	}
+	public static List<Map<String, String>>  getRowValue(String sql){
+		getConnection();
+		printSQL(sql);
+		List<Map<String, String>> list=new LinkedList<>();
+		try {
+			PreparedStatement pst=c.prepareStatement(sql);
 			ResultSet rs=pst.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
 //		getColumnCount(); 返回 ResultSet 中的列数。 
@@ -102,6 +131,7 @@ public class SqLiteUtil {
 	 */
 	public static Integer  updateValue(String sql,List<String> param){
 		getConnection();
+		printSQL(sql, param);
 		Integer num=0;
 		try {
 			PreparedStatement pst=c.prepareStatement(sql);
@@ -126,6 +156,7 @@ public class SqLiteUtil {
 	 */
 	public static Integer createTable(String sql){
 		getConnection();
+		printSQL(sql);
 		Integer num=0;
 		try {
 			Statement st=c.createStatement();
@@ -136,5 +167,15 @@ public class SqLiteUtil {
 			closeConnection();
 		}
 		return num;
+	}
+	
+	private static void printSQL(String sql,List<String> param){
+		for(int i=0;i<param.size();i++){
+			sql=sql.replaceFirst("\\?", param.get(i));
+		}
+		log.debug(sql);
+	}
+	private static void printSQL(String sql){
+		log.debug(sql);
 	}
 }

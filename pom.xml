@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>SpirngMVC</groupId>
-  <artifactId>SpirngMVC</artifactId>
+  <groupId>geccoWeb</groupId>
+  <artifactId>geccoWeb</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>SpirngMVC Maven Webapp</name>
+  <name>SpringMVC Maven Webapp</name>
   <url>http://maven.apache.org</url>
     <build>
-    <finalName>SpirngMVC</finalName>
+    <finalName>geccoWeb</finalName>
 	<plugins>
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
@@ -177,7 +177,7 @@
 		<dependency>
 			<groupId>com.geccocrawler</groupId>
 			<artifactId>gecco-spring</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.5</version>
 		</dependency>
 		
 		<dependency>
@@ -218,6 +218,49 @@
 		    <groupId>com.google.zxing</groupId>
 		    <artifactId>core</artifactId>
 		    <version>3.3.0</version>
+		</dependency>
+		
+		
+		<dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>jstl-api</artifactId>
+            <version>1.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+<!--  		JSTL 			 -->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jstl-impl</artifactId>
+            <version>1.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet.jsp.jstl</groupId>
+                    <artifactId>jstl-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.15</version>
 		</dependency>
 		
   </dependencies>

@@ -88,7 +88,7 @@ $(function(){
 	   { "title" : "属性", "field" : "attribute2",  },
 	   { "title" : "特性",  "field" : "property1",  },
 	   { "title" : "特性",  "field" : "property2",  },
-	   { "title" : "隐藏特性", "field" : "hideFeatures" },
+	   { "title" : "隐藏特性", "field" : "hide_property" },
 	   { "title" : "HP",   "field" : "hp",  sortable:true,},
 	   { "title" : "攻击", "field" : "atk", sortable:true, },
 	   { "title" : "防御", "field" : "def", sortable:true, },

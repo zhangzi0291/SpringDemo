@@ -35,7 +35,7 @@ public class SqLiteUtil {
 	  *@date 2016年12月15日 上午9:37:46
 	  *@author zxn
 	 */
-	private static Connection getConnection(){
+	private synchronized static Connection getConnection(){
 	    try {
 	      Class.forName("org.sqlite.JDBC");
 	      c = DriverManager.getConnection("jdbc:sqlite:E:\\test\\pokemon\\pokemon.db");
@@ -52,7 +52,7 @@ public class SqLiteUtil {
 	  *@date 2016年12月15日 上午9:38:15
 	  *@author zxn
 	 */
-	private static  void closeConnection(){
+	private synchronized static  void closeConnection(){
 		try {
 			c.close();
 		} catch (SQLException e) {
@@ -69,7 +69,7 @@ public class SqLiteUtil {
 	  *@date 2016年12月15日 上午9:38:35
 	  *@author zxn
 	 */
-	public static List<Map<String, String>>  getRowValue(String sql,List<String> param){
+	public synchronized static List<Map<String, String>>  getRowValue(String sql,List<String> param){
 		getConnection();
 		printSQL(sql, param);
 		List<Map<String, String>> list=new LinkedList<>();
@@ -96,7 +96,7 @@ public class SqLiteUtil {
 		}
 		return list;
 	}
-	public static List<Map<String, String>>  getRowValue(String sql){
+	public synchronized static List<Map<String, String>>  getRowValue(String sql){
 		getConnection();
 		printSQL(sql);
 		List<Map<String, String>> list=new LinkedList<>();
@@ -129,7 +129,7 @@ public class SqLiteUtil {
 	  *@date 2016年12月15日 上午9:40:03
 	  *@author zxn
 	 */
-	public static Integer  updateValue(String sql,List<String> param){
+	public synchronized static Integer  updateValue(String sql,List<String> param){
 		getConnection();
 		printSQL(sql, param);
 		Integer num=0;
@@ -154,7 +154,7 @@ public class SqLiteUtil {
 	  *@date 2016年12月15日 上午9:40:48
 	  *@author zxn
 	 */
-	public static Integer createTable(String sql){
+	public synchronized static Integer createTable(String sql){
 		getConnection();
 		printSQL(sql);
 		Integer num=0;

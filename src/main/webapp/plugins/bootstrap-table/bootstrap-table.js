@@ -1401,15 +1401,15 @@
                 from = 1;
                 to = this.totalPages;
             } else {
-                from = this.options.pageNumber - 2;
-                to = from + 4;
+                from = this.options.pageNumber - 3;
+                to = from + 6;
                 if (from < 1) {
                     from = 1;
                     to = 5;
                 }
                 if (to > this.totalPages) {
                     to = this.totalPages;
-                    from = to - 4;
+                    from = to - 6;
                 }
             }
 
@@ -1422,8 +1422,8 @@
                     from++;
                 }
 
-                if (this.options.pageNumber >= 4) {
-                    if (this.options.pageNumber == 4 || this.totalPages == 6 || this.totalPages == 7) {
+                if (this.options.pageNumber >= 5) {
+                    if (this.options.pageNumber == 5 || this.totalPages == 6 || this.totalPages == 7) {
                         from--;
                     } else {
                         html.push('<li class="page-first-separator disabled">',
@@ -1466,7 +1466,7 @@
             }
 
             if (this.totalPages >= 6) {
-                if (this.options.pageNumber <= (this.totalPages - 3)) {
+                if (this.options.pageNumber <= (this.totalPages - 4)) {
                     html.push('<li class="page-last' + (this.totalPages === this.options.pageNumber ? ' active' : '') + '">',
                         '<a href="javascript:void(0)">', this.totalPages, '</a>',
                         '</li>');

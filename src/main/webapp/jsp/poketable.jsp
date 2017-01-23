@@ -7,7 +7,9 @@
 <title>Document</title>
 <%@include file="csstool.jsp"%>
 <style type="text/css">
-
+.onclick{
+	cursor:pointer;
+}
 </style>
 </head>
 <body class="skin-blue fixed">
@@ -83,7 +85,11 @@ $(function(){
 	tableoption.columns=[	
 	   { "title" : "check",   checkbox:true, },
 	   { "title" : "id",   "field": "pid", },
-	   { "title" : "名称",  "field" : "name", },
+	   { "title" : "名称",  "field" : "name", 
+		"formatter":function(value){
+		   return "<a href='pokeDetail?name="+value+"'>"+value+"</a>"
+	   }
+	   },
 	   { "title" : "属性", "field" : "attribute1",  },
 	   { "title" : "属性", "field" : "attribute2",  },
 	   { "title" : "特性",  "field" : "property1",  },
@@ -122,7 +128,6 @@ function initEvent(){
 	})
 }
 function initTable(){
-	
 	$table=$("#table").bootstrapTable(option);
 }
 

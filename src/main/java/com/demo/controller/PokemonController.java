@@ -23,7 +23,7 @@ public class PokemonController {
 	}
 	@RequestMapping("getpoke")
 	@ResponseBody
-	public Map<String, Object> getpoke(HttpServletRequest request,Page page,String name,String attribute,String property){
+	public Map<String, Object> getpoke(Page page,String name,String attribute,String property){
 		Map<String, Object> map =new HashMap<String, Object>();
 		StringBuffer sql=new StringBuffer("select * from pokemon_list where 1=1 ");
 		List<String > param =new ArrayList<>();
@@ -68,5 +68,37 @@ public class PokemonController {
 		map.put("rows", list);
 		map.put("total", totalrs.get(0).get("total"));
 		return map;
+	}
+	
+	@RequestMapping("pokeDetail")
+	public String pokeDetail(Map<String , Object> map,String name){
+//		map.put("name", name);
+		StringBuffer sql=new StringBuffer("select * from pokemon_list where name='"+name+"'");
+		List<Map<String, String>>list = SqLiteUtil.getRowValue(sql.toString());
+		Map<String, String> param=list.get(0);
+		String property1=param.get("property1");
+		String property2=param.get("property2");
+		String hide_property=param.get("hide_property");
+		sql=new StringBuffer("select * from pokemon_property where 1=1 ");
+		sql.append("and (");
+		if (StringUtil.isNotEmpty(property1)) {
+			sql.append("property_name ='").append(property1).append("'");
+		}
+		if (StringUtil.isNotEmpty(property2)) {
+			sql.append("or property_name ='").append(property2).append("'");
+		}
+		if (StringUtil.isNotEmpty(hide_property)) {
+			sql.append("or property_name ='").append(hide_property).append("'");
+		}
+		sql.append(")");
+		List<Map<String, String>>propertyList = SqLiteUtil.getRowValue(sql.toString());
+		map.put("pro",param);
+		for(int i=0;i<propertyList.size();i++){
+			if(hide_property.equals(propertyList.get(i).get("property_name"))){
+				propertyList.get(i).put("hide", "1");
+			}
+		}
+		map.put("property",propertyList);
+		return "pokeDetail";
 	}
 }

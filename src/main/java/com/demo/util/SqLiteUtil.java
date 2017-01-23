@@ -7,6 +7,8 @@
  */
 package com.demo.util;
 
+import java.io.FileNotFoundException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,8 +21,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
 
 
 public class SqLiteUtil {
@@ -28,6 +32,15 @@ public class SqLiteUtil {
 	private static Connection c;
 	
 	private static Logger log = LoggerFactory.getLogger(SqLiteUtil.class);
+	
+	private static String url;
+	static{
+		try {
+			url=ResourceUtils.getURL("classpath:pokemon.db").getPath();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 
 	  * 打开数据库连接
@@ -38,7 +51,7 @@ public class SqLiteUtil {
 	private synchronized static Connection getConnection(){
 	    try {
 	      Class.forName("org.sqlite.JDBC");
-	      c = DriverManager.getConnection("jdbc:sqlite:E:\\test\\pokemon\\pokemon.db");
+	      c = DriverManager.getConnection("jdbc:sqlite:"+url);
 	    } catch ( Exception e ) {
 	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	      System.exit(0);

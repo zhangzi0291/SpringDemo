@@ -36,7 +36,7 @@ public class SqLiteUtil {
 	private static String url;
 	static{
 		try {
-			url=ResourceUtils.getURL("classpath:pokemon.db").getPath();
+			url=ResourceUtils.getURL("classpath:"+PropertiesConfig.getProperties(GlobalConstants.DB_NAME)).getPath();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

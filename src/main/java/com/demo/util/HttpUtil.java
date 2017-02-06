@@ -6,10 +6,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.HttpResponse;
@@ -132,6 +139,51 @@ public class HttpUtil {
         return result;
     }    
 	
+	/**
+	 * 
+	  * 获取url返回的请求头
+	  *@param urlStr url地址
+	  *@return
+	  *@throws Exception 
+	  *@date 2017年2月6日 下午3:43:50
+	  *@author zxn
+	 */
+	public static Map<String, List<String>> sendHead(String urlStr) {
+		try {
+			URL url = new URL(urlStr);
+			Map<String, String> map=new HashMap<String, String>();
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			// conn.setDoOutput(true);
+			conn.setRequestMethod("HEAD");
+			Map<String, List<String>> headerMap = conn.getHeaderFields();
+			return headerMap;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	  * 测试url是否能连同，返回200为连同
+	  *@param url rul地址
+	  *@return 
+	  *@date 2017年2月6日 下午3:54:22
+	  *@author zxn
+	 */
+	public static boolean isConnect(String url){
+		Map<String, List<String>> map =sendHead(url);
+    	for(Entry<String,  List<String>> e :map.entrySet()){
+    		if(e.getValue().contains("HTTP/1.1 200 OK")){
+    			return true;
+    		}
+    	}
+		return false;
+	}
 	
 	public static String getRobotTolk(String message){
 		String url="http://www.tuling123.com/openapi/api";
@@ -224,21 +276,8 @@ public class HttpUtil {
     private static int getShort(byte[] data) {  
         return (int) ((data[0] << 8) | data[1] & 0xFF);  
     }  
-    public static void main(String[] args) {
-//    	String url="http://int.dpool.sina.com.cn/iplookup/iplookup.php";
-//		String parem="format=json&ip=222.45.42.120";
-//		HttpGet httpGet = new HttpGet(url +"?"+parem);  
-//		HttpClient httpClient = new DefaultHttpClient();
-//		String weatherJSON = "";
-//		try {
-//			HttpResponse httpResponse = httpClient.execute(httpGet);  	
-//			weatherJSON = getJsonStringFromGZIP(httpResponse);
-//		} catch (ClientProtocolException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-    	String weatherJSON=sendPost("http://int.dpool.sina.com.cn/iplookup/iplookup.php", "format=json&ip=222.45.42.120");
-		System.out.println(weatherJSON);
+    public static void main(String[] args) throws Exception {
+    	boolean b=isConnect("https://www.baidu.com");
+    	System.out.println(b);
 	}
 }

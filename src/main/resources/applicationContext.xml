@@ -20,6 +20,13 @@
 		<property name="prefix" value="/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+	<!--  不拦截静态文件  -->
+	<mvc:resources location="/" mapping="/**/*.html"/>
+	<mvc:resources location="/" mapping="/**/*.js"/>
+	<mvc:resources location="/" mapping="/**/*.css"/>
+	<mvc:resources location="/" mapping="/**/*.png"/>
+	<mvc:resources location="/" mapping="/**/*.gif"/>
+	
 	<bean id="utf8Charset" class="java.nio.charset.Charset"  
         factory-method="forName">  
         <constructor-arg value="UTF-8"/>  
@@ -31,6 +38,7 @@
 	</bean>
 	
 	<mvc:default-servlet-handler/>
+	
 	<mvc:annotation-driven>
 		<mvc:message-converters>  
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">  
@@ -116,6 +124,7 @@
 <!-- 		<property name="basePackage" value="com.*.dao"/> -->
 <!-- 	</bean> -->
 	
+	<!--  文件上传相关  -->
 	<bean id="multipartResolver"
     class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	    <property name="maxUploadSize" value="524288000"/>

@@ -11,4 +11,6 @@ public final class GlobalConstants {
 	public static final String SEND_MESSAGE="wechat.sendmessage";
 	
 	public static final String SSL_FILE="station.sslfile";
+	
+	public static final String DB_NAME="db.name";
 }

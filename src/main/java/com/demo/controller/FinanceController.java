@@ -1,6 +1,8 @@
 package com.demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +31,16 @@ public class FinanceController {
 	
 	@RequestMapping("myFinanceList")
 	@ResponseBody
-	public List<financProduct> getMyFinanceList(HttpServletRequest request,Page page){
+	public Map<String, Object> getMyFinanceList(HttpServletRequest request,Page page){
+		Map<String, Object> map =new HashMap<String, Object>();
 		financProductExample example = new financProductExample();
 		financProductExample.Criteria criteria = example.createCriteria();
 		try {
 			List<financProduct> list = financeService.selectByExample(example);
-			return list;
+			Integer count = financeService.countByExample(example);
+			map.put("rows",list);
+			map.put("total",count);
+			return map;
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}

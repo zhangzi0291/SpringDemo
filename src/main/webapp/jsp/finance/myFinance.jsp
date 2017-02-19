@@ -10,6 +10,21 @@
 .onclick{
 	cursor:pointer;
 }
+.search-high{
+	height: 30px;
+	margin-bottom: 6px;
+}
+.queryBox{
+  padding-left:0;
+  padding-right:0;
+}
+.queryBox>label{
+  padding-right:0;
+}
+.nopadding{
+  padding-left: 0px;
+  padding-right: 0px;
+}
 </style>
 </head>
 <body class="skin-blue fixed">
@@ -24,11 +39,34 @@
 <div class="content-wrapper">
 	<section class="content">
 		<div class="col-xs-12">
-			<div class="box">
+			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">宝可梦</div>
+					<div class="box-title">我的融资</div>
 				</div>
 				<div class="box-body">
+					<div class="row" >
+						<div class="col-xs-4 queryBox marginTop">
+							<label class="col-xs-3 control-label">金额：</label>
+<!-- 							<span class="col-xs-3">金额：</span> -->
+							<input id="name" class="input-sm  col-xs-3"    />
+							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
+							<input id="name" class="input-sm col-xs-3"  />
+						</div>
+						<div class="col-xs-4 queryBox marginTop">
+							<label class="col-xs-3 control-label">利率：</label>
+							<input id="name" class="input-sm  col-xs-3"    />
+							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
+							<input id="name" class="input-sm col-xs-3"  />
+						</div>
+						<div class="col-xs-3 queryBox marginTop">
+							<label class="col-xs-4 control-label nopadding">还款日期：</label>
+							<input id="property" class="input-sm col-xs-8"  />
+							</select>
+						</div>
+						<div class="col-xs-1">
+							<button id="search" class="btn btn-primary search-high search-btn" type="button">搜索</button>
+						</div>
+					</div>
 					<table id = 'table'  cellspacing="0"></table>
 				</div>
 			</div>
@@ -36,39 +74,13 @@
 	</section>
 </div>
 <div id="toolbar">
-<form class="form-inline" role="form">
-	<div class="form-group">
-		<label for="name" >名字：</label><input id="name" class="input-sm"  />
+	<div class="btn-toolbar" role="toolbar">
+		<div class="btn-group">
+		    <button type="button" class="btn btn-primary">新增</button>
+		    <button type="button" class="btn btn-warning">修改</button>
+		    <button type="button" class="btn btn-danger">删除</button>
+		</div>
 	</div>
-	<div class="form-group">
-		<label for="property" >特性：</label><input id="property" class="input-sm"  />
-	</div>
-	<div class="form-group">
-		<label for="attribute" >属性：</label>
-		<select id="attribute"  style="height: 30px;">
-			<option value="">不选择</option>
-			<option>一般</option>
-			<option>火</option>
-			<option>水</option>
-			<option>草</option>
-			<option>电</option>
-			<option>冰</option>
-			<option>虫</option>
-			<option>飞行</option>
-			<option>地面</option>
-			<option>岩石</option>
-			<option>格斗</option>
-			<option>超能力</option>
-			<option>幽灵</option>
-			<option>毒</option>
-			<option>恶</option>
-			<option>钢</option>
-			<option>龙</option>
-			<option>妖精</option>
-		</select>
-	</div>
-	<button id="search" class="btn btn-primary" type="button">搜索</button>
-</form>
 </div>
 </body>
 <%@include file="../jstool.jsp"%>
@@ -76,32 +88,24 @@
 var $table
 var option = tableoption
 $(function(){
-	tableoption.queryParams=function (params) {
+	option.url = basePath + "/finance/myFinanceList";
+	option.queryParams=function (params) {
 		params.name=$("#name").val()
 		params.attribute=$("#attribute").val()
 		params.property=$("#property").val()
 		return params;
 	}
-	tableoption.columns=[	
+	option.columns=[	
 	   { "title" : "check",   checkbox:true, },
-	   { "title" : "id",   "field": "pid", },
-	   { "title" : "名称",  "field" : "name", 
-		"formatter":function(value){
-		   return "<a href='pokeDetail?name="+value+"'>"+value+"</a>"
-	   }
+	   { "title" : "id",   "field": "id", },
+	   { "title" : "融资金额",  "field" : "loanAmount", },
+	   { "title" : "还款方式", "field" : "repaymentMethod",  },
+	   { "title" : "利率", "field" : "interestRate", 
+		   "formatter":function(value){
+		   return value/100+"%"
+			} 
 	   },
-	   { "title" : "属性", "field" : "attribute1",  },
-	   { "title" : "属性", "field" : "attribute2",  },
-	   { "title" : "特性",  "field" : "property1",  },
-	   { "title" : "特性",  "field" : "property2",  },
-	   { "title" : "隐藏特性", "field" : "hide_property" },
-	   { "title" : "HP",   "field" : "hp",  sortable:true,},
-	   { "title" : "攻击", "field" : "atk", sortable:true, },
-	   { "title" : "防御", "field" : "def", sortable:true, },
-	   { "title" : "特攻", "field" : "spatk", sortable:true, },
-	   { "title" : "特防", "field" : "spdef", sortable:true, },
-	   { "title" : "速度", "field" : "speed", sortable:true, },
-	   { "title" : "总值", "field" : "sum", sortable:true, },
+	   { "title" : "预期还款时间",  "field" : "repaymentDate",  },
   	]
 	initTable();
 	initEvent();

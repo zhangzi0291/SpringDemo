@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.financ.financProductDao" >
+  <resultMap id="BaseResultMap" type="com.demo.entity.financ.financProduct" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="LOAN_AMOUNT" property="loanAmount" jdbcType="DECIMAL" />
+    <result column="REPAYMENT_METHOD" property="repaymentMethod" jdbcType="VARCHAR" />
+    <result column="INTEREST_RATE" property="interestRate" jdbcType="DECIMAL" />
+    <result column="REPAYMENT_DATE" property="repaymentDate" jdbcType="DATE" />
+    <result column="PUBLIC_TYPE" property="publicType" jdbcType="VARCHAR" />
+    <result column="PUBLIC_MAN" property="publicMan" jdbcType="VARCHAR" />
+    <result column="REPAYMENT_BALANCE" property="repaymentBalance" jdbcType="DECIMAL" />
+    <result column="REPAYMENT_MAN" property="repaymentMan" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, LOAN_AMOUNT, REPAYMENT_METHOD, INTEREST_RATE, REPAYMENT_DATE, PUBLIC_TYPE, PUBLIC_MAN, 
+    REPAYMENT_BALANCE, REPAYMENT_MAN
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.entity.financ.financProductExample" >
+    <include refid="OracleDialectPrefix" />
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from FINANC_PRODUCT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="OracleDialectSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from FINANC_PRODUCT
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from FINANC_PRODUCT
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.demo.entity.financ.financProductExample" >
+    delete from FINANC_PRODUCT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.financ.financProduct" >
+    insert into FINANC_PRODUCT (ID, LOAN_AMOUNT, REPAYMENT_METHOD, 
+      INTEREST_RATE, REPAYMENT_DATE, PUBLIC_TYPE, 
+      PUBLIC_MAN, REPAYMENT_BALANCE, REPAYMENT_MAN
+      )
+    values (#{id,jdbcType=DECIMAL}, #{loanAmount,jdbcType=DECIMAL}, #{repaymentMethod,jdbcType=VARCHAR}, 
+      #{interestRate,jdbcType=DECIMAL}, #{repaymentDate,jdbcType=DATE}, #{publicType,jdbcType=VARCHAR}, 
+      #{publicMan,jdbcType=VARCHAR}, #{repaymentBalance,jdbcType=DECIMAL}, #{repaymentMan,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.financ.financProduct" >
+    insert into FINANC_PRODUCT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="loanAmount != null" >
+        LOAN_AMOUNT,
+      </if>
+      <if test="repaymentMethod != null" >
+        REPAYMENT_METHOD,
+      </if>
+      <if test="interestRate != null" >
+        INTEREST_RATE,
+      </if>
+      <if test="repaymentDate != null" >
+        REPAYMENT_DATE,
+      </if>
+      <if test="publicType != null" >
+        PUBLIC_TYPE,
+      </if>
+      <if test="publicMan != null" >
+        PUBLIC_MAN,
+      </if>
+      <if test="repaymentBalance != null" >
+        REPAYMENT_BALANCE,
+      </if>
+      <if test="repaymentMan != null" >
+        REPAYMENT_MAN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="loanAmount != null" >
+        #{loanAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="repaymentMethod != null" >
+        #{repaymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="interestRate != null" >
+        #{interestRate,jdbcType=DECIMAL},
+      </if>
+      <if test="repaymentDate != null" >
+        #{repaymentDate,jdbcType=DATE},
+      </if>
+      <if test="publicType != null" >
+        #{publicType,jdbcType=VARCHAR},
+      </if>
+      <if test="publicMan != null" >
+        #{publicMan,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentBalance != null" >
+        #{repaymentBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="repaymentMan != null" >
+        #{repaymentMan,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.entity.financ.financProductExample" resultType="java.lang.Integer" >
+    select count(*) from FINANC_PRODUCT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update FINANC_PRODUCT
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=DECIMAL},
+      </if>
+      <if test="record.loanAmount != null" >
+        LOAN_AMOUNT = #{record.loanAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.repaymentMethod != null" >
+        REPAYMENT_METHOD = #{record.repaymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interestRate != null" >
+        INTEREST_RATE = #{record.interestRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.repaymentDate != null" >
+        REPAYMENT_DATE = #{record.repaymentDate,jdbcType=DATE},
+      </if>
+      <if test="record.publicType != null" >
+        PUBLIC_TYPE = #{record.publicType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publicMan != null" >
+        PUBLIC_MAN = #{record.publicMan,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repaymentBalance != null" >
+        REPAYMENT_BALANCE = #{record.repaymentBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.repaymentMan != null" >
+        REPAYMENT_MAN = #{record.repaymentMan,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update FINANC_PRODUCT
+    set ID = #{record.id,jdbcType=DECIMAL},
+      LOAN_AMOUNT = #{record.loanAmount,jdbcType=DECIMAL},
+      REPAYMENT_METHOD = #{record.repaymentMethod,jdbcType=VARCHAR},
+      INTEREST_RATE = #{record.interestRate,jdbcType=DECIMAL},
+      REPAYMENT_DATE = #{record.repaymentDate,jdbcType=DATE},
+      PUBLIC_TYPE = #{record.publicType,jdbcType=VARCHAR},
+      PUBLIC_MAN = #{record.publicMan,jdbcType=VARCHAR},
+      REPAYMENT_BALANCE = #{record.repaymentBalance,jdbcType=DECIMAL},
+      REPAYMENT_MAN = #{record.repaymentMan,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.financ.financProduct" >
+    update FINANC_PRODUCT
+    <set >
+      <if test="loanAmount != null" >
+        LOAN_AMOUNT = #{loanAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="repaymentMethod != null" >
+        REPAYMENT_METHOD = #{repaymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="interestRate != null" >
+        INTEREST_RATE = #{interestRate,jdbcType=DECIMAL},
+      </if>
+      <if test="repaymentDate != null" >
+        REPAYMENT_DATE = #{repaymentDate,jdbcType=DATE},
+      </if>
+      <if test="publicType != null" >
+        PUBLIC_TYPE = #{publicType,jdbcType=VARCHAR},
+      </if>
+      <if test="publicMan != null" >
+        PUBLIC_MAN = #{publicMan,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentBalance != null" >
+        REPAYMENT_BALANCE = #{repaymentBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="repaymentMan != null" >
+        REPAYMENT_MAN = #{repaymentMan,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.financ.financProduct" >
+    update FINANC_PRODUCT
+    set LOAN_AMOUNT = #{loanAmount,jdbcType=DECIMAL},
+      REPAYMENT_METHOD = #{repaymentMethod,jdbcType=VARCHAR},
+      INTEREST_RATE = #{interestRate,jdbcType=DECIMAL},
+      REPAYMENT_DATE = #{repaymentDate,jdbcType=DATE},
+      PUBLIC_TYPE = #{publicType,jdbcType=VARCHAR},
+      PUBLIC_MAN = #{publicMan,jdbcType=VARCHAR},
+      REPAYMENT_BALANCE = #{repaymentBalance,jdbcType=DECIMAL},
+      REPAYMENT_MAN = #{repaymentMan,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <sql id="OracleDialectPrefix" >
+    <if test="page != null" >
+      select * from ( select row_.*, rownum rownum_ from ( 
+    </if>
+  </sql>
+  <sql id="OracleDialectSuffix" >
+    <if test="page != null" >
+      <![CDATA[ ) row_ ) where rownum_ > #{page.begin} and rownum_ <= #{page.end} ]]>
+    </if>
+  </sql>
+</mapper>

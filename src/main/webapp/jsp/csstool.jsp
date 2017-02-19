@@ -7,16 +7,19 @@
 	<!-- Bootstrap 3.3.6 -->
 	<link rel="stylesheet" href="${basePath }/css/bootstrap/bootstrap.min.css">
 	<!-- Font Awesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="${basePath }/css/font-awesome/font-awesome.min.css">
 	<!-- Ionicons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	<link rel="stylesheet" href="${basePath }/css/ionicons/ionicons.min.css">
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="${basePath }/plugins/datepicker/datepicker3.css">
 	<!-- Daterange picker -->
 	<link rel="stylesheet" href="${basePath }/plugins/daterangepicker/daterangepicker.css">
 	<!-- Daterange picker -->
 	<link rel="stylesheet" href="${basePath }/plugins/bootstrap-table/bootstrap-table.css">
+	<!-- iCheck -->
+	<link rel="stylesheet" href="${basePath }/plugins/iCheck/all.css">
 	
+	<link rel="stylesheet" href="${basePath }/css/easyform.css">
 	  <!-- AdminLTE style -->
 	<link rel="stylesheet" href="${basePath }/css/AdminLTE/AdminLTE.min.css">
 	<link rel="stylesheet" href="${basePath }/css/AdminLTE/skins/_all-skins.min.css">

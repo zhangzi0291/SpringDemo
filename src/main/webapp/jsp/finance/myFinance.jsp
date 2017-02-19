@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Document</title>
-<%@include file="csstool.jsp"%>
+<%@include file="../csstool.jsp"%>
 <style type="text/css">
 .onclick{
 	cursor:pointer;
@@ -71,7 +71,7 @@
 </form>
 </div>
 </body>
-<%@include file="jstool.jsp"%>
+<%@include file="../jstool.jsp"%>
 <script type="text/javascript">
 var $table
 var option = tableoption

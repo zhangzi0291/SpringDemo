@@ -6,7 +6,7 @@
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <name>SpringMVC Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <url>http://maven.oschina.net/content/groups/public/</url>
     <build>
     <finalName>SpringDemo</finalName>
 	<plugins>
@@ -99,9 +99,9 @@
 		</dependency>
 		<!-- orcale数据库 -->
 		<dependency>
-             <groupId>oracle</groupId> 
-             <artifactId>ojdbc14</artifactId> 
-             <version>10.2.0.1.0</version> 
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc7</artifactId>
+		    <version>12.1.0.2</version>
 		</dependency>
 		
 		<!-- log4j -->

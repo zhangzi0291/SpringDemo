@@ -1,6 +1,7 @@
 package com.demo.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,8 @@ public class StringUtil {
 	
 	
 	public  static void main(String ... strings){
-		System.out.println(reverse("aabbccddee"));
+	    
+	    
 	}
 	/**
 	 * 
@@ -85,4 +87,19 @@ public class StringUtil {
 		}
 		return str;
  	}
+	
+//	public static String[] split(String str,String regex){
+//	    String[] result = null; 
+//	    String[] array = str.split(regex);
+//	    try {
+//            String s= array[array.length-1];
+//            result = array;
+//        } catch (NullPointerException e) {
+//            result=new String[array.length-1];
+//            for (int i = 0;i<array.length-1;i++) {
+//                result[i]=array[i];
+//            }
+//        }
+//	    return result;
+//	}
 }

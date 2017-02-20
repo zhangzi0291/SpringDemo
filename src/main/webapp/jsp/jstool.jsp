@@ -5,10 +5,13 @@
 <script src="${basePath}/plugins/fastclick/fastclick.js"></script>
 <script src="${basePath}/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 
+<script src="${basePath}/plugins/layer/layer.js"></script>
+
 <script src="${basePath}/plugins/bootstrap-table/bootstrap-table.js"></script>
 <script src="${basePath}/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="${basePath}/plugins/bootstrap-table/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="${basePath}/js/tableexport.js"></script>
+<script src="${basePath}/js/upload.js"></script>
 
 <script src="${basePath}/plugins/app.js"></script>
 

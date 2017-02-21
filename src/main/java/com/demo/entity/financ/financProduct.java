@@ -2,9 +2,18 @@ package com.demo.entity.financ;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.annotation.Resource;
+
+import com.demo.base.DaoException;
+import com.demo.entity.sys.SysUser;
+import com.demo.service.sys.UserService;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
+
 public class financProduct implements Serializable {
+	
     private BigDecimal id;
 
     private BigDecimal loanAmount;
@@ -18,10 +27,16 @@ public class financProduct implements Serializable {
     private String publicType;
 
     private String publicMan;
+    
+    private String publicManStr;
 
     private BigDecimal repaymentBalance;
 
     private String repaymentMan;
+    
+    private String repaymentManStr;
+
+    private String state;
 
     private static final long serialVersionUID = 1L;
 
@@ -61,6 +76,11 @@ public class financProduct implements Serializable {
         return repaymentDate;
     }
 
+	public String getRepaymentDateStr() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    	return sdf.format(repaymentDate);
+    }
+	
     public void setRepaymentDate(Date repaymentDate) {
         this.repaymentDate = repaymentDate;
     }
@@ -96,4 +116,29 @@ public class financProduct implements Serializable {
     public void setRepaymentMan(String repaymentMan) {
         this.repaymentMan = repaymentMan == null ? null : repaymentMan.trim();
     }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
+    }
+
+	public String getPublicManStr() {
+		return publicManStr;
+	}
+
+	public void setPublicManStr(String publicManStr) {
+		this.publicManStr = publicManStr;
+	}
+
+	public String getRepaymentManStr() {
+		return repaymentManStr;
+	}
+
+	public void setRepaymentManStr(String repaymentManStr) {
+		this.repaymentManStr = repaymentManStr;
+	}
+    
 }

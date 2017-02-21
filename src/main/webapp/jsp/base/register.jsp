@@ -44,7 +44,7 @@
         <span class="glyphicon glyphicon-envelope form-control-feedback" ></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="密码" name="userPwd"
+        <input type="password" class="form-control" placeholder="密码" name="userPwd" id="password"
         		data-easyform="length:4 16;char-normal;real-time;"
 				data-message="密码必须为4—16位"
                 data-easytip="position:right;class:easy-blue;">
@@ -52,7 +52,7 @@
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control" placeholder="重复密码"
-        		data-easyform="length:4 16;char-normal;real-time;equal:#inputPassword;"
+        		data-easyform="length:4 16;char-normal;real-time;equal:#password;"
 				data-message="密码不一致"
                 data-easytip="position:right;class:easy-blue;">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
@@ -130,11 +130,6 @@
   });
 function initEvent(){
 	$("#registerForm").easyform()
-	$("#login").on("click",function(){
-	 var username = $("#username").val()
-	 var password = $("#password").val()
-	 var remember = $("#remember").val()
-	})
 }
 function checkuser(){
 	$.ajax({

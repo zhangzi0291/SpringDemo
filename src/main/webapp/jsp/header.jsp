@@ -22,7 +22,7 @@
             <li class="user-header">
               <img src="" class="img-circle" alt="User Image">
               <p>
-                Alexander Pierce - Web Developer(user name)
+               ${user.realName }
               </p>
             </li>
             <!-- Menu Footer-->
@@ -31,7 +31,7 @@
                 <a href="#" class="btn btn-default btn-flat">详情</a>
               </div>
               <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">注销</a>
+                <a href="${basePath }/exit" class="btn btn-default btn-flat">注销</a>
               </div>
             </li>
           </ul>

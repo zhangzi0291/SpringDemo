@@ -12,6 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.demo.controller.WebController;
 import com.demo.entity.sys.SysUser;
+import com.demo.util.ServletApplicationObject;
 
 
 public class LoginInterceptor extends HandlerInterceptorAdapter{
@@ -23,7 +24,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
 		String username = "";
 		String password = "";
-		SysUser user = (SysUser) request.getSession().getAttribute("user");
+		SysUser user = ServletApplicationObject.getUser(request);
 		if(user != null){
 			return true;
 		}

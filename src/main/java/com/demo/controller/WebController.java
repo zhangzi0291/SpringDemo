@@ -22,6 +22,7 @@ import com.demo.entity.sys.SysUser;
 import com.demo.entity.sys.SysUserExample;
 import com.demo.service.sys.MenuService;
 import com.demo.service.sys.UserService;
+import com.demo.util.ServletApplicationObject;
 import com.demo.util.SqLiteUtil;
 import com.demo.util.StringUtil;
 
@@ -45,7 +46,6 @@ public class WebController {
 	}
 	@RequestMapping("login")
 	public String login(HttpServletRequest request,HttpServletResponse response,String username,String password,String remember){
-		HttpSession session = request.getSession();
 		SysUserExample example = new SysUserExample();
 		SysUserExample.Criteria criteria = example.createCriteria();
 		criteria.andUserNameEqualTo(username);
@@ -54,7 +54,7 @@ public class WebController {
 			List<SysUser> userList = userService.selectByExample(example);
 			if(userList.size()>0){
 				SysUser user = userList.get(0);
-				session.setAttribute("user",user);
+				ServletApplicationObject.setUser(request, user);
 			}
 		} catch (DaoException e) {
 			e.printStackTrace();
@@ -111,15 +111,14 @@ public class WebController {
 		return "base/register";
 	}
 	@RequestMapping("register")
-	@ResponseBody
-	public Integer register(SysUser user){
+	public String register(SysUser user){
 		Integer num = 0;
 		try {
 			num=userService.insertSelective(user);
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
-		return num;
+		return "redirect:login.html";
 	}
 	@RequestMapping("checkregister")
 	@ResponseBody
@@ -161,5 +160,10 @@ public class WebController {
 			request.getSession().setAttribute("nowMenu", menuName);
 		}
 		return menuName;
+	}
+	@RequestMapping("exit")
+	public String exit(HttpServletRequest request){
+		request.getSession().invalidate();
+		return "redirect:login.html";
 	}
 }

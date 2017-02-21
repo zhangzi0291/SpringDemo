@@ -15,9 +15,6 @@
 <body class="skin-blue fixed">
 <div class="wrapper">
 
-<jsp:include page="/jsp/header.jsp" flush="true"/>
-<jsp:include page="/jsp/menu.jsp" flush="true"/>
-
 <aside class="control-sidebar control-sidebar-dark"></aside>
 <div class="control-sidebar-bg"></div>
 

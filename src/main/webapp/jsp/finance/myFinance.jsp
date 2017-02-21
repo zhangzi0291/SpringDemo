@@ -48,19 +48,19 @@
 						<div class="col-xs-4 queryBox marginTop">
 							<label class="col-xs-3 control-label">金额：</label>
 <!-- 							<span class="col-xs-3">金额：</span> -->
-							<input id="name" class="input-sm  col-xs-3"    />
+							<input id="loanAmount1" class=" col-xs-3"    />
 							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
-							<input id="name" class="input-sm col-xs-3"  />
+							<input id="loanAmount2" class="col-xs-3"  />
 						</div>
 						<div class="col-xs-4 queryBox marginTop">
 							<label class="col-xs-3 control-label">利率：</label>
-							<input id="name" class="input-sm  col-xs-3"    />
+							<input id="interestRate1" class=" col-xs-3"    />
 							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
-							<input id="name" class="input-sm col-xs-3"  />
+							<input id="interestRate2" class="col-xs-3"  />
 						</div>
 						<div class="col-xs-3 queryBox marginTop">
 							<label class="col-xs-4 control-label nopadding">还款日期：</label>
-							<input id="property" class="input-sm col-xs-8"  />
+							<input id="repaymentDate" class="col-xs-8"  />
 							</select>
 						</div>
 						<div class="col-xs-1">
@@ -88,11 +88,44 @@
 var $table
 var option = tableoption
 $(function(){
+	initPage();
+	initTable();
+	initEvent();
+})
+function initPage(){
+	$( "#repaymentDate" ).datepicker({format: "yyyy-mm-dd"});
+}
+function initEvent(){
+	$("#search").on("click",function(){
+		console.log($table.options)
+		$.ajax({
+			type:"POST",
+			url:basePath+"/getpoke",
+			data:{
+				loanAmount1:$("#loanAmount1").val(),
+				loanAmount2:$("#loanAmount2").val(),
+				interestRate1:$("#interestRate1").val(),
+				interestRate2:$("#interestRate2").val(),
+				repaymentDate:$("#repaymentDate").val(),
+				"limit":tableoption.pageSize,
+				"offset":0
+			},
+			success : function(data){
+				console.log(data)
+				$table.bootstrapTable('selectPage', 1);
+				$table.bootstrapTable('load', data);
+			}
+		})
+	})
+}
+function initTable(){
 	option.url = basePath + "/finance/myFinanceList";
 	option.queryParams=function (params) {
-		params.name=$("#name").val()
-		params.attribute=$("#attribute").val()
-		params.property=$("#property").val()
+		params.loanAmount1=$("#loanAmount1").val()
+		params.loanAmount2=$("#loanAmount2").val()
+		params.interestRate1=$("#interestRate1").val()
+		params.interestRate2=$("#interestRate2").val()
+		params.repaymentDate=$("#repaymentDate").val()
 		return params;
 	}
 	option.columns=[	
@@ -107,31 +140,6 @@ $(function(){
 	   },
 	   { "title" : "预期还款时间",  "field" : "repaymentDate",  },
   	]
-	initTable();
-	initEvent();
-})
-function initEvent(){
-	$("#search").on("click",function(){
-		console.log($table.options)
-		$.ajax({
-			type:"POST",
-			url:basePath+"/getpoke",
-			data:{
-				"name":$("#name").val(),
-				"attribute":$("#attribute").val(),
-				"property":$("#property").val(),
-				"limit":tableoption.pageSize,
-				"offset":0
-			},
-			success : function(data){
-				console.log(data)
-				$table.bootstrapTable('selectPage', 1);
-				$table.bootstrapTable('load', data);
-			}
-		})
-	})
-}
-function initTable(){
 	$table=$("#table").bootstrapTable(option);
 }
 

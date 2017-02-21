@@ -6,6 +6,10 @@
 <script src="${basePath}/plugins/fastclick/fastclick.js"></script>
 <script src="${basePath}/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="${basePath}/plugins/iCheck/icheck.js"></script>
+<script src="${basePath}/plugins/daterangepicker/moment.js"></script>
+<script src="${basePath}/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="${basePath}/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="${basePath}/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
 
 <script src="${basePath}/plugins/bootstrap-table/bootstrap-table.js"></script>
 <script src="${basePath}/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>

@@ -198,6 +198,19 @@ public class DateUtil {
 	
 	public static String getStrByStr(String date,String format1,String format2){
 		return getStrByDate(getDateByStr(date,format1), format2);
-		
+	}
+	
+	public static Date getDate(String date, Integer hour, Integer min , Integer sec){
+	    c = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATE);
+	    try {
+            c.setTime(sdf.parse(date));
+            c.set(Calendar.HOUR_OF_DAY, hour);
+            c.set(Calendar.MINUTE, min);
+            c.set(Calendar.SECOND, sec);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+	    return c.getTime();
 	}
 }

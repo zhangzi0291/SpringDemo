@@ -38,6 +38,8 @@ public class financProduct implements Serializable {
 
     private String state;
 
+    private String stateStr;
+    
     private static final long serialVersionUID = 1L;
 
     public BigDecimal getId() {
@@ -139,6 +141,33 @@ public class financProduct implements Serializable {
 
 	public void setRepaymentManStr(String repaymentManStr) {
 		this.repaymentManStr = repaymentManStr;
+	}
+
+	public String getStateStr() {
+		switch (state) {
+		case "1":
+			return "发布融资";
+		case "2":
+			return "申请贷款";
+		case "3":
+			return "审核通过";
+		case "4":
+			return "审核不通过";
+		case "5":
+			return "正在还款";
+		case "6":
+			return "还款结束";
+		case "7":
+			return "评价完成";
+
+		default:
+			break;
+		}
+		return stateStr;
+	}
+
+	public void setStateStr(String stateStr) {
+		this.stateStr = stateStr;
 	}
     
 }

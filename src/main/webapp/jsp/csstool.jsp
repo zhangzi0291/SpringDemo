@@ -18,6 +18,8 @@
 	<link rel="stylesheet" href="${basePath }/plugins/bootstrap-table/bootstrap-table.css">
 	<!-- iCheck -->
 	<link rel="stylesheet" href="${basePath }/plugins/iCheck/all.css">
+	<!-- iCheck -->
+	<link rel="stylesheet" href="${basePath }/plugins/bootstrap-star-rating/css/star-rating.css">
 	
 	<link rel="stylesheet" href="${basePath }/css/easyform.css">
 	  <!-- AdminLTE style -->

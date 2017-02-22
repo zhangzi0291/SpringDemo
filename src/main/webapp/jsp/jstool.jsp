@@ -11,6 +11,7 @@
 <script src="${basePath}/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="${basePath}/plugins/datepicker/bootstrap-datepicker.js"></script>
 <script src="${basePath}/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+<script src="${basePath}/plugins/bootstrap-star-rating/js/star-rating.js"></script>
 
 <script src="${basePath}/plugins/bootstrap-table/bootstrap-table.js"></script>
 <script src="${basePath}/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>

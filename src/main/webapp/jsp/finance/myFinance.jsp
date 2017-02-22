@@ -87,6 +87,7 @@
 		</div>
 		<div class="btn-group">
 			<button type="button" class="btn btn-primary"  id="check">审核</button>
+			<button type="button" class="btn btn-primary"  id="evaluation">评价</button>
 		</div>
 	</div>
 </div>
@@ -171,7 +172,15 @@ function initEvent(){
 				$(".checkbody").html(html);
 			}
 		})
-	})
+	}) 
+	$("#evaluation").on("click",function(){
+		var select = $table.bootstrapTable('getSelections');
+		if(select.length != 1){
+			layer.alert("请选择一条信息")
+			return
+		}
+		window.location.href = basePath+"/evaluation/evaluation.html?id="+select[0].id
+	}) 
 	$("#checkOk").on("click",function(){
 		var select = $table.bootstrapTable('getSelections');
 		$.ajax({

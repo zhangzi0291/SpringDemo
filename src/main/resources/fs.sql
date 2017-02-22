@@ -1,8 +1,76 @@
-prompt PL/SQL Developer import file
-prompt Created on 2017年2月20日 by North
-set feedback off
-set define off
-prompt Creating FINANC_PRODUCT...
+--------------------------------------------
+-- Export file for user FS                --
+-- Created by North on 2017-2-23, 4:37:51 --
+--------------------------------------------
+
+spool fs.log
+
+prompt
+prompt Creating table CASH_FLOW
+prompt ========================
+prompt
+create table CASH_FLOW
+(
+  ID        NUMBER,
+  PAYEE_MAN VARCHAR2(32),
+  PAYER_MAN VARCHAR2(32),
+  MONEY     NUMBER,
+  PAY_DATE  DATE
+)
+tablespace USERS
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+comment on column CASH_FLOW.PAYEE_MAN
+  is '收款人';
+comment on column CASH_FLOW.PAYER_MAN
+  is '付款人';
+comment on column CASH_FLOW.MONEY
+  is '金额';
+comment on column CASH_FLOW.PAY_DATE
+  is '付款日期';
+
+prompt
+prompt Creating table EVALUATION_CRITERIA
+prompt ==================================
+prompt
+create table EVALUATION_CRITERIA
+(
+  ID               NUMBER,
+  EVALUATORS_MAN   VARCHAR2(32),
+  VALUATION_MAN    VARCHAR2(32),
+  EVALUATION_SCORE NUMBER,
+  EVALUATION_DATE  DATE
+)
+tablespace USERS
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+comment on column EVALUATION_CRITERIA.EVALUATORS_MAN
+  is '评价人';
+comment on column EVALUATION_CRITERIA.VALUATION_MAN
+  is '被评价人';
+comment on column EVALUATION_CRITERIA.EVALUATION_SCORE
+  is '评分';
+comment on column EVALUATION_CRITERIA.EVALUATION_DATE
+  is '评分日期';
+
+prompt
+prompt Creating table FINANC_PRODUCT
+prompt =============================
+prompt
 create table FINANC_PRODUCT
 (
   ID                NUMBER not null,
@@ -13,7 +81,8 @@ create table FINANC_PRODUCT
   PUBLIC_TYPE       VARCHAR2(8),
   PUBLIC_MAN        VARCHAR2(64),
   REPAYMENT_BALANCE NUMBER,
-  REPAYMENT_MAN     VARCHAR2(64)
+  REPAYMENT_MAN     VARCHAR2(64),
+  STATE             VARCHAR2(16)
 )
 tablespace USERS
   pctfree 10
@@ -40,9 +109,11 @@ comment on column FINANC_PRODUCT.PUBLIC_TYPE
 comment on column FINANC_PRODUCT.PUBLIC_MAN
   is '发布人';
 comment on column FINANC_PRODUCT.REPAYMENT_BALANCE
-  is '剩余需要还款额';
+  is '已还款额';
 comment on column FINANC_PRODUCT.REPAYMENT_MAN
   is '还款人';
+comment on column FINANC_PRODUCT.STATE
+  is '状态：1发布融资 2申请贷款 3审核通过 4审核不通过 5正在还款 6还款结束 7评价完成';
 alter table FINANC_PRODUCT
   add primary key (ID)
   using index 
@@ -57,7 +128,10 @@ alter table FINANC_PRODUCT
     maxextents unlimited
   );
 
-prompt Creating SYS_MENU...
+prompt
+prompt Creating table SYS_MENU
+prompt =======================
+prompt
 create table SYS_MENU
 (
   ID         NUMBER not null,
@@ -91,7 +165,10 @@ alter table SYS_MENU
     maxextents unlimited
   );
 
-prompt Creating SYS_USER...
+prompt
+prompt Creating table SYS_USER
+prompt =======================
+prompt
 create table SYS_USER
 (
   USER_NAME       VARCHAR2(32),
@@ -150,42 +227,56 @@ alter table SYS_USER
     maxextents unlimited
   );
 
-prompt Deleting SYS_USER...
-delete from SYS_USER;
-commit;
-prompt Deleting SYS_MENU...
-delete from SYS_MENU;
-commit;
-prompt Deleting FINANC_PRODUCT...
-delete from FINANC_PRODUCT;
-commit;
-prompt Loading FINANC_PRODUCT...
-insert into FINANC_PRODUCT (ID, LOAN_AMOUNT, REPAYMENT_METHOD, INTEREST_RATE, REPAYMENT_DATE, PUBLIC_TYPE, PUBLIC_MAN, REPAYMENT_BALANCE, REPAYMENT_MAN)
-values (1, 1000, '还款方式', 1, to_date('19-02-2017 23:25:08', 'dd-mm-yyyy hh24:mi:ss'), '融资', '管理员', 0, null);
-commit;
-prompt 1 records loaded
-prompt Loading SYS_MENU...
-insert into SYS_MENU (ID, MENU_NAME, MENU_PID, MENU_ICON, MENU_URL, MENU_ORDER)
-values (1, '融资', -1, null, null, null);
-insert into SYS_MENU (ID, MENU_NAME, MENU_PID, MENU_ICON, MENU_URL, MENU_ORDER)
-values (2, '贷款', -1, null, null, null);
-insert into SYS_MENU (ID, MENU_NAME, MENU_PID, MENU_ICON, MENU_URL, MENU_ORDER)
-values (3, '目录3', -1, null, null, null);
-insert into SYS_MENU (ID, MENU_NAME, MENU_PID, MENU_ICON, MENU_URL, MENU_ORDER)
-values (4, '我的融资', 1, null, 'finance/myFinance.html', null);
-insert into SYS_MENU (ID, MENU_NAME, MENU_PID, MENU_ICON, MENU_URL, MENU_ORDER)
-values (5, '我的贷款', 2, null, '#', null);
-insert into SYS_MENU (ID, MENU_NAME, MENU_PID, MENU_ICON, MENU_URL, MENU_ORDER)
-values (6, '融资产品', 1, null, '#', null);
-insert into SYS_MENU (ID, MENU_NAME, MENU_PID, MENU_ICON, MENU_URL, MENU_ORDER)
-values (7, '贷款申请', 2, null, '#', null);
-commit;
-prompt 7 records loaded
-prompt Loading SYS_USER...
-insert into SYS_USER (USER_NAME, USER_PWD, USER_EMAIL, USER_PROFESSION, REAL_NAME, REAL_INCOME, FAMILY_NUMBER, ID_NUMBER, ID, CREDIT_RATE, HEADSHOT_IMG)
-values ('admin', '123', null, '学生', '管理员', 12300, 2, '123456789012345678', 8, '5', null);
-commit;
-prompt 1 records loaded
-set feedback on
-set define on
-prompt Done.
+prompt
+prompt Creating sequence SYS_SEQ
+prompt =========================
+prompt
+create sequence SYS_SEQ
+minvalue 1
+maxvalue 999999999999999999999999999
+start with 21
+increment by 1
+cache 10;
+
+prompt
+prompt Creating function GETID
+prompt =======================
+prompt
+create or replace function getId return number is
+  id number;
+begin
+  select sys_seq.nextval into id  from dual;
+  return id;
+end getId;
+/
+
+prompt
+prompt Creating trigger FINANC_PRODUCT_SEQ_TRI
+prompt =======================================
+prompt
+create or replace trigger FINANC_PRODUCT_seq_tri
+before insert on FINANC_PRODUCT for each row
+declare
+  next_id number;
+begin
+  select sys_seq.nextval into next_id from dual;
+  :new.id := next_id;
+end;
+/
+
+prompt
+prompt Creating trigger SYS_USER_SEQ_TRI
+prompt =================================
+prompt
+create or replace trigger sys_user_seq_tri
+before insert on sys_user for each row
+declare
+  next_id number;
+begin
+  select sys_seq.nextval into next_id from dual;
+  :new.id := next_id;
+end;
+/
+
+
+spool off

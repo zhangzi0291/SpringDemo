@@ -179,6 +179,22 @@ function initEvent(){
 			layer.alert("请选择一条信息")
 			return
 		}
+		var flag;
+		$.ajax({
+			type:"POST",
+			url:basePath+"/evaluation/checkevaluation",
+			async:false,
+			data:{
+				id:select[0].id
+			},
+			success:function(msg){
+				flag=msg
+			}
+		})
+		if(flag=='true'){
+			layer.alert("已评价过")
+			return
+		}
 		window.location.href = basePath+"/evaluation/evaluation.html?id="+select[0].id
 	}) 
 	$("#checkOk").on("click",function(){

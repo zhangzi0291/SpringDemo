@@ -15,6 +15,8 @@ public class EvaluationCriteria implements Serializable {
 
     private Date evaluationDate;
 
+    private BigDecimal fid;
+
     private static final long serialVersionUID = 1L;
 
     public BigDecimal getId() {
@@ -55,5 +57,13 @@ public class EvaluationCriteria implements Serializable {
 
     public void setEvaluationDate(Date evaluationDate) {
         this.evaluationDate = evaluationDate;
+    }
+
+    public BigDecimal getFid() {
+        return fid;
+    }
+
+    public void setFid(BigDecimal fid) {
+        this.fid = fid;
     }
 }

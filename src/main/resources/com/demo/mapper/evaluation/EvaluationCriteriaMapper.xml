@@ -7,6 +7,7 @@
     <result column="VALUATION_MAN" property="valuationMan" jdbcType="VARCHAR" />
     <result column="EVALUATION_SCORE" property="evaluationScore" jdbcType="DECIMAL" />
     <result column="EVALUATION_DATE" property="evaluationDate" jdbcType="DATE" />
+    <result column="FID" property="fid" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,9 +68,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, EVALUATORS_MAN, VALUATION_MAN, EVALUATION_SCORE, EVALUATION_DATE
+    ID, EVALUATORS_MAN, VALUATION_MAN, EVALUATION_SCORE, EVALUATION_DATE, FID
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.entity.Evaluation.EvaluationCriteriaExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.entity.evaluation.EvaluationCriteriaExample" >
     <include refid="OracleDialectPrefix" />
     select
     <if test="distinct" >
@@ -85,19 +86,21 @@
     </if>
     <include refid="OracleDialectSuffix" />
   </select>
-  <delete id="deleteByExample" parameterType="com.demo.entity.Evaluation.EvaluationCriteriaExample" >
+  <delete id="deleteByExample" parameterType="com.demo.entity.evaluation.EvaluationCriteriaExample" >
     delete from EVALUATION_CRITERIA
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.demo.entity.Evaluation.EvaluationCriteria" >
+  <insert id="insert" parameterType="com.demo.entity.evaluation.EvaluationCriteria" >
     insert into EVALUATION_CRITERIA (ID, EVALUATORS_MAN, VALUATION_MAN, 
-      EVALUATION_SCORE, EVALUATION_DATE)
+      EVALUATION_SCORE, EVALUATION_DATE, FID
+      )
     values (#{id,jdbcType=DECIMAL}, #{evaluatorsMan,jdbcType=VARCHAR}, #{valuationMan,jdbcType=VARCHAR}, 
-      #{evaluationScore,jdbcType=DECIMAL}, #{evaluationDate,jdbcType=DATE})
+      #{evaluationScore,jdbcType=DECIMAL}, #{evaluationDate,jdbcType=DATE}, #{fid,jdbcType=DECIMAL}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.demo.entity.Evaluation.EvaluationCriteria" >
+  <insert id="insertSelective" parameterType="com.demo.entity.evaluation.EvaluationCriteria" >
     insert into EVALUATION_CRITERIA
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -114,6 +117,9 @@
       </if>
       <if test="evaluationDate != null" >
         EVALUATION_DATE,
+      </if>
+      <if test="fid != null" >
+        FID,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -132,9 +138,12 @@
       <if test="evaluationDate != null" >
         #{evaluationDate,jdbcType=DATE},
       </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=DECIMAL},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.demo.entity.Evaluation.EvaluationCriteriaExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.demo.entity.evaluation.EvaluationCriteriaExample" resultType="java.lang.Integer" >
     select count(*) from EVALUATION_CRITERIA
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -158,6 +167,9 @@
       <if test="record.evaluationDate != null" >
         EVALUATION_DATE = #{record.evaluationDate,jdbcType=DATE},
       </if>
+      <if test="record.fid != null" >
+        FID = #{record.fid,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -169,7 +181,8 @@
       EVALUATORS_MAN = #{record.evaluatorsMan,jdbcType=VARCHAR},
       VALUATION_MAN = #{record.valuationMan,jdbcType=VARCHAR},
       EVALUATION_SCORE = #{record.evaluationScore,jdbcType=DECIMAL},
-      EVALUATION_DATE = #{record.evaluationDate,jdbcType=DATE}
+      EVALUATION_DATE = #{record.evaluationDate,jdbcType=DATE},
+      FID = #{record.fid,jdbcType=DECIMAL}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

@@ -5,15 +5,23 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.base.DaoException;
+import com.demo.entity.evaluation.EvaluationCriteria;
+import com.demo.entity.evaluation.EvaluationCriteriaExample;
 import com.demo.entity.financ.financProduct;
 import com.demo.entity.sys.SysUser;
+import com.demo.service.evaluation.EvaluationService;
 import com.demo.service.finance.FinanceService;
+import com.demo.service.sys.SysService;
 import com.demo.service.sys.UserService;
+import com.demo.util.ServletApplicationObject;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -25,6 +33,12 @@ public class EvaluationController {
 	
 	@Resource
 	private UserService userService;
+	
+	@Resource
+	private EvaluationService evaluationService ;
+	
+	@Resource
+	private SysService sysService;
 	
 	@RequestMapping("evaluation.html")
 	public String evaluationHtml(Map<String , Object > map , String id){
@@ -38,8 +52,42 @@ public class EvaluationController {
 		return "evaluation/editEvaluation";
 	}
 	
+	@RequestMapping("evaluation.json")
+	public String evaluationJson(HttpServletRequest request , String evaluationScore,String repaymentMan , String id){
+		EvaluationCriteria ec=new EvaluationCriteria();
+		SysUser user = ServletApplicationObject.getUser(request);
+		ec.setEvaluationScore(new BigDecimal(evaluationScore));
+		ec.setEvaluatorsMan(user.getId().toString());
+		ec.setValuationMan(userService.getUserIdByName(repaymentMan.trim()).toString());
+		ec.setId(sysService.findId());
+		ec.setFid(new BigDecimal(id.trim()));
+		try {
+			evaluationService.insert(ec);
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:../finance/myFinance.html";
+	}
 	
-	
+	@RequestMapping("checkevaluation")
+	@ResponseBody
+	public String checkevaluation(HttpServletRequest request , String id){
+		SysUser user = ServletApplicationObject.getUser(request);
+		EvaluationCriteriaExample example = new EvaluationCriteriaExample();
+		EvaluationCriteriaExample.Criteria criteria = example.createCriteria();
+		criteria.andFidEqualTo(new BigDecimal(id.trim()));
+		try {
+			List<EvaluationCriteria > list = evaluationService.selectByExample(example);
+			for(EvaluationCriteria ec : list){
+				if(ec.getEvaluatorsMan().equals(user.getId().toString())){
+					return "true";
+				}
+			}
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "false";
+	}
 	/**
 	 * 
 	  * 获取发布人和贷款人的名字

@@ -466,6 +466,66 @@ public class EvaluationCriteriaExample implements Example {
             return (Criteria) this;
         }
 
+        public Criteria andFidIsNull() {
+            addCriterion("FID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidIsNotNull() {
+            addCriterion("FID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidEqualTo(BigDecimal value) {
+            addCriterion("FID =", value, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidNotEqualTo(BigDecimal value) {
+            addCriterion("FID <>", value, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidGreaterThan(BigDecimal value) {
+            addCriterion("FID >", value, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("FID >=", value, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidLessThan(BigDecimal value) {
+            addCriterion("FID <", value, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("FID <=", value, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidIn(List<BigDecimal> values) {
+            addCriterion("FID in", values, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidNotIn(List<BigDecimal> values) {
+            addCriterion("FID not in", values, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("FID between", value1, value2, "fid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFidNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("FID not between", value1, value2, "fid");
+            return (Criteria) this;
+        }
+
         public Criteria andEvaluatorsManLikeInsensitive(String value) {
             addCriterion("upper(EVALUATORS_MAN) like", value.toUpperCase(), "evaluatorsMan");
             return (Criteria) this;

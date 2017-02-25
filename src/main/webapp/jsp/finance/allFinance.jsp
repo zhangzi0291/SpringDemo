@@ -159,10 +159,13 @@ function initTable(){
 		   }
 	   },
 	   { "title" : "发布人", "field" : "publicManStr",  },
-	   { "title" : "状态", "field" : "state",  }
+	   { "title" : "状态", "field" : "stateStr",  }
   	]
 	$table=$("#table").bootstrapTable(option);
 }
-
+function viewInline(){
+	var selects = $table.bootstrapTable('getSelections');
+	window.location.href = basePath+"/loan/applyLoan.html?id="+selects[0].id
+}
 </script>
 </html>

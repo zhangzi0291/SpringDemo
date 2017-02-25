@@ -82,6 +82,7 @@
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group">
 		    <button type="button" class="btn btn-warning"  id="edit">还款</button>
+		    <button type="button" class="btn btn-primary"  id="evaluation">评价</button>
 		</div>
 	</div>
 </div>
@@ -126,12 +127,44 @@ function initEvent(){
 				isEnd = msg
 			}
 		})
+		if(isEnd=='unaccept'){
+			layer.alert("融资人未审核")
+			return
+		}
 		if(isEnd=='end'){
 			layer.alert("已经还清贷款")
 			return
 		}
 		window.location.href = basePath+"/loan/repaymentLoan.html?id="+selects[0].id
 	})
+	$("#evaluation").on("click",function(){
+		var select = $table.bootstrapTable('getSelections');
+		if(select.length != 1){
+			layer.alert("请选择一条信息")
+			return
+		}
+		var flag
+		$.ajax({
+			type:"POST",
+			url:basePath+"/evaluation/checkevaluation",
+			async:false,
+			data:{
+				id:select[0].id
+			},
+			success:function(msg){
+				flag=msg;
+			}
+		})
+		if(flag=='false2'){
+			layer.alert("还未到评价环节")
+			return
+		}
+		if(flag=='true'){
+			layer.alert("已评价过")
+			return
+		}
+		window.location.href = basePath+"/evaluation/evaluation.html?id="+select[0].id
+	}) 
 	$("#search").on("click",function(){
 		$.ajax({
 			type:"POST",
@@ -180,7 +213,7 @@ function initTable(){
 			   return new Date(value).Format("yyyy-MM-dd")
 		   }
 	   },
-	   { "title" : "状态", "field" : "state",  }
+	   { "title" : "状态", "field" : "stateStr",  }
   	]
 	$table=$("#table").bootstrapTable(option);
 }

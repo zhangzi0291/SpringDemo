@@ -45,12 +45,13 @@
 		<div class="col-xs-12">
 			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">贷款申请</div>
+					<div class="box-title">我的贷款</div>
 				</div>
 				<div class="box-body">
 					<div class="row" >
 						<div class="col-xs-4 queryBox marginTop">
 							<label class="col-xs-3 control-label">金额：</label>
+<!-- 							<span class="col-xs-3">金额：</span> -->
 							<input id="loanAmount1" class=" col-xs-3"    />
 							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
 							<input id="loanAmount2" class="col-xs-3"  />
@@ -62,7 +63,7 @@
 							<input id="interestRate2" class="col-xs-3"  />
 						</div>
 						<div class="col-xs-3 queryBox marginTop">
-							<label class="col-xs-4 control-label nopadding">还款日期：</label>
+							<label class="col-xs-4 control-label nopadding">还款截止日：</label>
 							<input id="repaymentDate1" class=" col-xs-3"    />
 							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
 							<input id="repaymentDate2" class="col-xs-3"  />
@@ -80,11 +81,12 @@
 <div id="toolbar">
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group">
-			<button type="button" class="btn btn-primary"  id="add">贷款申请</button>
+		    <button type="button" class="btn btn-primary"  id="add">贷款申请</button>
+		    <button type="button" class="btn btn-warning"  id="edit">修改</button>
+		    <button type="button" class="btn btn-danger" id="del">删除</button>
 		</div>
 	</div>
 </div>
-
 </body>
 <%@include file="../jstool.jsp"%>
 <script type="text/javascript">
@@ -108,11 +110,38 @@ function initPage(){
 	});
 }
 function initEvent(){
+	$("#add").on("click",function(){
+		window.location.href = basePath+"/loan/newLoan.html"
+	})
+	$("#edit").on("click",function(){
+		var selects = $table.bootstrapTable('getSelections');
+		if(selects.length != 1){
+			layer.alert("请选择一条还款")
+			return
+		}
+		var isEnd
+		$.ajax({
+			type:"POST",
+			url:basePath+"/loan/checkrepayment",
+			async:false,
+			data:{
+				id:selects[0].id
+			},
+			success:function(msg){
+				if(isEnd=='end'){
+					layer.alert("已经还清贷款")
+					return
+				}
+				isEnd = msg
+			}
+		})
+		window.location.href = basePath+"/loan/editLoan.html?id="+selects[0].id
+	})
 	
 	$("#search").on("click",function(){
 		$.ajax({
 			type:"POST",
-			url:basePath+"/loan/allLoanList",
+			url:basePath+"/loan/myLoanList",
 			data:{
 				loanAmount1:$("#loanAmount1").val(),
 				loanAmount2:$("#loanAmount2").val(),
@@ -132,7 +161,7 @@ function initEvent(){
 	})
 }
 function initTable(){
-	option.url = basePath + "/loan/allLoanList";
+	option.url = basePath + "/loan/applicationLoanList";
 	option.queryParams=function (params) {
 		params.loanAmount1=$("#loanAmount1").val()
 		params.loanAmount2=$("#loanAmount2").val()
@@ -144,15 +173,6 @@ function initTable(){
 	}
 	option.columns=[	
 	   { "title" : "check",   checkbox:true, },
-	   { "title" : "操作",   "field": "option","width":"50px",
-		   "formatter":function(value, row, index){
-			   return [
-			            "<a class=\"like\" href=\"javascript:viewInline('" + row.id +  "')\" title=\"申请贷款\">",
-			            '<i class="fa fa-search-plus"></i>',
-			            '</a>  '
-			        ].join('')
-			}   
-	   },
 	   { "title" : "id",   "field": "id", },
 	   { "title" : "融资金额",  "field" : "loanAmount", },
 	   { "title" : "还款方式", "field" : "repaymentMethod",  },
@@ -161,19 +181,15 @@ function initTable(){
 		   return value+"%"
 			} 
 	   },
-	   { "title" : "预期还款时间",  "field" : "repaymentDate", 
+	   { "title" : "还款截止时间",  "field" : "repaymentDate", 
 		   "formatter":function(value){
 			   return new Date(value).Format("yyyy-MM-dd")
 		   }
 	   },
-	   { "title" : "发布人", "field" : "publicManStr",  },
 	   { "title" : "状态", "field" : "stateStr",  }
   	]
 	$table=$("#table").bootstrapTable(option);
 }
-function viewInline(){
-	var selects = $table.bootstrapTable('getSelections');
-	window.location.href = basePath+"/finance/applyFinance.html?id="+selects[0].id
-}
+
 </script>
 </html>

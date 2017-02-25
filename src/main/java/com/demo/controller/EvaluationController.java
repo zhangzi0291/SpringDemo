@@ -24,6 +24,8 @@ import com.demo.service.sys.UserService;
 import com.demo.util.ServletApplicationObject;
 import com.demo.util.StringUtil;
 
+import oracle.net.aso.c;
+
 @Controller
 @RequestMapping("evaluation")
 public class EvaluationController {
@@ -52,17 +54,60 @@ public class EvaluationController {
 		return "evaluation/editEvaluation";
 	}
 	
-	@RequestMapping("evaluation.json")
-	public String evaluationJson(HttpServletRequest request , String evaluationScore,String repaymentMan , String id){
+	@RequestMapping("evaluationLoan.json")
+	public String evaluationLoanJson(HttpServletRequest request , String evaluationScore , String id){
 		EvaluationCriteria ec=new EvaluationCriteria();
 		SysUser user = ServletApplicationObject.getUser(request);
 		ec.setEvaluationScore(new BigDecimal(evaluationScore));
 		ec.setEvaluatorsMan(user.getId().toString());
-		ec.setValuationMan(userService.getUserIdByName(repaymentMan.trim()).toString());
 		ec.setId(sysService.findId());
 		ec.setFid(new BigDecimal(id.trim()));
 		try {
+			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id.trim()));
+			ec.setValuationMan(fp.getPublicMan().toString());
 			evaluationService.insert(ec);
+			
+			EvaluationCriteriaExample example = new EvaluationCriteriaExample();
+			EvaluationCriteriaExample.Criteria criteria = example.createCriteria();
+			criteria.andFidEqualTo(new BigDecimal(id.trim()));
+			List<EvaluationCriteria > list = evaluationService.selectByExample(example);
+			if(list.size()==2){
+				fp.setState("7");
+				financeService.updateByPrimaryKeySelective(fp);
+			}else{
+				fp.setState("10");
+				financeService.updateByPrimaryKeySelective(fp);
+			}
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:../loan/myLoan.html";
+	}
+	
+	@RequestMapping("evaluation.json")
+	public String evaluationJson(HttpServletRequest request , String evaluationScore , String id){
+		EvaluationCriteria ec=new EvaluationCriteria();
+		SysUser user = ServletApplicationObject.getUser(request);
+		ec.setEvaluationScore(new BigDecimal(evaluationScore));
+		ec.setEvaluatorsMan(user.getId().toString());
+		ec.setId(sysService.findId());
+		ec.setFid(new BigDecimal(id.trim()));
+		try {
+			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id.trim()));
+			ec.setValuationMan(fp.getRepaymentMan().toString());
+			evaluationService.insert(ec);
+			
+			EvaluationCriteriaExample example = new EvaluationCriteriaExample();
+			EvaluationCriteriaExample.Criteria criteria = example.createCriteria();
+			criteria.andFidEqualTo(new BigDecimal(id.trim()));
+			List<EvaluationCriteria > list = evaluationService.selectByExample(example);
+			if(list.size()==2){
+				fp.setState("7");
+				financeService.updateByPrimaryKeySelective(fp);
+			}else{
+				fp.setState("9");
+				financeService.updateByPrimaryKeySelective(fp);
+			}
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
@@ -77,6 +122,10 @@ public class EvaluationController {
 		EvaluationCriteriaExample.Criteria criteria = example.createCriteria();
 		criteria.andFidEqualTo(new BigDecimal(id.trim()));
 		try {
+			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id.trim()));
+			if(!fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount()).setScale(2, BigDecimal.ROUND_HALF_UP).equals(fp.getRepaymentBalance().setScale(2, BigDecimal.ROUND_HALF_UP))){
+				return "false2";
+			}
 			List<EvaluationCriteria > list = evaluationService.selectByExample(example);
 			for(EvaluationCriteria ec : list){
 				if(ec.getEvaluatorsMan().equals(user.getId().toString())){
@@ -97,19 +146,27 @@ public class EvaluationController {
 	  *@author zxn
 	 */
 	private void setUserName(financProduct fp) throws DaoException{
-		SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(fp.getPublicMan()));
-		if(user1.getRealName()!=null){
-			fp.setPublicManStr(user1.getRealName());
-		}else{
-			fp.setPublicManStr(user1.getUserName());
-		}
-		if(StringUtil.isNotEmpty(fp.getRepaymentMan())){
-			SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(fp.getRepaymentMan()));
-			if(user2.getRealName()!=null){
-				fp.setRepaymentManStr(user2.getRealName());
+		try {
+			SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(fp.getPublicMan()));
+			if(user1.getRealName()!=null){
+				fp.setPublicManStr(user1.getRealName());
 			}else{
-				fp.setRepaymentManStr(user2.getUserName());
+				fp.setPublicManStr(user1.getUserName());
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			if(StringUtil.isNotEmpty(fp.getRepaymentMan())){
+				SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(fp.getRepaymentMan()));
+				if(user2.getRealName()!=null){
+					fp.setRepaymentManStr(user2.getRealName());
+				}else{
+					fp.setRepaymentManStr(user2.getUserName());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -123,19 +180,27 @@ public class EvaluationController {
 	 */
 	private void setUserName(List<financProduct> list) throws DaoException{
 		for(int i=0;i<list.size();i++){
-			SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getPublicMan()));
-			if(user1.getRealName()!=null){
-				list.get(i).setPublicManStr(user1.getRealName());
-			}else{
-				list.get(i).setPublicManStr(user1.getUserName());
-			}
-			if(StringUtil.isNotEmpty(list.get(i).getRepaymentMan())){
-				SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getRepaymentMan()));
-				if(user2.getRealName()!=null){
-					list.get(i).setRepaymentManStr(user2.getRealName());
+			try {
+				SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getPublicMan()));
+				if(user1.getRealName()!=null){
+					list.get(i).setPublicManStr(user1.getRealName());
 				}else{
-					list.get(i).setRepaymentManStr(user2.getUserName());
+					list.get(i).setPublicManStr(user1.getUserName());
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if(StringUtil.isNotEmpty(list.get(i).getRepaymentMan())){
+					SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getRepaymentMan()));
+					if(user2.getRealName()!=null){
+						list.get(i).setRepaymentManStr(user2.getRealName());
+					}else{
+						list.get(i).setRepaymentManStr(user2.getUserName());
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		

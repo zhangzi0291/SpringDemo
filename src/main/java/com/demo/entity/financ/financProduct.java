@@ -158,7 +158,13 @@ public class financProduct implements Serializable {
 		case "6":
 			return "还款结束";
 		case "7":
-			return "评价完成";
+			return "交易完成";
+		case "8":
+			return "发布贷款申请";
+		case "9":
+			return "融资人评价完成";
+		case "10":
+			return "贷款人评价完成";
 
 		default:
 			break;

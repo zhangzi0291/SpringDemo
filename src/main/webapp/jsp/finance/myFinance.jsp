@@ -138,7 +138,21 @@ function initEvent(){
 		window.location.href = basePath+"/finance/newFinance.html"
 	})
 	$("#edit").on("click",function(){
-		var selects = $table.bootstrapTable('getSelections');
+		var select = $table.bootstrapTable('getSelections');
+		$.ajax({
+			type:"POST",
+			url:basePath+"/loan/checkLoan",
+			async:false,
+			data:{
+				id:select[0].id
+			},
+			success:function(msg){
+				if(msg=='true'){
+					layer.alert("已被申请不可以编辑")
+					return
+				}
+			}
+		})
 		if(selects.length != 1){
 			layer.alert("请选择一条信息")
 			return
@@ -158,7 +172,7 @@ function initEvent(){
 				id:select[0].id
 			},
 			success:function(data){
-				if(data.state != 1){
+				if(data.state != 2){
 					layer.alert("不是需要审核的单子")
 					return
 				}
@@ -179,7 +193,7 @@ function initEvent(){
 			layer.alert("请选择一条信息")
 			return
 		}
-		var flag;
+		var flag
 		$.ajax({
 			type:"POST",
 			url:basePath+"/evaluation/checkevaluation",
@@ -188,13 +202,18 @@ function initEvent(){
 				id:select[0].id
 			},
 			success:function(msg){
-				flag=msg
+				flag=msg;
 			}
 		})
+		if(flag=='false2'){
+			layer.alert("还未到评价环节")
+			return
+		}
 		if(flag=='true'){
 			layer.alert("已评价过")
 			return
 		}
+		
 		window.location.href = basePath+"/evaluation/evaluation.html?id="+select[0].id
 	}) 
 	$("#checkOk").on("click",function(){
@@ -291,7 +310,7 @@ function initTable(){
 		   }
 	   },
 	   { "title" : "借款人",  "field" : "repaymentManStr", },
-	   { "title" : "状态", "field" : "state",  }
+	   { "title" : "状态", "field" : "stateStr",  }
   	]
 	$table=$("#table").bootstrapTable(option);
 }

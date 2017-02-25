@@ -36,13 +36,14 @@
 				<div class="box-header">
 					<div class="box-title">我的融资</div>
 				</div>
-				 <form action="${basePath }/finance/addFinance.json">
+				 <form action="${basePath }/finance/editFinance.json">
 				<div class="box-body">
 					<div class="box-header with-border">
 		              <h3 class="box-title">新建融资</h3>
 		            </div>
 		            <div class="box-body">
-		           
+		          	 <input type="hidden" class="form-control"  name="id"  value="${info.id} "
+		                		placeholder="融资金额">
 		              <div class="input-group">
 		                <span class="input-group-addon left-addon"><i class="fa fa-cny"></i></span>
 		                <input type="text" class="form-control" id="loanAmount" name="loanAmount"  value="${info.loanAmount} "

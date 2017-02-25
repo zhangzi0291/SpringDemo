@@ -50,7 +50,7 @@ public class FinanceController {
 		financProductExample example = new financProductExample();
 		financProductExample.Criteria criteria = example.createCriteria();
 		criteria.andPublicManEqualTo(user.getId().toString());
-		criteria.andPublicTypeEqualTo("1");
+//		criteria.andPublicTypeEqualTo("1");
 		if(StringUtil.isNotEmpty(loanAmount1)){
 		    criteria.andLoanAmountGreaterThan(new BigDecimal(loanAmount1));
 		}
@@ -115,6 +115,21 @@ public class FinanceController {
 		return "finance/editFinance";
 	}
 	
+	@RequestMapping("editFinance.json")
+	public String editFinanceHtml(HttpServletRequest request, financProduct fp, String repaymentDateStr){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SysUser user = ServletApplicationObject.getUser(request);
+		try {
+			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
+			financeService.updateByPrimaryKeySelective(fp);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:myFinance.html";
+	}
+	
 	@RequestMapping("allFinance.html")
 	public String allFinanceHtml(){
 		return "finance/allFinance";
@@ -125,10 +140,12 @@ public class FinanceController {
 	public Map<String, Object> getAllFinanceList(HttpServletRequest request, Page page, String loanAmount1, String loanAmount2, String interestRate1,
 	        String interestRate2 , String repaymentDate1 , String repaymentDate2){
 		Map<String, Object> map =new HashMap<String, Object>();
+		SysUser user = ServletApplicationObject.getUser(request);
 		financProductExample example = new financProductExample();
 		financProductExample.Criteria criteria = example.createCriteria();
 		criteria.andPublicTypeEqualTo("1");
 		criteria.andRepaymentManIsNull();
+		criteria.andPublicManNotEqualTo(user.getId().toString());
 		if(StringUtil.isNotEmpty(loanAmount1)){
 		    criteria.andLoanAmountGreaterThan(new BigDecimal(loanAmount1));
 		}
@@ -169,7 +186,7 @@ public class FinanceController {
 			SysUser user = userService.selectByPrimaryKey(new BigDecimal(fp.getRepaymentMan()));
 			map.put("creditRate", user.getCreditRate());
 			map.put("state", fp.getState());
-			map.put("sum", fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount().setScale(2, BigDecimal.ROUND_HALF_UP)));
+			map.put("sum", fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount()).setScale(2, BigDecimal.ROUND_HALF_UP));
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
@@ -183,11 +200,11 @@ public class FinanceController {
 		fp.setId(new BigDecimal(id));
 		if("1".equals(check)){
 			//审核通过
-			fp.setState("2");
+			fp.setState("3");
 		}
 		if("2".equals(check)){
 			//审核不通过
-			fp.setState("3");
+			fp.setState("4");
 		}
 		try {
 			financeService.updateByPrimaryKeySelective(fp);
@@ -196,6 +213,34 @@ public class FinanceController {
 			e.printStackTrace();
 		}
 		return map;
+	}
+	
+	@RequestMapping("applyFinance.html")
+	public String applyFinanceHtml(Map<String , Object > map , String id){
+		try {
+			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id));
+			map.put("info", fp);
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "finance/applyFinance";
+	}
+	
+	@RequestMapping("applyFinance.json")
+	public String applyFinancejson(HttpServletRequest request , financProduct fp,String repaymentDateStr){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SysUser user = ServletApplicationObject.getUser(request);
+		try {
+			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
+			fp.setPublicMan(user.getId().toString());
+			fp.setState("3");
+			financeService.updateByPrimaryKeySelective(fp);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:../loan/allLoan.html";
 	}
 	
 	private void setUserName(List<financProduct> list) throws DaoException{

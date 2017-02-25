@@ -36,7 +36,7 @@
 				<div class="box-header">
 					<div class="box-title">我的融资</div>
 				</div>
-				 <form action="${basePath }/loan/applyLoan.json">
+				 <form action="${basePath }/finance/applyFinance.json">
 				<div class="box-body">
 					<div class="box-header with-border">
 		              <h3 class="box-title">贷款申请</h3>

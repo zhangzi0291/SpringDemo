@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <!doctype html>
 <html lang="en">
 <head>
@@ -35,9 +37,14 @@
 			<div class="col-xs-6">
 				<div class="box box-primary">
 					<div class="box-header">
-						<div class="box-title">基础信息</div>
+						<div class="box-title">基础信息 </div>
 					</div>
-					 <form id="eform" action="${basePath }/evaluation/evaluation.json">
+					<c:if test="${fn:contains(header.referer,'myLoan.html')==true}">
+						 <form id="eform" action="${basePath }/evaluation/evaluationLoan.json">
+					 </c:if>
+					<c:if test="${fn:contains(header.referer,'myLoan.html')==false}">
+						 <form id="eform" action="${basePath }/evaluation/evaluation.json">
+					 </c:if>
 					<div class="box-body">
 						<div class="box-header with-border">
 <!-- 			              <h3 class="box-title"></h3> -->

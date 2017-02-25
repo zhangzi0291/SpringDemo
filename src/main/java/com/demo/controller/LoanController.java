@@ -49,6 +49,7 @@ public class LoanController {
 		financProductExample example = new financProductExample();
 		financProductExample.Criteria criteria = example.createCriteria();
 		criteria.andRepaymentManEqualTo(user.getId().toString());
+		criteria.andStateNotEqualTo("8");
 		if(StringUtil.isNotEmpty(loanAmount1)){
 		    criteria.andLoanAmountGreaterThan(new BigDecimal(loanAmount1));
 		}
@@ -84,23 +85,25 @@ public class LoanController {
 	public String newLoanHtml(){
 		return "loan/newLoan";
 	}
+	
 	@RequestMapping("addLoan.json")
 	public String addLoanHtml(HttpServletRequest request, financProduct fp, String repaymentDateStr){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		SysUser user = ServletApplicationObject.getUser(request);
 		try {
 			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
-			fp.setPublicMan(user.getId().toString());
-			fp.setPublicType("1");
-			fp.setState("0");
+			fp.setRepaymentMan(user.getId().toString());
+			fp.setPublicType("2");
+			fp.setState("8");
 			financeService.insertSelective(fp);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
-		return "redirect:myLoan.html";
+		return "redirect:applicationLoan.html";
 	}
+	
 	
 	@RequestMapping("editLoan.html")
 	public String editLoanHtml(Map<String , Object > map , String id){
@@ -111,6 +114,21 @@ public class LoanController {
 			e.printStackTrace();
 		}
 		return "loan/editLoan";
+	}
+	
+	@RequestMapping("editLoan.json")
+	public String editFinanceHtml(HttpServletRequest request, financProduct fp, String repaymentDateStr){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SysUser user = ServletApplicationObject.getUser(request);
+		try {
+			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
+			financeService.updateByPrimaryKeySelective(fp);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:applicationLoan.html";
 	}
 	
 	@RequestMapping("allLoan.html")
@@ -126,9 +144,9 @@ public class LoanController {
 		SysUser user = ServletApplicationObject.getUser(request);
 		financProductExample example = new financProductExample();
 		financProductExample.Criteria criteria = example.createCriteria();
-		criteria.andPublicTypeEqualTo("1");
-		criteria.andPublicManNotEqualTo(user.getId().toString());
-		criteria.andRepaymentManIsNull();
+		criteria.andPublicTypeEqualTo("2");
+		criteria.andPublicManIsNull();
+		criteria.andRepaymentManNotEqualTo(user.getId().toString());
 		if(StringUtil.isNotEmpty(loanAmount1)){
 		    criteria.andLoanAmountGreaterThan(new BigDecimal(loanAmount1));
 		}
@@ -171,6 +189,69 @@ public class LoanController {
 		return "loan/applyloan";
 	}
 	
+	@RequestMapping("applicationLoan.html")
+	public String applicationLoanHtml(Map<String , Object > map , String id){
+		return "loan/applicationLoan";
+	}
+	
+	@RequestMapping("applicationLoanList")
+	@ResponseBody
+	public Map<String, Object> getApplicationLoanList(HttpServletRequest request, Page page, String loanAmount1, String loanAmount2, String interestRate1,
+	        String interestRate2 , String repaymentDate1 , String repaymentDate2 ){
+		Map<String, Object> map =new HashMap<String, Object>();
+		SysUser user = ServletApplicationObject.getUser(request);
+		financProductExample example = new financProductExample();
+		financProductExample.Criteria criteria = example.createCriteria();
+		criteria.andRepaymentManEqualTo(user.getId().toString());
+		criteria.andPublicManIsNull();
+		criteria.andPublicTypeEqualTo("2");
+		if(StringUtil.isNotEmpty(loanAmount1)){
+		    criteria.andLoanAmountGreaterThan(new BigDecimal(loanAmount1));
+		}
+		if(StringUtil.isNotEmpty(loanAmount2)){
+		    criteria.andLoanAmountLessThan(new BigDecimal(loanAmount2));
+		}
+		if(StringUtil.isNotEmpty(interestRate1)){
+		    criteria.andInterestRateGreaterThan(new BigDecimal(interestRate1));
+		}
+		if(StringUtil.isNotEmpty(interestRate2)){
+		    criteria.andInterestRateLessThan(new BigDecimal(interestRate2));
+		}
+		if(StringUtil.isNotEmpty(repaymentDate1)){
+			criteria.andRepaymentDateGreaterThanOrEqualTo(DateUtil.getSqlDate(repaymentDate1, "yyyy-MM-dd"));
+		}
+		if(StringUtil.isNotEmpty(repaymentDate2)){
+			criteria.andRepaymentDateLessThanOrEqualTo(DateUtil.getSqlDate(repaymentDate2, "yyyy-MM-dd"));
+		}
+		try {
+			List<financProduct> list = financeService.selectByExample(example);
+			setUserName(list);
+			Integer count = financeService.countByExample(example);
+			map.put("rows",list);
+			map.put("total",count);
+			return map;
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@RequestMapping("checkLoan")
+	@ResponseBody
+	public String checkLoan(String id){
+		try {
+			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id));
+			String pm = fp.getPublicMan();
+			String rm = fp.getRepaymentMan();
+			if(StringUtil.isNotEmpty(rm)&&StringUtil.isNotEmpty(pm)){
+				return "true";
+			}
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "false";
+	}
+	
 	@RequestMapping("applyLoan.json")
 	public String applyloanjson(HttpServletRequest request , financProduct fp,String repaymentDateStr){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -178,7 +259,7 @@ public class LoanController {
 		try {
 			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
 			fp.setRepaymentMan(user.getId().toString());
-			fp.setState("1");
+			fp.setState("2");
 			financeService.updateByPrimaryKeySelective(fp);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -205,7 +286,12 @@ public class LoanController {
 		try {
 			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id));
 			BigDecimal sum = fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount().setScale(2, BigDecimal.ROUND_HALF_UP));
+			if("2".equals(fp.getState())){
+				//融资人未审核
+				return "unaccept";
+			}
 			if(	fp.getRepaymentBalance().setScale(2, BigDecimal.ROUND_HALF_UP).equals(sum)){
+				//贷款还清
 				return "end";
 			}
 		} catch (DaoException e) {
@@ -239,19 +325,27 @@ public class LoanController {
 	  *@author zxn
 	 */
 	private void setUserName(financProduct fp) throws DaoException{
-		SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(fp.getPublicMan()));
-		if(user1.getRealName()!=null){
-			fp.setPublicManStr(user1.getRealName());
-		}else{
-			fp.setPublicManStr(user1.getUserName());
-		}
-		if(StringUtil.isNotEmpty(fp.getRepaymentMan())){
-			SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(fp.getRepaymentMan()));
-			if(user2.getRealName()!=null){
-				fp.setRepaymentManStr(user2.getRealName());
+		try {
+			SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(fp.getPublicMan()));
+			if(user1.getRealName()!=null){
+				fp.setPublicManStr(user1.getRealName());
 			}else{
-				fp.setRepaymentManStr(user2.getUserName());
+				fp.setPublicManStr(user1.getUserName());
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			if(StringUtil.isNotEmpty(fp.getRepaymentMan())){
+				SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(fp.getRepaymentMan()));
+				if(user2.getRealName()!=null){
+					fp.setRepaymentManStr(user2.getRealName());
+				}else{
+					fp.setRepaymentManStr(user2.getUserName());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -265,19 +359,27 @@ public class LoanController {
 	 */
 	private void setUserName(List<financProduct> list) throws DaoException{
 		for(int i=0;i<list.size();i++){
-			SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getPublicMan()));
-			if(user1.getRealName()!=null){
-				list.get(i).setPublicManStr(user1.getRealName());
-			}else{
-				list.get(i).setPublicManStr(user1.getUserName());
-			}
-			if(StringUtil.isNotEmpty(list.get(i).getRepaymentMan())){
-				SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getRepaymentMan()));
-				if(user2.getRealName()!=null){
-					list.get(i).setRepaymentManStr(user2.getRealName());
+			try {
+				SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getPublicMan()));
+				if(user1.getRealName()!=null){
+					list.get(i).setPublicManStr(user1.getRealName());
 				}else{
-					list.get(i).setRepaymentManStr(user2.getUserName());
+					list.get(i).setPublicManStr(user1.getUserName());
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if(StringUtil.isNotEmpty(list.get(i).getRepaymentMan())){
+					SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(list.get(i).getRepaymentMan()));
+					if(user2.getRealName()!=null){
+						list.get(i).setRepaymentManStr(user2.getRealName());
+					}else{
+						list.get(i).setRepaymentManStr(user2.getUserName());
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		

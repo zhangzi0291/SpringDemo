@@ -200,6 +200,18 @@ function initTable(){
 	}
 	option.columns=[	
 	   { "title" : "check",   checkbox:true, },
+	   { "title" : "操作",   "field": "option","width":"50px",
+		   "formatter":function(value, row, index){
+			   return [
+			            "<a class=\"like\" href=\"javascript:repayment('" + row.id +  "')\" title=\"还款\">",
+			            '<i class="fa fa-edit"></i>',
+			            '</a>  ',
+			            "<a class=\"like\" href=\"javascript: evaluation('" + row.id +  "')\" title=\"评价\">",
+			            '<i class="fa fa-commenting-o"></i>',
+			            '</a>  ',
+			        ].join('')
+			}   
+	   },
 	   { "title" : "id",   "field": "id", },
 	   { "title" : "融资金额",  "field" : "loanAmount", },
 	   { "title" : "还款方式", "field" : "repaymentMethod",  },
@@ -217,6 +229,51 @@ function initTable(){
   	]
 	$table=$("#table").bootstrapTable(option);
 }
-
+function repayment(id){
+	var isEnd
+	$.ajax({
+		type:"POST",
+		url:basePath+"/loan/checkrepayment",
+		async:false,
+		data:{
+			id:id
+		},
+		success:function(msg){
+			isEnd = msg
+		}
+	})
+	if(isEnd=='unaccept'){
+		layer.alert("融资人未审核")
+		return
+	}
+	if(isEnd=='end'){
+		layer.alert("已经还清贷款")
+		return
+	}
+	window.location.href = basePath+"/loan/repaymentLoan.html?id="+id
+}
+function evaluation(id){
+	var flag
+	$.ajax({
+		type:"POST",
+		url:basePath+"/evaluation/checkevaluation",
+		async:false,
+		data:{
+			id:id
+		},
+		success:function(msg){
+			flag=msg;
+		}
+	})
+	if(flag=='false2'){
+		layer.alert("还未到评价环节")
+		return
+	}
+	if(flag=='true'){
+		layer.alert("已评价过")
+		return
+	}
+	window.location.href = basePath+"/evaluation/evaluation.html?id="+id
+}
 </script>
 </html>

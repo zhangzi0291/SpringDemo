@@ -45,7 +45,7 @@
 		<div class="col-xs-12">
 			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">我的融资</div>
+					<div class="box-title">融资产品</div>
 				</div>
 				<div class="box-body">
 					<div class="row" >
@@ -77,6 +77,13 @@
 		</div>
 	</section>
 </div>
+<div id="toolbar">
+	<div class="btn-toolbar" role="toolbar">
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary"  id="applic">申请贷款</button>
+		</div>
+	</div>
+</div>
 </body>
 <%@include file="../jstool.jsp"%>
 <script type="text/javascript">
@@ -100,7 +107,14 @@ function initPage(){
 	});
 }
 function initEvent(){
-	
+	$("#applic").on("click",function(){
+		var select = $table.bootstrapTable('getSelections');
+		if(select.length != 1){
+			layer.alert("请选择一条信息")
+			return
+		}
+		window.location.href = basePath+"/loan/applyLoan.html?id="+select[0].id
+	})
 	$("#search").on("click",function(){
 		$.ajax({
 			type:"POST",
@@ -139,8 +153,8 @@ function initTable(){
 	   { "title" : "操作",   "field": "option","width":"50px",
 		   "formatter":function(value, row, index){
 			   return [
-			            "<a class=\"like\" href=\"javascript:viewInline('" + row.id +  "')\" title=\"查看详情\">",
-			            '<i class="fa fa-search-plus"></i>',
+			            "<a class=\"like\" href=\"javascript:viewInline('" + row.id +  "')\" title=\"申请贷款\">",
+			            '<i class="fa fa fa-edit"></i>',
 			            '</a>  '
 			        ].join('')
 			}   

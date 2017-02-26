@@ -34,12 +34,12 @@
 		<div class="col-xs-12">
 			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">我的融资</div>
+					<div class="box-title">修改融资</div>
 				</div>
 				 <form action="${basePath }/finance/editFinance.json">
 				<div class="box-body">
 					<div class="box-header with-border">
-		              <h3 class="box-title">新建融资</h3>
+<!-- 		              <h3 class="box-title">新建融资</h3> -->
 		            </div>
 		            <div class="box-body">
 		          	 <input type="hidden" class="form-control"  name="id"  value="${info.id} "

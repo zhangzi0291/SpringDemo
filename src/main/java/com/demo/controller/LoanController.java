@@ -3,6 +3,7 @@ package com.demo.controller;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.base.DaoException;
 import com.demo.base.Page;
+import com.demo.entity.cash.CashFlow;
 import com.demo.entity.financ.financProduct;
 import com.demo.entity.financ.financProductExample;
 import com.demo.entity.sys.SysUser;
+import com.demo.service.cash.CashService;
 import com.demo.service.finance.FinanceService;
+import com.demo.service.sys.SysService;
 import com.demo.service.sys.UserService;
 import com.demo.util.DateUtil;
 import com.demo.util.ServletApplicationObject;
@@ -34,6 +38,12 @@ public class LoanController {
 	
 	@Resource
 	private UserService userService;
+	
+	@Resource
+	private CashService cashService;
+	
+	@Resource
+	private SysService sysService;
 	
 	@RequestMapping("myLoan.html")
 	public String myFinanceHtml(){
@@ -285,12 +295,12 @@ public class LoanController {
 	public String checkrepayment(String id){
 		try {
 			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id));
-			BigDecimal sum = fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount().setScale(2, BigDecimal.ROUND_HALF_UP));
+			BigDecimal sum = fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount()).setScale(0, BigDecimal.ROUND_HALF_UP);
 			if("2".equals(fp.getState())){
 				//融资人未审核
 				return "unaccept";
 			}
-			if(	fp.getRepaymentBalance().setScale(2, BigDecimal.ROUND_HALF_UP).equals(sum)){
+			if(	fp.getRepaymentBalance().setScale(0, BigDecimal.ROUND_HALF_UP).equals(sum)){
 				//贷款还清
 				return "end";
 			}
@@ -301,14 +311,27 @@ public class LoanController {
 	}
 	
 	@RequestMapping("repaymentLoan.json")
-	public String repaymentLoanJson(Map<String , Object > map , financProduct fp,String repayment,String sum){
+	public String repaymentLoanJson(Map<String , Object > map , financProduct fp,String repayment,String sum,String repaymentDateStr){
 		try {
 			BigDecimal balance = fp.getRepaymentBalance()!=null? fp.getRepaymentBalance():new BigDecimal(0);
 			fp.setRepaymentBalance(balance.add(new BigDecimal(repayment.trim())));
+			
+			if("分期还款".equals(fp.getRepaymentMethod())){
+				fp.setState("5");
+			}
 			//是否还款完成
 			if( fp.getRepaymentBalance().equals(new BigDecimal(sum.trim()))){
 				fp.setState("6");
 			}
+			financProduct fp2 = financeService.selectByPrimaryKey(fp.getId());
+			CashFlow cf = new CashFlow();
+			cf.setId(sysService.findId());
+			cf.setMoney(new BigDecimal(repayment.trim()));
+			cf.setPayeeMan(fp2.getPublicMan());
+			cf.setPayerMan(fp2.getRepaymentMan());
+			cf.setPayDate(new Date());
+			
+			cashService.insertSelective(cf);
 			financeService.updateByPrimaryKeySelective(fp);
 		} catch (DaoException e) {
 			e.printStackTrace();

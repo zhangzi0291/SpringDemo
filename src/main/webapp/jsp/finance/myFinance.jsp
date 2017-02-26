@@ -137,8 +137,14 @@ function initEvent(){
 	$("#add").on("click",function(){
 		window.location.href = basePath+"/finance/newFinance.html"
 	})
+	
 	$("#edit").on("click",function(){
 		var select = $table.bootstrapTable('getSelections');
+		if(select.length != 1){
+			layer.alert("请选择一条信息")
+			return
+		}
+		var flag
 		$.ajax({
 			type:"POST",
 			url:basePath+"/loan/checkLoan",
@@ -147,17 +153,14 @@ function initEvent(){
 				id:select[0].id
 			},
 			success:function(msg){
-				if(msg=='true'){
-					layer.alert("已被申请不可以编辑")
-					return
-				}
+				flag=msg
 			}
 		})
-		if(selects.length != 1){
-			layer.alert("请选择一条信息")
+		if(flag=='true'){
+			layer.alert("已被申请不可以编辑")
 			return
 		}
-		window.location.href = basePath+"/finance/editFinance.html?id="+selects[0].id
+		window.location.href = basePath+"/finance/editFinance.html?id="+select[0].id
 	})
 	$("#check").on("click",function(){
 		var select = $table.bootstrapTable('getSelections');
@@ -165,27 +168,30 @@ function initEvent(){
 			layer.alert("请选择一条信息")
 			return
 		}
+		var date
 		$.ajax({
 			type:"POST",
 			url:basePath+"/finance/checkLoan",
+			async : false,
 			data:{
-				id:select[0].id
+ 				id:select[0].id
 			},
 			success:function(data){
-				if(data.state != 2){
-					layer.alert("不是需要审核的单子")
-					return
-				}
-				$("#checkModal").removeClass("modal-danger");
-				$("#checkModal").modal("show");
-				if(data.creditRate<=3){
-					$("#checkModal").addClass("modal-danger");
-				}
-				var html = "<div> 该用户信用评分为 "+data.creditRate+"（5分以上值得信赖）</div>"
-				html += "<div> 总共需要还款 "+data.sum+"元</div>"
-				$(".checkbody").html(html);
+				date= data
 			}
 		})
+		if(date.state != 2){
+			layer.alert("不是需要审核的单子")
+			return
+		}
+		$("#checkModal").removeClass("modal-danger");
+		$("#checkModal").modal("show");
+		if(date.creditRate<=3){
+			$("#checkModal").addClass("modal-danger");
+		}
+		var html = "<div> 该用户信用评分为 "+date.creditRate+"（5分以上值得信赖）</div>"
+		html += "<div> 总共需要还款 "+date.sum+"元</div>"
+		$(".checkbody").html(html);
 	}) 
 	$("#evaluation").on("click",function(){
 		var select = $table.bootstrapTable('getSelections');
@@ -246,6 +252,38 @@ function initEvent(){
 			}
 		})
 	})
+	$("#del").on("click",function(){
+		var select = $table.bootstrapTable('getSelections');
+		if(select.length < 1){
+			layer.alert("至少选择一条信息")
+			return
+		}
+		for(var i=0;i<select.length;i++){
+			$.ajax({
+				type:"POST",
+				url:basePath+"/finance/delete.json",
+				async : false,
+				dataType: 'text',
+				data:{
+					id:select[i].id,
+				},
+				success:function(msg){
+					console.log(msg)
+					if(msg=="exist"){
+						layer.alert("已经达成协议不可删除")
+						return
+					}
+					if(msg=="error"){
+						layer.alert("删除错误")
+						return
+					}
+					$table.bootstrapTable('selectPage', 1);
+					$table.bootstrapTable('load', data);
+					layer.alert("删除成功")
+				}
+			})
+		}
+	})
 	$("#search").on("click",function(){
 		$.ajax({
 			type:"POST",
@@ -282,17 +320,20 @@ function initTable(){
 	option.columns=[	
 	   { "title" : "check",   checkbox:true, },
 	   { "title" : "id",   "field": "id", },
-	   { "title" : "操作",   "field": "option","width":"70px",
+	   { "title" : "操作",   "field": "option","width":"90px",
 		   "formatter":function(value, row, index){
 			   return [
-			            "<a class=\"like\" href=\"javascript:viewInline('" + row.id +  "')\" title=\"申请贷款\">",
-			            '<i class="fa fa-search-plus"></i>',
+			            "<a class=\"like\" href=\"javascript: editInline('" + row.id +  "')\" title=\"编辑\">",
+			            '<i class="fa fa-edit"></i>',
 			            '</a>  ',
-			            "<a class=\"like\" href=\"javascript:viewInline('" + row.id +  "')\" title=\"申请贷款\">",
-			            '<i class="fa fa-search-plus"></i>',
+			            "<a class=\"like\" href=\"javascript: check('" + row.id +  "')\" title=\"审核\">",
+			            '<i class="fa fa-check-square-o"></i>',
 			            '</a>  ',
-			            "<a class=\"like\" href=\"javascript:viewInline('" + row.id +  "')\" title=\"申请贷款\">",
-			            '<i class="fa fa-search-plus"></i>',
+			            "<a class=\"like\" href=\"javascript: evaluation('" + row.id +  "')\" title=\"评价\">",
+			            '<i class="fa fa-commenting-o"></i>',
+			            '</a>  ',
+			            "<a class=\"like\" href=\"javascript: delInline('" + row.id +  "')\" title=\"删除\">",
+			            '<i class="fa fa-remove"></i>',
 			            '</a>  '
 			        ].join('')
 			}   
@@ -313,6 +354,99 @@ function initTable(){
 	   { "title" : "状态", "field" : "stateStr",  }
   	]
 	$table=$("#table").bootstrapTable(option);
+}
+function evaluation(id){
+	var flag
+	$.ajax({
+		type:"POST",
+		url:basePath+"/evaluation/checkevaluation",
+		async:false,
+		data:{
+			id:id
+		},
+		success:function(msg){
+			flag=msg;
+		}
+	})
+	if(flag=='false2'){
+		layer.alert("还未到评价环节")
+		return
+	}
+	if(flag=='true'){
+		layer.alert("已评价过")
+		return
+	}
+	window.location.href = basePath+"/evaluation/evaluation.html?id="+id
+}
+function check(id){
+	var date
+	$.ajax({
+		type:"POST",
+		url:basePath+"/finance/checkLoan",
+		async : false,
+		data:{
+			id:id
+		},
+		success:function(data){
+			date = data
+		}
+	})
+	if(date.state != 2){
+		layer.alert("不是需要审核的单子")
+		return
+	}
+	$("#checkModal").removeClass("modal-danger");
+	$("#checkModal").modal("show");
+	if(date.creditRate<=3){
+		$("#checkModal").addClass("modal-danger");
+	}
+	var html = "<div> 该用户信用评分为 "+date.creditRate+"（5分以上值得信赖）</div>"
+	html += "<div> 总共需要还款 "+date.sum+"元</div>"
+	$(".checkbody").html(html);
+}
+function editInline(id){
+	var flag
+	$.ajax({
+		type:"POST",
+		url:basePath+"/loan/checkLoan",
+		async:false,
+		data:{
+			id:id
+		},
+		success:function(msg){
+			flag = msg
+		}
+	})
+	if(flagr=='true'){
+		layer.alert("已被申请不可以编辑")
+		return
+	}
+	window.location.href = basePath+"/finance/editFinance.html?id="+id
+}
+function delInline(id){
+	$.ajax({
+		type:"POST",
+		url:basePath+"/finance/delete.json",
+		async : false,
+		dataType: 'text',
+		data:{
+			id:id,
+		},
+		success:function(msg){
+			console.log(msg)
+			if(msg=="exist"){
+				layer.alert("已经达成协议不可删除")
+				return
+			}
+			if(msg=="error"){
+				layer.alert("删除错误")
+				return
+			}
+			$table.bootstrapTable('selectPage', 1);
+			$table.bootstrapTable('load', data);
+			layer.alert("删除成功")
+		}
+	})
 }
 </script>
 </html>

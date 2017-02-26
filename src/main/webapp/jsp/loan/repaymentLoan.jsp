@@ -96,14 +96,14 @@
 		              <br>
 		              <div class="input-group">
 		                <span class="input-group-addon left-addon">还款额</span>
-						<input type="text" class="form-control" id="repayment" name="repayment"  placeholder="还款额" value="" >
+						<input type="number" class="form-control" id="repayment" name="repayment"  min="0" placeholder="还款额" value="" >
 						<span class="input-group-addon">.00</span>
 		              </div>
 		              
 		            </div>
 				</div>
 				<div class="box-footer">
-					<input class="btn btn-info pull-right" type="submit"  value="提交"  >
+					<input class="btn btn-info pull-right" id="up" type="submit"  value="提交"  >
 				</div>
 				</form>
 			</div>
@@ -126,16 +126,33 @@ function intiPage(){
 // 		startDate:new Date()
 // 	});
 	var sum="${info.loanAmount*info.interestRate/100 + info.loanAmount}"
+	var leftM="${info.repaymentBalance}";
 	var repaymentMethod= "${info.repaymentMethod}";
 	if(repaymentMethod=="一次还款"){
 		$("#repayment").val(sum);
 		$("#repayment").attr("readonly","readonly");
 	}else{
-		
+		if(Number(sum)-Number(leftM) >0){
+			$("#repayment").attr("max",Number(sum)-Number(leftM));
+		}
 	}
 }
 function initEvent(){
-	
+	$("#up").on("click",function(){
+		var sum="${info.loanAmount*info.interestRate/100 + info.loanAmount}"
+		var leftM="${info.repaymentBalance}";
+		if($("#repayment").val()-0<=0){
+			layer.alert("还款额不正确")
+			return
+		}
+		if($("#repayment").val()-0>(sum-leftM)){
+			layer.alert("请不要多还钱")
+			return
+		}
+		$("#repaymentMethod").removeAttr("disabled"); 
+		$("form").submit();
+// 		$("#repaymentMethod").attr("disabled","disabled"); 
+	})
 }
 function initTable(){
 	

@@ -1,5 +1,6 @@
 package com.demo.entity.financ;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -128,6 +129,8 @@ public class financProduct implements Serializable {
     }
 
 	public String getPublicManStr() {
+		this.publicManStr = this.publicManStr.substring(0, publicManStr.length()-1);
+		this.publicManStr+="*";
 		return publicManStr;
 	}
 
@@ -136,6 +139,8 @@ public class financProduct implements Serializable {
 	}
 
 	public String getRepaymentManStr() {
+		this.repaymentManStr = this.repaymentManStr.substring(0, repaymentManStr.length()-1);
+		this.repaymentManStr+="*";
 		return repaymentManStr;
 	}
 
@@ -175,5 +180,4 @@ public class financProduct implements Serializable {
 	public void setStateStr(String stateStr) {
 		this.stateStr = stateStr;
 	}
-    
 }

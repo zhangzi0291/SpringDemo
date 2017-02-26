@@ -3,6 +3,7 @@ package com.demo.controller;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.base.DaoException;
 import com.demo.base.Page;
-import com.demo.base.RespBody;
+import com.demo.entity.cash.CashFlow;
 import com.demo.entity.financ.financProduct;
 import com.demo.entity.financ.financProductExample;
 import com.demo.entity.sys.SysUser;
+import com.demo.service.cash.CashService;
 import com.demo.service.finance.FinanceService;
+import com.demo.service.sys.SysService;
 import com.demo.service.sys.UserService;
 import com.demo.util.DateUtil;
 import com.demo.util.ServletApplicationObject;
@@ -35,6 +38,12 @@ public class FinanceController {
 	
 	@Resource
 	private UserService userService;
+	
+	@Resource
+	private CashService cashService;
+	
+	@Resource
+	private SysService sysService;
 	
 	@RequestMapping("myFinance.html")
 	public String myFinanceHtml(){
@@ -94,7 +103,7 @@ public class FinanceController {
 			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
 			fp.setPublicMan(user.getId().toString());
 			fp.setPublicType("1");
-			fp.setState("0");
+			fp.setState("1");
 			financeService.insertSelective(fp);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -186,9 +195,11 @@ public class FinanceController {
 			SysUser user = userService.selectByPrimaryKey(new BigDecimal(fp.getRepaymentMan()));
 			map.put("creditRate", user.getCreditRate());
 			map.put("state", fp.getState());
-			map.put("sum", fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			map.put("sum", fp.getInterestRate().divide(new BigDecimal(100)).multiply(fp.getLoanAmount()).add(fp.getLoanAmount()).setScale(0, BigDecimal.ROUND_HALF_UP));
 		} catch (DaoException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			map.put("state","0");
 		}
 		return map;
 	}
@@ -196,17 +207,23 @@ public class FinanceController {
 	@ResponseBody
 	public Map<String, Object> acceptLoan(String id,String check){
 		Map<String, Object> map = new HashMap<String,Object>();
-		financProduct fp = new financProduct();
-		fp.setId(new BigDecimal(id));
-		if("1".equals(check)){
-			//审核通过
-			fp.setState("3");
-		}
-		if("2".equals(check)){
-			//审核不通过
-			fp.setState("4");
-		}
 		try {
+			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id.trim()));
+			if("1".equals(check)){
+				//审核通过
+				fp.setState("3");
+				CashFlow cf = new CashFlow();
+				cf.setId(sysService.findId());
+				cf.setMoney(fp.getLoanAmount());
+				cf.setPayeeMan(fp.getRepaymentMan());
+				cf.setPayerMan(fp.getPublicMan());
+				cf.setPayDate(new Date());
+				cashService.insertSelective(cf);
+			}
+			if("2".equals(check)){
+				//审核不通过
+				fp.setState("4");
+			}
 			financeService.updateByPrimaryKeySelective(fp);
 			map.put("result", "ok");
 		} catch (DaoException e) {
@@ -241,6 +258,23 @@ public class FinanceController {
 			e.printStackTrace();
 		}
 		return "redirect:../loan/allLoan.html";
+	}
+	
+	@RequestMapping("delete.json")
+	@ResponseBody
+	public String deletejson(HttpServletRequest request , String id){
+		Integer num = 0;
+		try {
+			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id.trim()) );
+			if(StringUtil.isEmpty(fp.getPublicMan())||StringUtil.isEmpty(fp.getRepaymentMan())){
+				num = financeService.deleteByPrimaryKey(new BigDecimal(id.trim()) );
+				return num.toString();
+			}
+			return "exist";
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "error";
 	}
 	
 	private void setUserName(List<financProduct> list) throws DaoException{

@@ -45,7 +45,7 @@
 		<div class="col-xs-12">
 			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">我的贷款</div>
+					<div class="box-title">我的申请</div>
 				</div>
 				<div class="box-body">
 					<div class="row" >
@@ -137,7 +137,38 @@ function initEvent(){
 		})
 		window.location.href = basePath+"/loan/editLoan.html?id="+selects[0].id
 	})
-	
+	$("#del").on("click",function(){
+		var select = $table.bootstrapTable('getSelections');
+		if(select.length < 1){
+			layer.alert("至少选择一条信息")
+			return
+		}
+		for(var i=0;i<select.length;i++){
+			$.ajax({
+				type:"POST",
+				url:basePath+"/finance/delete.json",
+				async : false,
+				dataType: 'text',
+				data:{
+					id:select[i].id,
+				},
+				success:function(msg){
+					console.log(msg)
+					if(msg=="exist"){
+						layer.alert("已经达成协议不可删除")
+						return
+					}
+					if(msg=="error"){
+						layer.alert("删除错误")
+						return
+					}
+					$table.bootstrapTable('selectPage', 1);
+					$table.bootstrapTable('refresh');
+					layer.alert("删除成功")
+				}
+			})
+		}
+	})
 	$("#search").on("click",function(){
 		$.ajax({
 			type:"POST",

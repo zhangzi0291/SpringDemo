@@ -1,6 +1,6 @@
 --------------------------------------------
 -- Export file for user FS                --
--- Created by North on 2017-2-23, 4:37:51 --
+-- Created by North on 2017-2-27, 0:41:12 --
 --------------------------------------------
 
 spool fs.log
@@ -46,7 +46,8 @@ create table EVALUATION_CRITERIA
   EVALUATORS_MAN   VARCHAR2(32),
   VALUATION_MAN    VARCHAR2(32),
   EVALUATION_SCORE NUMBER,
-  EVALUATION_DATE  DATE
+  EVALUATION_DATE  DATE,
+  FID              NUMBER
 )
 tablespace USERS
   pctfree 10
@@ -66,6 +67,8 @@ comment on column EVALUATION_CRITERIA.EVALUATION_SCORE
   is '评分';
 comment on column EVALUATION_CRITERIA.EVALUATION_DATE
   is '评分日期';
+comment on column EVALUATION_CRITERIA.FID
+  is '交易id';
 
 prompt
 prompt Creating table FINANC_PRODUCT
@@ -113,7 +116,7 @@ comment on column FINANC_PRODUCT.REPAYMENT_BALANCE
 comment on column FINANC_PRODUCT.REPAYMENT_MAN
   is '还款人';
 comment on column FINANC_PRODUCT.STATE
-  is '状态：1发布融资 2申请贷款 3审核通过 4审核不通过 5正在还款 6还款结束 7评价完成';
+  is '状态：1发布融资 2申请贷款 3审核通过 4审核不通过 5正在还款 6还款结束 7交易完成 8 贷款申请发布 9融资人评价完成 10 贷款人评价完成';
 alter table FINANC_PRODUCT
   add primary key (ID)
   using index 
@@ -234,7 +237,7 @@ prompt
 create sequence SYS_SEQ
 minvalue 1
 maxvalue 999999999999999999999999999
-start with 21
+start with 91
 increment by 1
 cache 10;
 

@@ -4,4 +4,25 @@
  	<select id="findId" resultType="java.lang.Integer">
  		select sys_seq.nextval from dual
  	</select>
+ 	
+ 	<select id="findMoneyByUserId" parameterType="java.lang.String" resultType="java.util.Map">
+ 		select * from 
+			(select nvl(sum(t.interest_rate/100*t.loan_amount+t.loan_amount),0) total from financ_product t where t.repayment_man=#{userId} and state in('3','5')
+			),
+			(select nvl(sum(t.interest_rate/100*t.loan_amount+t.loan_amount),0)-nvl(sum(t.repayment_balance),0) repayment from financ_product t where t.repayment_man=#{userId} and state in('3','5')
+			),
+			(select count(t.loan_amount) loanAmount from financ_product t where t.public_man=#{userId} and state in('3','5')
+			)
+ 	</select>
+ 	
+ 	<select id="getLoanAmount" parameterType="java.lang.String" resultType="java.util.Map">
+ 		select sum(t.loan_amount) loanAmount ,t.create_date from financ_product t 
+ 			where public_man=#{userId} and create_date-sysdate&lt;30 
+ 			group by t.create_date order by t.create_date
+ 	</select>
+ 	<select id="getRepayment" parameterType="java.lang.String" resultType="java.util.Map">
+ 		select sum(t.loan_amount) loanAmount ,t.create_date from financ_product t 
+ 			where t.repayment_man=#{userId} and create_date-sysdate&lt;30 
+ 			group by t.create_date order by t.create_date
+ 	</select>
 </mapper>

@@ -104,6 +104,7 @@ public class FinanceController {
 			fp.setPublicMan(user.getId().toString());
 			fp.setPublicType("1");
 			fp.setState("1");
+			fp.setCreateDate(DateUtil.getDateByStr(DateUtil.getDate(0)));
 			financeService.insertSelective(fp);
 		} catch (ParseException e) {
 			e.printStackTrace();

@@ -105,6 +105,7 @@ public class LoanController {
 			fp.setRepaymentMan(user.getId().toString());
 			fp.setPublicType("2");
 			fp.setState("8");
+			fp.setCreateDate(DateUtil.getDateByStr(DateUtil.getDate(0)));
 			financeService.insertSelective(fp);
 		} catch (ParseException e) {
 			e.printStackTrace();

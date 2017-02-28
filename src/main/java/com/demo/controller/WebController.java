@@ -21,6 +21,7 @@ import com.demo.entity.sys.SysMenuExample;
 import com.demo.entity.sys.SysUser;
 import com.demo.entity.sys.SysUserExample;
 import com.demo.service.sys.MenuService;
+import com.demo.service.sys.SysService;
 import com.demo.service.sys.UserService;
 import com.demo.util.ServletApplicationObject;
 import com.demo.util.SqLiteUtil;
@@ -35,8 +36,15 @@ public class WebController {
 	@Resource
 	private MenuService menuService;
 	
+	@Resource
+	private SysService sysService;
+	
 	@RequestMapping("index.html")
-	public String index(){
+	public String index(HttpServletRequest request , Map<String, Object> map ){
+		SysUser user = ServletApplicationObject.getUser(request);
+		Map<String, String> money = sysService.findMoneyByUserId(user.getId().toString());
+		System.out.println(money.get("repayment"));
+		map.put("money", money);
 		return "index";
 	}
 	

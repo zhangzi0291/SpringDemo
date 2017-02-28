@@ -123,7 +123,7 @@ public class EvaluationController {
 		criteria.andFidEqualTo(new BigDecimal(id.trim()));
 		try {
 			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id.trim()));
-			if(!fp.getState().equals(new BigDecimal("6"))){
+			if(!fp.getState().equals("6")){
 				return "false2";
 			}
 			List<EvaluationCriteria > list = evaluationService.selectByExample(example);

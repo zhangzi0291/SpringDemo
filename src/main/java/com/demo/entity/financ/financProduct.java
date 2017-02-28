@@ -1,17 +1,11 @@
 package com.demo.entity.financ;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.annotation.Resource;
-
-import com.demo.base.DaoException;
-import com.demo.entity.sys.SysUser;
-import com.demo.service.sys.UserService;
-import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
+import com.demo.util.StringUtil;
 
 public class financProduct implements Serializable {
 	
@@ -40,6 +34,8 @@ public class financProduct implements Serializable {
     private String state;
 
     private String stateStr;
+    
+    private Date createDate;
     
     private static final long serialVersionUID = 1L;
 
@@ -139,8 +135,10 @@ public class financProduct implements Serializable {
 	}
 
 	public String getRepaymentManStr() {
-		this.repaymentManStr = this.repaymentManStr.substring(0, repaymentManStr.length()-1);
-		this.repaymentManStr+="*";
+		if(StringUtil.isNotEmpty(this.repaymentManStr)){
+			this.repaymentManStr = this.repaymentManStr.substring(0, repaymentManStr.length()-1);
+			this.repaymentManStr+="*";
+		}
 		return repaymentManStr;
 	}
 
@@ -180,4 +178,23 @@ public class financProduct implements Serializable {
 	public void setStateStr(String stateStr) {
 		this.stateStr = stateStr;
 	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	@Override
+	public String toString() {
+		return "financProduct [id=" + id + ", loanAmount=" + loanAmount + ", repaymentMethod=" + repaymentMethod
+				+ ", interestRate=" + interestRate + ", repaymentDate=" + repaymentDate + ", publicType=" + publicType
+				+ ", publicMan=" + publicMan + ", publicManStr=" + publicManStr + ", repaymentBalance="
+				+ repaymentBalance + ", repaymentMan=" + repaymentMan + ", repaymentManStr=" + repaymentManStr
+				+ ", state=" + state + ", stateStr=" + stateStr + ", createDate=" + createDate + "]";
+	}
+	
+	
 }

@@ -4,7 +4,7 @@
 <aside class="main-sidebar">
   <div class="sidebar">
     <ul class="sidebar-menu">
-      <li id ="menu-header" class="header">HEADER</li>
+      <li id ="menu-header" class="header"><a href="${basePath }/index.html">首页</a></li>
       
     </ul><!-- /.sidebar-menu -->
   </div><!-- /.sidebar -->

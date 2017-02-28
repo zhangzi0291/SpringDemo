@@ -1,6 +1,8 @@
 package com.demo.service.sys.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,6 +22,21 @@ public class SysServiceImpl implements SysService {
 		Integer b=dao.findId();
 		BigDecimal i = new BigDecimal(b);
 		return i;
+	}
+
+	@Override
+	public Map<String, String> findMoneyByUserId(String userId) {
+		return dao.findMoneyByUserId(userId);
+	}
+
+	@Override
+	public List<Map<String, String>> getLoanAmount(String userId) {
+		return dao.getLoanAmount(userId);
+	}
+	
+	@Override
+	public List<Map<String, String>> getRepayment(String userId) {
+		return dao.getRepayment(userId);
 	}
 
 }

@@ -12,6 +12,7 @@
     <result column="REPAYMENT_BALANCE" property="repaymentBalance" jdbcType="DECIMAL" />
     <result column="REPAYMENT_MAN" property="repaymentMan" jdbcType="VARCHAR" />
     <result column="STATE" property="state" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     ID, LOAN_AMOUNT, REPAYMENT_METHOD, INTEREST_RATE, REPAYMENT_DATE, PUBLIC_TYPE, PUBLIC_MAN, 
-    REPAYMENT_BALANCE, REPAYMENT_MAN, STATE
+    REPAYMENT_BALANCE, REPAYMENT_MAN, STATE, CREATE_DATE
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.entity.financ.financProductExample" >
     <include refid="OracleDialectPrefix" />
@@ -111,11 +112,11 @@
     insert into FINANC_PRODUCT (ID, LOAN_AMOUNT, REPAYMENT_METHOD, 
       INTEREST_RATE, REPAYMENT_DATE, PUBLIC_TYPE, 
       PUBLIC_MAN, REPAYMENT_BALANCE, REPAYMENT_MAN, 
-      STATE)
+      STATE, CREATE_DATE)
     values (#{id,jdbcType=DECIMAL}, #{loanAmount,jdbcType=DECIMAL}, #{repaymentMethod,jdbcType=VARCHAR}, 
       #{interestRate,jdbcType=DECIMAL}, #{repaymentDate,jdbcType=DATE}, #{publicType,jdbcType=VARCHAR}, 
       #{publicMan,jdbcType=VARCHAR}, #{repaymentBalance,jdbcType=DECIMAL}, #{repaymentMan,jdbcType=VARCHAR}, 
-      #{state,jdbcType=VARCHAR})
+      #{state,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.demo.entity.financ.financProduct" >
     insert into FINANC_PRODUCT
@@ -150,6 +151,9 @@
       <if test="state != null" >
         STATE,
       </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -181,6 +185,9 @@
       </if>
       <if test="state != null" >
         #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
       </if>
     </trim>
   </insert>
@@ -223,6 +230,9 @@
       <if test="record.state != null" >
         STATE = #{record.state,jdbcType=VARCHAR},
       </if>
+      <if test="record.createDate != null" >
+        CREATE_DATE = #{record.createDate,jdbcType=DATE},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -239,7 +249,8 @@
       PUBLIC_MAN = #{record.publicMan,jdbcType=VARCHAR},
       REPAYMENT_BALANCE = #{record.repaymentBalance,jdbcType=DECIMAL},
       REPAYMENT_MAN = #{record.repaymentMan,jdbcType=VARCHAR},
-      STATE = #{record.state,jdbcType=VARCHAR}
+      STATE = #{record.state,jdbcType=VARCHAR},
+      CREATE_DATE = #{record.createDate,jdbcType=DATE}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -274,6 +285,9 @@
       <if test="state != null" >
         STATE = #{state,jdbcType=VARCHAR},
       </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
     </set>
     where ID = #{id,jdbcType=DECIMAL}
   </update>
@@ -287,7 +301,8 @@
       PUBLIC_MAN = #{publicMan,jdbcType=VARCHAR},
       REPAYMENT_BALANCE = #{repaymentBalance,jdbcType=DECIMAL},
       REPAYMENT_MAN = #{repaymentMan,jdbcType=VARCHAR},
-      STATE = #{state,jdbcType=VARCHAR}
+      STATE = #{state,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=DATE}
     where ID = #{id,jdbcType=DECIMAL}
   </update>
   <sql id="OracleDialectPrefix" >

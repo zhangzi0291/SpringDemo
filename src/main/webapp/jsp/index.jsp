@@ -22,7 +22,7 @@
 <div class="content-wrapper">
 	<section class="content">
 		<div class="row">
-			<div class="col-md-4 col-xs-12">
+			<div class="col-md-3 col-xs-12">
 				<div class="info-box">
 					<span class="info-box-icon bg-aqua"><i class="ion ion-social-yen"></i></span>
 					<div class="info-box-content">
@@ -31,7 +31,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4 col-xs-12">
+			<div class="col-md-3 col-xs-12">
 				<div class="info-box">
 					<span class="info-box-icon bg-aqua"><i class="ion ion-archive"></i></span>
 					<div class="info-box-content">
@@ -40,12 +40,22 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-4 col-xs-12">
+			<div class="col-md-3 col-xs-12">
 				<div class="info-box">
 					<span class="info-box-icon bg-aqua"><i class="ion ion-ios-refresh"></i></span>
 					<div class="info-box-content">
 					  <span class="info-box-text">剩余还款：</span>
 					  <span class="info-box-number">${money.REPAYMENT }<small>元</small></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 col-xs-12">
+				<div class="info-box">
+					<span class="info-box-icon bg-aqua"><i class="ion ion-ios-refresh"></i></span>
+					<div class="info-box-content">
+					  <span class="info-box-text">适合贷款数：</span>
+					  <span class="info-box-number">${canLoan }<small>元</small></span>
+					  <span class="info-box-text">个人评价：<b>${user.creditRate }</b></span>
 					</div>
 				</div>
 			</div>

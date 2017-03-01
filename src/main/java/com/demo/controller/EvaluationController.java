@@ -66,7 +66,13 @@ public class EvaluationController {
 			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id.trim()));
 			ec.setValuationMan(fp.getPublicMan().toString());
 			evaluationService.insert(ec);
-			
+			if(ec.getEvaluationScore().intValue()==5){
+				user.setCreditRate(new BigDecimal(user.getCreditRate()).add(new BigDecimal(1)).toString());
+			}else if (ec.getEvaluationScore().intValue()<=1 && ec.getEvaluationScore().intValue()>0){
+				user.setCreditRate(new BigDecimal(user.getCreditRate()).subtract(new BigDecimal(1)).toString());
+			}else if(ec.getEvaluationScore().intValue()==0){
+				user.setCreditRate(new BigDecimal(user.getCreditRate()).subtract(new BigDecimal(2)).toString());
+			}
 			EvaluationCriteriaExample example = new EvaluationCriteriaExample();
 			EvaluationCriteriaExample.Criteria criteria = example.createCriteria();
 			criteria.andFidEqualTo(new BigDecimal(id.trim()));

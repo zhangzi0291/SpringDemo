@@ -42,9 +42,11 @@ public class WebController {
 	@RequestMapping("index.html")
 	public String index(HttpServletRequest request , Map<String, Object> map ){
 		SysUser user = ServletApplicationObject.getUser(request);
+		Double canLoan= ServletApplicationObject.getCanLoan(request);
 		Map<String, String> money = sysService.findMoneyByUserId(user.getId().toString());
 		System.out.println(money.get("repayment"));
 		map.put("money", money);
+		map.put("canLoan", canLoan);
 		return "index";
 	}
 	

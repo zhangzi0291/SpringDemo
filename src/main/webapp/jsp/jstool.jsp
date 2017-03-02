@@ -1,3 +1,4 @@
+<%@page import="com.demo.entity.sys.SysUser"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -41,11 +42,12 @@ $(function() {
         return fmt;
     }
 <%
-	if(session.getAttribute("user") != null) {
+	SysUser user = (SysUser)session.getAttribute("user");
+	if( user != null && user.getUserName().equals("admin") ) {
 %>
    	$.ajax({
    		type:"POST",
-   		url:basePath+"/getMenu",
+   		url:basePath+"/getAdminMenu",
    		success:function(data){
    			for(var i=data.length-1;i>=0;i--){
    				var topli=$("<li class='treeview'>")
@@ -87,6 +89,53 @@ $(function() {
    	   		}
    		})
    	})
+<%
+	}else{
+%>
+$.ajax({
+		type:"POST",
+		url:basePath+"/getMenu",
+		success:function(data){
+			for(var i=data.length-1;i>=0;i--){
+				var topli=$("<li class='treeview'>")
+				var a=$("<a href >")
+				var span=$("<span>")
+				var icon=$("<i class='fa fa-angle-left pull-right'>")
+				span.text(data[i].menuName)
+				if("${nowMenu}"==data[i].menuName){
+					topli.addClass("active")
+				}
+				a.append(span);
+				a.append(icon);	
+				var child=data[i].child;
+			var ul=$("<ul class='treeview-menu menu-open'>")
+				for(var j=0;j<child.length;j++){
+					var li=$("<li>")
+					var a2=$("<a>")
+					a2.attr("href","${basePath}/"+child[j].menuUrl);
+					a2.text(child[j].menuName)
+					li.append(a2);
+					ul.append(li);
+				}
+			topli.append(a);
+			topli.append(ul);
+				$("#menu-header").after(topli)
+			}
+		}
+	})
+	$("aside.main-sidebar > div > div.sidebar > ul ").on("click","li",function(){
+		var menuName = $(this).find("a").find("span").text();
+		$.ajax({
+			type:"POST",
+	   		url:basePath+"/setMenu",
+	   		data:{
+	   			"menuName":menuName
+	   		},
+	   		success:function(data){
+	   			
+	   		}
+		})
+	})
 <%
 	}
 %>

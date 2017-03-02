@@ -312,7 +312,7 @@ public class LoanController {
 	}
 	
 	@RequestMapping("repaymentLoan.json")
-	public String repaymentLoanJson(Map<String , Object > map , financProduct fp,String repayment,String sum,String repaymentDateStr){
+	public String repaymentLoanJson(HttpServletRequest request,Map<String , Object > map , financProduct fp,String repayment,String sum,String repaymentDateStr){
 		try {
 			BigDecimal balance = fp.getRepaymentBalance()!=null? fp.getRepaymentBalance():new BigDecimal(0);
 			fp.setRepaymentBalance(balance.add(new BigDecimal(repayment.trim())));
@@ -334,6 +334,11 @@ public class LoanController {
 			
 			cashService.insertSelective(cf);
 			financeService.updateByPrimaryKeySelective(fp);
+			if(fp2.getRepaymentDate().before(new Date())){
+				SysUser user = ServletApplicationObject.getUser(request);
+				user.setCreditRate(new BigDecimal(user.getCreditRate()).subtract(new BigDecimal(1)).toString());
+				userService.updateByPrimaryKey(user);
+			}
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}

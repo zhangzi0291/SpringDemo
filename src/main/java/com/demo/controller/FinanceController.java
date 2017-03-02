@@ -106,6 +106,10 @@ public class FinanceController {
 			fp.setState("1");
 			fp.setCreateDate(DateUtil.getDateByStr(DateUtil.getDate(0)));
 			financeService.insertSelective(fp);
+			if(fp.getLoanAmount().doubleValue()>50000){
+				user.setCreditRate(new BigDecimal(user.getCreditRate()).add(new BigDecimal(1)).toString());
+				userService.updateByPrimaryKey(user);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (DaoException e) {

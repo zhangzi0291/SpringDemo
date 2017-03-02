@@ -86,7 +86,7 @@ $(function(){
 		url:basePath+"/analysis/getLoanAmount",
 		success:function(data){
 			var loanAmountOption = {
-				    title: {text: '30天放款变化'},
+				    title: {text: '过去放款变化'},
 				    toolbox: {
 				        show: true,
 				        feature: {
@@ -121,7 +121,7 @@ $(function(){
 		url:basePath+"/analysis/getRepayment",
 		success:function(data){
 			var repaymentOption = {
-				    title: {text: '30天贷款变化'},
+				    title: {text: '过去贷款变化'},
 				    toolbox: {
 				        show: true,
 				        feature: {

@@ -146,6 +146,31 @@ public class WebController {
 			SysMenuExample example = new SysMenuExample();
 			SysMenuExample.Criteria criteria = example.createCriteria();
 			criteria.andMenuPidEqualTo(new BigDecimal(-1));
+			criteria.andMenuOrderNotEqualTo(new BigDecimal(0));
+			List<SysMenu> menu1= menuService.selectByExample(example);
+			for(int i=0;i<menu1.size();i++){
+				SysMenu param = menu1.get(i);
+				BigDecimal id = param.getId();
+				SysMenuExample example2 = new SysMenuExample();
+				SysMenuExample.Criteria criteria2 = example2.createCriteria();
+				criteria2.andMenuPidEqualTo(id);
+				List<SysMenu> menu2 = menuService.selectByExample(example2);
+				menu1.get(i).setChild(menu2);
+			}
+			return menu1;
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@RequestMapping("getAdminMenu")
+	@ResponseBody
+	public List<SysMenu> getAdminMenu(HttpServletRequest request){
+		try {
+			SysMenuExample example = new SysMenuExample();
+			SysMenuExample.Criteria criteria = example.createCriteria();
+			criteria.andMenuPidEqualTo(new BigDecimal(-1));
+			criteria.andMenuOrderEqualTo(new BigDecimal(0));
 			List<SysMenu> menu1= menuService.selectByExample(example);
 			for(int i=0;i<menu1.size();i++){
 				SysMenu param = menu1.get(i);

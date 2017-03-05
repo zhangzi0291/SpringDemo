@@ -1,6 +1,6 @@
 --------------------------------------------
 -- Export file for user FS                --
--- Created by North on 2017-2-27, 0:41:12 --
+-- Created by North on 2017-3-5, 15:17:51 --
 --------------------------------------------
 
 spool fs.log
@@ -85,7 +85,8 @@ create table FINANC_PRODUCT
   PUBLIC_MAN        VARCHAR2(64),
   REPAYMENT_BALANCE NUMBER,
   REPAYMENT_MAN     VARCHAR2(64),
-  STATE             VARCHAR2(16)
+  STATE             VARCHAR2(16),
+  CREATE_DATE       DATE
 )
 tablespace USERS
   pctfree 10
@@ -117,8 +118,48 @@ comment on column FINANC_PRODUCT.REPAYMENT_MAN
   is '还款人';
 comment on column FINANC_PRODUCT.STATE
   is '状态：1发布融资 2申请贷款 3审核通过 4审核不通过 5正在还款 6还款结束 7交易完成 8 贷款申请发布 9融资人评价完成 10 贷款人评价完成';
+comment on column FINANC_PRODUCT.CREATE_DATE
+  is '创建日期';
 alter table FINANC_PRODUCT
   add primary key (ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table SYS_BLACKLIST
+prompt ============================
+prompt
+create table SYS_BLACKLIST
+(
+  ID           NUMBER not null,
+  BLACKUSER_ID VARCHAR2(16),
+  REMARK       VARCHAR2(1024)
+)
+tablespace USERS
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+comment on column SYS_BLACKLIST.BLACKUSER_ID
+  is '黑名单用户ID';
+comment on column SYS_BLACKLIST.REMARK
+  is '理由备注';
+alter table SYS_BLACKLIST
+  add constraint PK_SYS_BLACKLIST_ID primary key (ID)
   using index 
   tablespace USERS
   pctfree 10
@@ -237,7 +278,7 @@ prompt
 create sequence SYS_SEQ
 minvalue 1
 maxvalue 999999999999999999999999999
-start with 91
+start with 131
 increment by 1
 cache 10;
 

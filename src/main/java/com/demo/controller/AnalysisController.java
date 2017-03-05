@@ -21,6 +21,14 @@ public class AnalysisController {
 	@Resource
 	private SysService sysService;
 	
+	/**
+	 * 
+	  * 获取历史30天的贷款数据
+	  *@param request
+	  *@return 
+	  *@date 2017年3月5日 上午10:00:01
+	  *@author zxn
+	 */
 	@RequestMapping("getLoanAmount")
 	@ResponseBody
 	public List<Map<String, String>> getLoanAmount(HttpServletRequest request){
@@ -29,6 +37,14 @@ public class AnalysisController {
 		return map;
 	}
 	
+	/**
+	 * 
+	  * 获取历史30天的融资数据
+	  *@param request
+	  *@return 
+	  *@date 2017年3月5日 上午10:00:32
+	  *@author zxn
+	 */
 	@RequestMapping("getRepayment")
 	@ResponseBody
 	public List<Map<String, String>> getRepayment(HttpServletRequest request){

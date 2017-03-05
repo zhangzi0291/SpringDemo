@@ -23,6 +23,15 @@ public class UserController {
 	@Resource
 	UserService userService;
 	
+	/**
+	 * 
+	  * 跳转我的信息页面
+	  *@param request
+	  *@param map
+	  *@return 
+	  *@date 2017年3月5日 上午10:28:59
+	  *@author zxn
+	 */
 	@RequestMapping("myinfo.html")
 	public String myinfoHtml(HttpServletRequest request,Map<String, Object> map){
 		SysUser user = ServletApplicationObject.getUser(request);
@@ -30,6 +39,15 @@ public class UserController {
 		return "setting/myInfo";
 	}
 	
+	/**
+	 * 
+	  * 保存修改的我的信息
+	  *@param request
+	  *@param user
+	  *@return 
+	  *@date 2017年3月5日 上午10:29:34
+	  *@author zxn
+	 */
 	@RequestMapping("edituser.json")
 	public String edituser(HttpServletRequest request,SysUser user){
 		try {
@@ -43,11 +61,27 @@ public class UserController {
 		return "redirect:../index.html";
 	}
 	
+	/**
+	 * 
+	  * 跳转到修改密码
+	  *@return 
+	  *@date 2017年3月5日 上午10:29:47
+	  *@author zxn
+	 */
 	@RequestMapping("changePwd.html")
 	public String changePwdHtml(){
 		return "setting/changePwd";
 	}
 	
+	/**
+	 * 
+	  * 修改密码
+	  *@param request
+	  *@param userPwd
+	  *@return 
+	  *@date 2017年3月5日 上午10:30:02
+	  *@author zxn
+	 */
 	@RequestMapping("changePwd.json")
 	public String changePwdJson(HttpServletRequest request , String userPwd){
 		SysUser user = ServletApplicationObject.getUser(request);
@@ -61,6 +95,15 @@ public class UserController {
 		return "redirect:../index.html";
 	}
 	
+	/**
+	 * 
+	  * 检查旧密码是否正确
+	  *@param request
+	  *@param password
+	  *@return 
+	  *@date 2017年3月5日 上午10:30:17
+	  *@author zxn
+	 */
 	@RequestMapping("checkPwd")
 	@ResponseBody
 	public String checkPwd(HttpServletRequest request , String password){

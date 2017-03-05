@@ -34,7 +34,7 @@
 		<div class="col-xs-12">
 			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">修改融资</div>
+					<div class="box-title">融资信息</div>
 				</div>
 				 <form action="${basePath }/finance/editFinance.json">
 				<div class="box-body">
@@ -90,7 +90,7 @@
 		            </div>
 				</div>
 				<div class="box-footer">
-					<input class="btn btn-info pull-right" type="submit"  value="提交"  >
+<!-- 					<input class="btn btn-info pull-right" type="submit"  value="提交"  > -->
 				</div>
 				</form>
 			</div>

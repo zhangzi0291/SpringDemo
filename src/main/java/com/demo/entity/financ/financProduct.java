@@ -125,8 +125,10 @@ public class financProduct implements Serializable {
     }
 
 	public String getPublicManStr() {
-		this.publicManStr = this.publicManStr.substring(0, publicManStr.length()-1);
-		this.publicManStr+="*";
+		if(StringUtil.isNotEmpty(this.publicManStr)){
+			this.publicManStr = this.publicManStr.substring(0, publicManStr.length()-1);
+			this.publicManStr+="*";
+		}
 		return publicManStr;
 	}
 

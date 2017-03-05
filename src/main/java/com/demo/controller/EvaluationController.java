@@ -42,6 +42,15 @@ public class EvaluationController {
 	@Resource
 	private SysService sysService;
 	
+	/**
+	 * 
+	  * 跳转用户评价页面
+	  *@param map
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:02:06
+	  *@author zxn
+	 */
 	@RequestMapping("evaluation.html")
 	public String evaluationHtml(Map<String , Object > map , String id){
 		try {
@@ -54,6 +63,16 @@ public class EvaluationController {
 		return "evaluation/editEvaluation";
 	}
 	
+	/**
+	 * 
+	  * 贷款人评价
+	  *@param request
+	  *@param evaluationScore
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:02:22
+	  *@author zxn
+	 */
 	@RequestMapping("evaluationLoan.json")
 	public String evaluationLoanJson(HttpServletRequest request , String evaluationScore , String id){
 		EvaluationCriteria ec=new EvaluationCriteria();
@@ -90,6 +109,16 @@ public class EvaluationController {
 		return "redirect:../loan/myLoan.html";
 	}
 	
+	/**
+	 * 
+	  * 融资人评价
+	  *@param request
+	  *@param evaluationScore
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:02:41
+	  *@author zxn
+	 */
 	@RequestMapping("evaluation.json")
 	public String evaluationJson(HttpServletRequest request , String evaluationScore , String id){
 		EvaluationCriteria ec=new EvaluationCriteria();
@@ -120,6 +149,15 @@ public class EvaluationController {
 		return "redirect:../finance/myFinance.html";
 	}
 	
+	/**
+	 * 
+	  * 检查是否需要评价
+	  *@param request
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:02:52
+	  *@author zxn
+	 */
 	@RequestMapping("checkevaluation")
 	@ResponseBody
 	public String checkevaluation(HttpServletRequest request , String id){

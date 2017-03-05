@@ -45,11 +45,33 @@ public class LoanController {
 	@Resource
 	private SysService sysService;
 	
+	/**
+	 * 
+	  * 跳转我的贷款页面
+	  *@return 
+	  *@date 2017年3月5日 上午10:16:49
+	  *@author zxn
+	 */
 	@RequestMapping("myLoan.html")
 	public String myFinanceHtml(){
 		return "loan/myLoan";
 	}
 	
+	/**
+	 * 
+	  * 我的贷款数据
+	  *@param request
+	  *@param page
+	  *@param loanAmount1
+	  *@param loanAmount2
+	  *@param interestRate1
+	  *@param interestRate2
+	  *@param repaymentDate1
+	  *@param repaymentDate2
+	  *@return 
+	  *@date 2017年3月5日 上午10:16:59
+	  *@author zxn
+	 */
 	@RequestMapping("myLoanList")
 	@ResponseBody
 	public Map<String, Object> getMyLoanList(HttpServletRequest request, Page page, String loanAmount1, String loanAmount2, String interestRate1,
@@ -91,11 +113,28 @@ public class LoanController {
 		return null;
 	}
 	
+	/**
+	 * 
+	  * 跳转新建申请贷款页面
+	  *@return 
+	  *@date 2017年3月5日 上午10:17:19
+	  *@author zxn
+	 */
 	@RequestMapping("newLoan.html")
 	public String newLoanHtml(){
 		return "loan/newLoan";
 	}
 	
+	/**
+	 * 
+	  * 新建申请贷款
+	  *@param request
+	  *@param fp
+	  *@param repaymentDateStr
+	  *@return 
+	  *@date 2017年3月5日 上午10:17:40
+	  *@author zxn
+	 */
 	@RequestMapping("addLoan.json")
 	public String addLoanHtml(HttpServletRequest request, financProduct fp, String repaymentDateStr){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -115,11 +154,20 @@ public class LoanController {
 		return "redirect:applicationLoan.html";
 	}
 	
-	
+	/**
+	 * 
+	  * 跳转编辑申请贷款信息页面
+	  *@param map
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:19:26
+	  *@author zxn
+	 */
 	@RequestMapping("editLoan.html")
 	public String editLoanHtml(Map<String , Object > map , String id){
 		try {
 			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id));
+			setUserName(fp);
 			map.put("info", fp);
 		} catch (DaoException e) {
 			e.printStackTrace();
@@ -127,6 +175,16 @@ public class LoanController {
 		return "loan/editLoan";
 	}
 	
+	/**
+	 * 
+	  * 编辑申请贷款信息
+	  *@param request
+	  *@param fp
+	  *@param repaymentDateStr
+	  *@return 
+	  *@date 2017年3月5日 上午10:19:42
+	  *@author zxn
+	 */
 	@RequestMapping("editLoan.json")
 	public String editFinanceHtml(HttpServletRequest request, financProduct fp, String repaymentDateStr){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -141,12 +199,33 @@ public class LoanController {
 		}
 		return "redirect:applicationLoan.html";
 	}
-	
+	/**
+	 * 
+	  * 跳转贷款申请页面
+	  *@return 
+	  *@date 2017年3月5日 上午10:20:21
+	  *@author zxn
+	 */
 	@RequestMapping("allLoan.html")
 	public String allLoanHtml(){
 		return "loan/allLoan";
 	}
 	
+	/**
+	 * 
+	  * 贷款申请数据
+	  *@param request
+	  *@param page
+	  *@param loanAmount1
+	  *@param loanAmount2
+	  *@param interestRate1
+	  *@param interestRate2
+	  *@param repaymentDate1
+	  *@param repaymentDate2
+	  *@return 
+	  *@date 2017年3月5日 上午10:20:53
+	  *@author zxn
+	 */
 	@RequestMapping("allLoanList")
 	@ResponseBody
 	public Map<String, Object> getAllLoanList(HttpServletRequest request, Page page, String loanAmount1, String loanAmount2, String interestRate1,
@@ -155,8 +234,11 @@ public class LoanController {
 		SysUser user = ServletApplicationObject.getUser(request);
 		financProductExample example = new financProductExample();
 		financProductExample.Criteria criteria = example.createCriteria();
+		//发布类型为申请贷款
 		criteria.andPublicTypeEqualTo("2");
+		//没有被人接受
 		criteria.andPublicManIsNull();
+		//不是当前用户发布
 		criteria.andRepaymentManNotEqualTo(user.getId().toString());
 		if(StringUtil.isNotEmpty(loanAmount1)){
 		    criteria.andLoanAmountGreaterThan(new BigDecimal(loanAmount1));
@@ -188,7 +270,15 @@ public class LoanController {
 		}
 		return null;
 	}
-	
+	/**
+	 * 
+	  * 跳转贷款申请页面
+	  *@param map
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:21:51
+	  *@author zxn
+	 */
 	@RequestMapping("applyLoan.html")
 	public String applyloanHtml(Map<String , Object > map , String id){
 		try {
@@ -200,11 +290,62 @@ public class LoanController {
 		return "loan/applyloan";
 	}
 	
+	/**
+	 * 
+	  * 贷款申请
+	  *@param request
+	  *@param fp
+	  *@param repaymentDateStr
+	  *@return 
+	  *@date 2017年3月5日 上午10:24:32
+	  *@author zxn
+	 */
+	@RequestMapping("applyLoan.json")
+	public String applyloanjson(HttpServletRequest request , financProduct fp,String repaymentDateStr){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SysUser user = ServletApplicationObject.getUser(request);
+		try {
+			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
+			fp.setRepaymentMan(user.getId().toString());
+			fp.setState("2");
+			financeService.updateByPrimaryKeySelective(fp);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (DaoException e) {
+			e.printStackTrace();
+		}
+		return "redirect:allLoan.html";
+	}
+	
+	/**
+	 * 	
+	  * 跳转我的申请页面
+	  *@param map
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:24:53
+	  *@author zxn
+	 */
 	@RequestMapping("applicationLoan.html")
 	public String applicationLoanHtml(Map<String , Object > map , String id){
 		return "loan/applicationLoan";
 	}
 	
+	/**
+	 * 
+	  * 获取我的申请数据
+	  *@param request
+	  *@param page
+	  *@param loanAmount1
+	  *@param loanAmount2
+	  *@param interestRate1
+	  *@param interestRate2
+	  *@param repaymentDate1
+	  *@param repaymentDate2
+	  *@return 
+	  *@date 2017年3月5日 上午10:26:28
+	  *@author zxn
+	 */
 	@RequestMapping("applicationLoanList")
 	@ResponseBody
 	public Map<String, Object> getApplicationLoanList(HttpServletRequest request, Page page, String loanAmount1, String loanAmount2, String interestRate1,
@@ -263,22 +404,15 @@ public class LoanController {
 		return "false";
 	}
 	
-	@RequestMapping("applyLoan.json")
-	public String applyloanjson(HttpServletRequest request , financProduct fp,String repaymentDateStr){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		SysUser user = ServletApplicationObject.getUser(request);
-		try {
-			fp.setRepaymentDate(sdf.parse(repaymentDateStr));
-			fp.setRepaymentMan(user.getId().toString());
-			fp.setState("2");
-			financeService.updateByPrimaryKeySelective(fp);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (DaoException e) {
-			e.printStackTrace();
-		}
-		return "redirect:allLoan.html";
-	}
+	/**
+	 * 
+	  * 跳转还款页面
+	  *@param map
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:28:03
+	  *@author zxn
+	 */
 	@RequestMapping("repaymentLoan.html")
 	public String repaymentLoanHtml(Map<String , Object > map , String id){
 		try {
@@ -291,6 +425,14 @@ public class LoanController {
 		return "loan/repaymentLoan";
 	}
 	
+	/**
+	 * 
+	  * 判断是否需要还款
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:28:19
+	  *@author zxn
+	 */
 	@RequestMapping("checkrepayment")
 	@ResponseBody
 	public String checkrepayment(String id){
@@ -311,6 +453,19 @@ public class LoanController {
 		return "continue";
 	}
 	
+	/**
+	 * 
+	  * 还款
+	  *@param request
+	  *@param map
+	  *@param fp
+	  *@param repayment
+	  *@param sum
+	  *@param repaymentDateStr
+	  *@return 
+	  *@date 2017年3月5日 上午10:28:40
+	  *@author zxn
+	 */
 	@RequestMapping("repaymentLoan.json")
 	public String repaymentLoanJson(HttpServletRequest request,Map<String , Object > map , financProduct fp,String repayment,String sum,String repaymentDateStr){
 		try {

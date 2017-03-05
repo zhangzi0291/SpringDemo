@@ -45,11 +45,33 @@ public class FinanceController {
 	@Resource
 	private SysService sysService;
 	
+	/**
+	 * 
+	  * 跳转我的融资页面
+	  *@return 
+	  *@date 2017年3月5日 上午10:03:36
+	  *@author zxn
+	 */
 	@RequestMapping("myFinance.html")
 	public String myFinanceHtml(){
 		return "finance/myFinance";
 	}
 	
+	/**
+	 * 
+	  * 获取我的融资数据
+	  *@param request
+	  *@param page
+	  *@param loanAmount1
+	  *@param loanAmount2
+	  *@param interestRate1
+	  *@param interestRate2
+	  *@param repaymentDate1
+	  *@param repaymentDate2
+	  *@return 
+	  *@date 2017年3月5日 上午10:04:08
+	  *@author zxn
+	 */
 	@RequestMapping("myFinanceList")
 	@ResponseBody
 	public Map<String, Object> getMyFinanceList(HttpServletRequest request, Page page, String loanAmount1, String loanAmount2, String interestRate1,
@@ -58,6 +80,7 @@ public class FinanceController {
 		SysUser user = ServletApplicationObject.getUser(request);
 		financProductExample example = new financProductExample();
 		financProductExample.Criteria criteria = example.createCriteria();
+		//发布人为当前用户
 		criteria.andPublicManEqualTo(user.getId().toString());
 //		criteria.andPublicTypeEqualTo("1");
 		if(StringUtil.isNotEmpty(loanAmount1)){
@@ -90,13 +113,30 @@ public class FinanceController {
 		}
 		return null;
 	}
-	
+	/**
+	 * 
+	  * 跳转到发布融资页面
+	  *@return 
+	  *@date 2017年3月5日 上午10:04:48
+	  *@author zxn
+	 */
 	@RequestMapping("newFinance.html")
 	public String newFinanceHtml(){
 		return "finance/newFinance";
 	}
+	
+	/**
+	 * 
+	  * 新建融资产品
+	  *@param request
+	  *@param fp
+	  *@param repaymentDateStr
+	  *@return 
+	  *@date 2017年3月5日 上午10:05:02
+	  *@author zxn
+	 */
 	@RequestMapping("addFinance.json")
-	public String addFinanceHtml(HttpServletRequest request, financProduct fp, String repaymentDateStr){
+	public String addFinanceJson(HttpServletRequest request, financProduct fp, String repaymentDateStr){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		SysUser user = ServletApplicationObject.getUser(request);
 		try {
@@ -118,10 +158,20 @@ public class FinanceController {
 		return "redirect:myFinance.html";
 	}
 	
+	/**
+	 * 
+	  * 跳转到编辑融资页面
+	  *@param map
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:06:34
+	  *@author zxn
+	 */
 	@RequestMapping("editFinance.html")
 	public String editFinanceHtml(Map<String , Object > map , String id){
 		try {
 			financProduct fp = financeService.selectByPrimaryKey(new BigDecimal(id));
+			setUserName(fp);
 			map.put("info", fp);
 		} catch (DaoException e) {
 			e.printStackTrace();
@@ -129,6 +179,16 @@ public class FinanceController {
 		return "finance/editFinance";
 	}
 	
+	/**
+	 * 
+	  * 保存编辑融资
+	  *@param request
+	  *@param fp
+	  *@param repaymentDateStr
+	  *@return 
+	  *@date 2017年3月5日 上午10:06:52
+	  *@author zxn
+	 */
 	@RequestMapping("editFinance.json")
 	public String editFinanceHtml(HttpServletRequest request, financProduct fp, String repaymentDateStr){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -144,11 +204,33 @@ public class FinanceController {
 		return "redirect:myFinance.html";
 	}
 	
+	/**
+	 * 
+	  * 跳转融资产品页面
+	  *@return 
+	  *@date 2017年3月5日 上午10:07:07
+	  *@author zxn
+	 */
 	@RequestMapping("allFinance.html")
 	public String allFinanceHtml(){
 		return "finance/allFinance";
 	}
 	
+	/**
+	 * 
+	  * 融资产品数据
+	  *@param request
+	  *@param page
+	  *@param loanAmount1
+	  *@param loanAmount2
+	  *@param interestRate1
+	  *@param interestRate2
+	  *@param repaymentDate1
+	  *@param repaymentDate2
+	  *@return 
+	  *@date 2017年3月5日 上午10:12:21
+	  *@author zxn
+	 */
 	@RequestMapping("allFinanceList")
 	@ResponseBody
 	public Map<String, Object> getAllFinanceList(HttpServletRequest request, Page page, String loanAmount1, String loanAmount2, String interestRate1,
@@ -191,6 +273,14 @@ public class FinanceController {
 		return null;
 	}
 	
+	/**
+	 * 
+	  * 检查是否需要还款
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:12:53
+	  *@author zxn
+	 */
 	@RequestMapping("checkLoan")
 	@ResponseBody
 	public Map<String, Object> checkLoan(String id){
@@ -208,6 +298,16 @@ public class FinanceController {
 		}
 		return map;
 	}
+	
+	/**
+	 * 
+	  * 审核贷款
+	  *@param id
+	  *@param check
+	  *@return 
+	  *@date 2017年3月5日 上午10:13:11
+	  *@author zxn
+	 */
 	@RequestMapping("acceptLoan")
 	@ResponseBody
 	public Map<String, Object> acceptLoan(String id,String check){
@@ -237,6 +337,15 @@ public class FinanceController {
 		return map;
 	}
 	
+	/**
+	 * 
+	  * 跳转贷款申请 放款
+	  *@param map
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:13:37
+	  *@author zxn
+	 */
 	@RequestMapping("applyFinance.html")
 	public String applyFinanceHtml(Map<String , Object > map , String id){
 		try {
@@ -248,6 +357,16 @@ public class FinanceController {
 		return "finance/applyFinance";
 	}
 	
+	/**
+	 * 
+	  * 接受贷款申请
+	  *@param request
+	  *@param fp
+	  *@param repaymentDateStr
+	  *@return 
+	  *@date 2017年3月5日 上午10:14:54
+	  *@author zxn
+	 */
 	@RequestMapping("applyFinance.json")
 	public String applyFinancejson(HttpServletRequest request , financProduct fp,String repaymentDateStr){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -265,6 +384,15 @@ public class FinanceController {
 		return "redirect:../loan/allLoan.html";
 	}
 	
+	/**
+	 * 
+	  * 删除还没有被接受的融资产品
+	  *@param request
+	  *@param id
+	  *@return 
+	  *@date 2017年3月5日 上午10:16:06
+	  *@author zxn
+	 */
 	@RequestMapping("delete.json")
 	@ResponseBody
 	public String deletejson(HttpServletRequest request , String id){
@@ -280,6 +408,39 @@ public class FinanceController {
 			e.printStackTrace();
 		}
 		return "error";
+	}
+	
+	/**
+	 * 
+	  * 获取发布人和贷款人的名字
+	  *@param fp
+	  *@throws DaoException 
+	  *@date 2017年2月22日 上午5:36:57
+	  *@author zxn
+	 */
+	private void setUserName(financProduct fp) throws DaoException{
+		try {
+			SysUser user1 = userService.selectByPrimaryKey(new BigDecimal(fp.getPublicMan()));
+			if(user1.getRealName()!=null){
+				fp.setPublicManStr(user1.getRealName());
+			}else{
+				fp.setPublicManStr(user1.getUserName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			if(StringUtil.isNotEmpty(fp.getRepaymentMan())){
+				SysUser user2 = userService.selectByPrimaryKey(new BigDecimal(fp.getRepaymentMan()));
+				if(user2.getRealName()!=null){
+					fp.setRepaymentManStr(user2.getRealName());
+				}else{
+					fp.setRepaymentManStr(user2.getUserName());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void setUserName(List<financProduct> list) throws DaoException{

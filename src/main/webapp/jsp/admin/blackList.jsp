@@ -45,17 +45,13 @@
 		<div class="col-xs-12">
 			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">用户列表</div>
+					<div class="box-title">黑名单</div>
 				</div>
 				<div class="box-body">
 					<div class="row" >
 						<div class="col-xs-4 queryBox marginTop">
-							<label class="col-xs-3 control-label">用户名：</label>
-							<input id="userName" class=" col-xs-3"    />
-						</div>
-						<div class="col-xs-4 queryBox marginTop">
-							<label class="col-xs-3 control-label">职业：</label>
-							<input id="userProfession" class=" col-xs-3"    />
+							<label class="col-xs-3 control-label">用户ID：</label>
+							<input id="userId" class=" col-xs-3"    />
 						</div>
 						<div class="col-xs-1">
 							<button id="search" class="btn btn-primary search-high search-btn" type="button">搜索</button>
@@ -70,11 +66,49 @@
 <div id="toolbar">
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group">
-			<button type="button" class="btn btn-primary"  id="del">删除</button>
+			<button type="button" class="btn btn-primary"  id="add">新增</button>
+			<button type="button" class="btn btn-danger"  id="del">删除</button>
 		</div>
 	</div>
 </div>
 
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">添加黑名单</h4>
+            </div>
+            <div class="modal-body">
+	            <form action="" role="form" >
+	            	<div class="row">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<select id="userIds" class="form-control">
+								<option value="">--------- 请选择 --------</option>
+							</select>
+						</div>
+					</div>
+					</div>
+					<br>
+					<div class="row">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<textarea id ="bremark" class="form-control"rows="5" ></textarea>
+						</div>
+					</div>
+					</div>
+				</form>
+			</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="tijiao" type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 </body>
 <%@include file="../jstool.jsp"%>
 <script type="text/javascript">
@@ -86,9 +120,20 @@ $(function(){
 	initEvent();
 })
 function initPage(){
-
+	$.ajax({
+		type:"post",
+		url:basePath+ "/admin/getAllUser.json",
+		success:function(data){
+			for(var i=0;i<data.length;i++){
+				$("#userIds").append("<option value="+data[i].id+">"+data[i].userName+"</option>");
+			}
+		}
+	})
 }
 function initEvent(){
+	$("#add").on("click",function(){
+		$("#addModal").modal("show");
+	})
 	$("#del").on("click",function(){
 		layer.confirm('确定要删除吗？', {
 		    btn: ['确定','取消'], //按钮
@@ -104,13 +149,36 @@ function initEvent(){
 		    layer.close(index);
 		});
 	})
+	$("#tijiao").on("click",function(){
+		if($("#userIds").val()==''){
+			layer.alert("请选择用户")
+			return;
+		}
+		$.ajax({
+			type:"post",
+			url:basePath+ "/admin/addBlackList.json",
+			data:{
+				userId:	$("#userIds").val(),
+				bremark:$("#bremark").val()
+			},
+			success:function(data){
+				if(data>0){
+					layer.alert("提交成功")
+					$table.bootstrapTable('refresh')
+				}else{
+					layer.alert("提交失败")
+				}
+				$("form")[0].reset()
+				$("#addModal").modal("hide");
+			}
+		})
+	})
 	$("#search").on("click",function(){
 		$.ajax({
 			type:"POST",
-			url:basePath+"/admin/userList.json",
+			url:basePath+"/admin/blackList.json",
 			data:{
-				userName:$("#userName").val(),
-				userProfession:$("#userProfession").val(),
+				userId:$("#userId").val(),
 				"limit":tableoption.pageSize,
 				"offset":0
 			},
@@ -123,10 +191,9 @@ function initEvent(){
 	})
 }
 function initTable(){
-	option.url = basePath + "/admin/userList.json";
+	option.url = basePath + "/admin/blackList.json";
 	option.queryParams=function (params) {
-		params.userName=$("#userName").val()
-		params.userProfession=$("#userProfession").val()
+		params.userId=$("#userId").val()
 		return params;
 	}
 	option.columns=[	
@@ -143,16 +210,14 @@ function initTable(){
 			        ].join('')
 			}   
 	   },
-	   { "title" : "id",   "field": "id", },
-	   { "title" : "用户名",  "field" : "userName", },
-	   { "title" : "邮箱", "field" : "userEmail",  },
-	   { "title" : "职业", "field" : "userProfession",   },
+	   { "title" : "封禁用户ID",  "field" : "blackuserId", },
+	   { "title" : "理由备注", "field" : "remark",  },
   	]
 	$table=$("#table").bootstrapTable(option);
 }
 function viewInline(){
 	var selects = $table.bootstrapTable('getSelections');
-	window.location.href = basePath+"/admin/userInfo.html?id="+selects[0].id
+	window.location.href = basePath+"/admin/blackListDetail.html?id="+selects[0].id
 }
 function delInline(id){
 	layer.confirm('确定要删除吗？', {
@@ -169,7 +234,7 @@ function delInline(id){
 function del(ids){
 	$.ajax({
 		type:"post",
-		url:basePath+"/admin/delUser.json",
+		url:basePath+"/admin/delBlackList.json",
 		data:{
 			"ids":ids
 		},

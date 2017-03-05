@@ -201,4 +201,9 @@ public class WebController {
 		request.getSession().invalidate();
 		return "redirect:login.html";
 	}
+	
+	@RequestMapping("blackUser.html")
+	public String blacklist(){
+		return "base/blackList";
+	}
 }

@@ -45,17 +45,27 @@
 		<div class="col-xs-12">
 			<div class="box box-primary">
 				<div class="box-header">
-					<div class="box-title">用户列表</div>
+					<div class="box-title">贷款申请</div>
 				</div>
 				<div class="box-body">
 					<div class="row" >
 						<div class="col-xs-4 queryBox marginTop">
-							<label class="col-xs-3 control-label">用户名：</label>
-							<input id="userName" class=" col-xs-3"    />
+							<label class="col-xs-3 control-label">金额：</label>
+							<input id="loanAmount1" class=" col-xs-3"    />
+							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
+							<input id="loanAmount2" class="col-xs-3"  />
 						</div>
 						<div class="col-xs-4 queryBox marginTop">
-							<label class="col-xs-3 control-label">职业：</label>
-							<input id="userProfession" class=" col-xs-3"    />
+							<label class="col-xs-3 control-label">利率：</label>
+							<input id="interestRate1" class=" col-xs-3"    />
+							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
+							<input id="interestRate2" class="col-xs-3"  />
+						</div>
+						<div class="col-xs-3 queryBox marginTop">
+							<label class="col-xs-4 control-label nopadding">还款日期：</label>
+							<input id="repaymentDate1" class=" col-xs-3"    />
+							<label class="col-xs-1 control-label  nopadding text-center"> -</label>
+							<input id="repaymentDate2" class="col-xs-3"  />
 						</div>
 						<div class="col-xs-1">
 							<button id="search" class="btn btn-primary search-high search-btn" type="button">搜索</button>
@@ -70,7 +80,7 @@
 <div id="toolbar">
 	<div class="btn-toolbar" role="toolbar">
 		<div class="btn-group">
-			<button type="button" class="btn btn-primary"  id="del">删除</button>
+<!-- 			<button type="button" class="btn btn-primary"  id="add">贷款申请</button> -->
 		</div>
 	</div>
 </div>
@@ -86,31 +96,30 @@ $(function(){
 	initEvent();
 })
 function initPage(){
-
+	$( "#repaymentDate1" ).datepicker({
+		format: "yyyy-mm-dd",
+		language:"zh-CN",
+		todayHighlight:true
+	});
+	$( "#repaymentDate2" ).datepicker({
+		format: "yyyy-mm-dd",
+		language:"zh-CN",
+		todayHighlight:true
+	});
 }
 function initEvent(){
-	$("#del").on("click",function(){
-		layer.confirm('确定要删除吗？', {
-		    btn: ['确定','取消'], //按钮
-		    shade: false //不显示遮罩
-		}, function(index){
-		    // 提交表单的代码，需要你自己写，然后用 layer.close 关闭就可以了，取消可以省略
-			var selects = $table.bootstrapTable('getSelections');
-			var ids= [];
-			for(i=0;i<selects.length;i++){
-				ids.push(selects[i].id);
-			}
-			del(ids);
-		    layer.close(index);
-		});
-	})
+	
 	$("#search").on("click",function(){
 		$.ajax({
 			type:"POST",
-			url:basePath+"/admin/userList.json",
+			url:basePath+"/admin/allLoanList",
 			data:{
-				userName:$("#userName").val(),
-				userProfession:$("#userProfession").val(),
+				loanAmount1:$("#loanAmount1").val(),
+				loanAmount2:$("#loanAmount2").val(),
+				interestRate1:$("#interestRate1").val(),
+				interestRate2:$("#interestRate2").val(),
+				repaymentDate1:$("#repaymentDate1").val(),
+				repaymentDate2:$("#repaymentDate2").val(),
 				"limit":tableoption.pageSize,
 				"offset":0
 			},
@@ -123,10 +132,14 @@ function initEvent(){
 	})
 }
 function initTable(){
-	option.url = basePath + "/admin/userList.json";
+	option.url = basePath + "/admin/allLoanList";
 	option.queryParams=function (params) {
-		params.userName=$("#userName").val()
-		params.userProfession=$("#userProfession").val()
+		params.loanAmount1=$("#loanAmount1").val()
+		params.loanAmount2=$("#loanAmount2").val()
+		params.interestRate1=$("#interestRate1").val()
+		params.interestRate2=$("#interestRate2").val()
+		params.repaymentDate1=$("#repaymentDate1").val()
+		params.repaymentDate2=$("#repaymentDate2").val()
 		return params;
 	}
 	option.columns=[	
@@ -136,52 +149,31 @@ function initTable(){
 			   return [
 			            "<a class=\"like\" href=\"javascript:viewInline('" + row.id +  "')\" title=\"查看\">",
 			            '<i class="fa fa-search-plus"></i>',
-			            '</a>  ',
-			            "<a class=\"like\" href=\"javascript:delInline('" + row.id +  "')\" title=\"删除\">",
-			            '<i class="fa fa-trash-o text-danger"></i>',
 			            '</a>  '
 			        ].join('')
 			}   
 	   },
 	   { "title" : "id",   "field": "id", },
-	   { "title" : "用户名",  "field" : "userName", },
-	   { "title" : "邮箱", "field" : "userEmail",  },
-	   { "title" : "职业", "field" : "userProfession",   },
+	   { "title" : "融资金额",  "field" : "loanAmount", },
+	   { "title" : "还款方式", "field" : "repaymentMethod",  },
+	   { "title" : "利率", "field" : "interestRate", 
+		   "formatter":function(value){
+		   return value+"%"
+			} 
+	   },
+	   { "title" : "预期还款时间",  "field" : "repaymentDate", 
+		   "formatter":function(value){
+			   return new Date(value).Format("yyyy-MM-dd")
+		   }
+	   },
+	   { "title" : "发布人", "field" : "publicManStr",  },
+	   { "title" : "状态", "field" : "stateStr",  }
   	]
 	$table=$("#table").bootstrapTable(option);
 }
 function viewInline(){
 	var selects = $table.bootstrapTable('getSelections');
-	window.location.href = basePath+"/admin/userInfo.html?id="+selects[0].id
-}
-function delInline(id){
-	layer.confirm('确定要删除吗？', {
-	    btn: ['确定','取消'], //按钮
-	    shade: false //不显示遮罩
-	}, function(index){
-	    // 提交表单的代码，需要你自己写，然后用 layer.close 关闭就可以了，取消可以省略
-		var ids= [];
-		ids.push(id);
-		del(ids);
-	    layer.close(index);
-	});
-}
-function del(ids){
-	$.ajax({
-		type:"post",
-		url:basePath+"/admin/delUser.json",
-		data:{
-			"ids":ids
-		},
-		success:function(data){
-			if(data>0){
-				layer.alert("删除成功")
-				$table.bootstrapTable('refresh')
-			}else{
-				layer.alert("删除失败")
-			}
-		}
-	})
+	window.location.href = basePath+"/admin/editLoan.html?id="+selects[0].id
 }
 </script>
 </html>

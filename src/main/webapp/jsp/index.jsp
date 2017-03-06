@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Document</title>
+<title>${title}</title>
 <%@include file="csstool.jsp"%>
 <style type="text/css">
 	

@@ -14,13 +14,13 @@
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="${basePath }/img/unknown.png" class="user-image" alt="User Image">
+            <img src="${basePath }/upload/${user.headshotImg==null?'unknown.png':user.headshotImg}  " class="user-image" alt="User Image">
             <span class="hidden-xs">${user.userName }</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header">
-              <img src="${basePath }/img/unknown.png" class="img-circle" alt="User Image">
+              <img src="${basePath }/upload/${user.headshotImg==null?'unknown.png':user.headshotImg}  " class="img-circle" alt="User Image">
               <p>
                ${user.realName }
               </p>

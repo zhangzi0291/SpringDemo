@@ -1,14 +1,21 @@
 package com.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.demo.base.DaoException;
 import com.demo.entity.sys.SysUser;
@@ -123,4 +130,38 @@ public class UserController {
 		}
 		return "false";
 	}
+	/**
+	 * 
+	  * 跳转上传头像页面
+	  *@return 
+	  *@date 2017年3月6日 下午9:51:12
+	  *@author zxn
+	 */
+	@RequestMapping("uploadHead.html")
+	public String uploadHeadhtml(){
+		return "setting/uphead";
+	}
+	
+	@RequestMapping("uploadHead.json")
+	public String upload(HttpServletRequest request, @RequestParam(name="file") CommonsMultipartFile file ){
+		try {
+			String realPath = request.getSession().getServletContext().getRealPath("upload");
+			String path = realPath+File.separator+file.getOriginalFilename(); 
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(path));
+		} catch (IOException e1) {
+			System.out.println("文件存储失败");
+			e1.printStackTrace();
+		}
+		try {
+			SysUser user =	 ServletApplicationObject.getUser(request);
+			user.setHeadshotImg(file.getOriginalFilename());
+			userService.updateByPrimaryKey(user);
+			ServletApplicationObject.setUser(request, user);
+		} catch (DaoException e) {
+			System.out.println("保存失败");
+			e.printStackTrace();
+		}
+		return "setting/uphead";
+	}
+	
 }

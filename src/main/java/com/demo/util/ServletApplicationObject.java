@@ -34,14 +34,14 @@ public class ServletApplicationObject {
 		return rate;
 	}
 	
-	public static Double getCanLoan(HttpServletRequest request ){
+	public static BigDecimal getCanLoan(HttpServletRequest request ){
 		SysUser user = getUser(request);
 		Double income = user.getRealIncome().doubleValue();
 		Double rate = getRate(income);
 		Double creditRate = Double.valueOf(user.getCreditRate());
 		if(creditRate<=0){
-			return 0.0;
+			return new BigDecimal(0);
 		}
-		return income/rate+income*creditRate/10;
+		return new BigDecimal( income/rate+income*creditRate/10);
 	}
 }

@@ -42,7 +42,7 @@ public class WebController {
 	@RequestMapping("index.html")
 	public String index(HttpServletRequest request , Map<String, Object> map ){
 		SysUser user = ServletApplicationObject.getUser(request);
-		Double canLoan= ServletApplicationObject.getCanLoan(request);
+		BigDecimal canLoan= ServletApplicationObject.getCanLoan(request).setScale(2,BigDecimal.ROUND_HALF_UP);
 		Map<String, String> money = sysService.findMoneyByUserId(user.getId().toString());
 		System.out.println(money.get("repayment"));
 		map.put("money", money);
@@ -56,6 +56,7 @@ public class WebController {
 	}
 	@RequestMapping("login")
 	public String login(HttpServletRequest request,HttpServletResponse response,String username,String password,String remember){
+		request.getSession().setAttribute("title", "在线投融资信息平台");
 		SysUserExample example = new SysUserExample();
 		SysUserExample.Criteria criteria = example.createCriteria();
 		criteria.andUserNameEqualTo(username);

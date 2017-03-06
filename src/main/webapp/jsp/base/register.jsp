@@ -82,7 +82,7 @@
         <span class="glyphicon glyphicon-user  form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="实际收入（年）" name="realIncome"
+        <input type="text" class="form-control" placeholder="实际收入（月）" name="realIncome"
         		data-easyform="number;real-time;"
         		ata-easytip="position:right;class:easy-blue;"
         		data-message="请输入整数">

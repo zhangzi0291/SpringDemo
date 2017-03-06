@@ -88,7 +88,7 @@
 		              <br>
 		              <div class="input-group">
 		                <span class="input-group-addon left-addon leftspen">实际收入</span>
-						<input type="text" class="form-control" placeholder="实际收入（年）" name="realIncome"
+						<input type="text" class="form-control" placeholder="实际收入（月）" name="realIncome"
 							value="${user.realIncome }" readonly>
 						<span class="input-group-addon"></span>
 		              </div>

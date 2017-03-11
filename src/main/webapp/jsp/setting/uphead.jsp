@@ -39,7 +39,7 @@
 				<div class="box-header">
 					<div class="box-title">上传头像</div>
 				</div>
-				 <form action="${basePath }/user/uploadHead.json" enctype="multipart/form-data" method="post">
+				 <form action="${basePath }/user/uploadHead.json"  enctype="multipart/form-data" method="post">
 				<div class="box-body">
 					<div class="box-header with-border">
 <!-- 		              <h3 class="box-title">新建融资</h3> -->
@@ -49,7 +49,7 @@
 		                		placeholder="融资金额">
 		              <div class="input-group">
 		                <span class="input-group-addon left-addon">头像图片（.jpg .png）</span>
-		              		<input type="file" class="form-control" name="file" multiple>
+		              		<input type="file" class="form-control" name="file" accept="image/jpeg,image/png">
 		                <span class="input-group-addon"></span>
 		              </div>
 		            </div>
@@ -71,15 +71,44 @@ $(function(){
 	initEvent();
 })
 function intiPage(){
-	$( "#repaymentDate" ).datepicker({
-		format: "yyyy-mm-dd",
-		language:"zh-CN",
-		todayHighlight:true,
-		startDate:new Date()
-	});
+
 }
 function initEvent(){
-	
+	$("input[type=submit]").on("click",function(){
+		if($("input[name = file ]").val().length<=0){
+			layer.alert("请选择图片后提交")
+			return false
+		}
+	})
+	$("input[name = file ]").on("change",function(){
+		var fileName = $(this).val();
+		if (fileName != null&& fileName != "") {
+			  //lastIndexOf如果没有搜索到则返回为-1
+			  if (fileName.lastIndexOf(".") != -1) {
+			   var fileType = (fileName.substring(fileName.lastIndexOf(".") + 1,
+			  fileName.length)).toLowerCase();
+			   var suppotFile = new Array();
+			   suppotFile[0] = "jpg";
+			   suppotFile[1] = "png";
+			   suppotFile[2] = "jpeg";
+			  }
+			  for ( var i = 0; i < suppotFile.length; i++) {
+				    if (suppotFile[i] == fileType) {
+						if (fileName.length > 60) {
+							layer.alert("文件名过长");
+							$(this).val("");$(this).text("");
+							return false
+						}else{
+							break
+						}
+				    }else{
+				    	layer.alert("只能上传图片文件")
+				    	$(this).val("");$(this).text("");
+				    	return false
+				    }
+			  }
+		}
+	})
 }
 function initTable(){
 }

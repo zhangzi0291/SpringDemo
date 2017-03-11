@@ -108,6 +108,24 @@ function initPage(){
 }
 function initEvent(){
 	$("#applic").on("click",function(){
+		var flag=0;
+		$.ajax({
+			type:"POST",
+			url:basePath+"/analysis/checkCreditRate",
+			async : false,
+			dataType: 'text',
+			success:function(data){
+				if(data=='true'){
+					flag=1;
+				}else{
+					flag=0;
+					layer.alert("对不起，您的信用评级过低不可以申请")
+				}
+			}
+		})
+		if(flag!=1){
+			return
+		}
 		var select = $table.bootstrapTable('getSelections');
 		if(select.length != 1){
 			layer.alert("请选择一条信息")
@@ -178,6 +196,24 @@ function initTable(){
 	$table=$("#table").bootstrapTable(option);
 }
 function viewInline(){
+	var flag=0;
+	$.ajax({
+		type:"POST",
+		url:basePath+"/analysis/checkCreditRate",
+		async : false,
+		dataType: 'text',
+		success:function(data){
+			if(data=='true'){
+				flag=1;
+			}else{
+				flag=0;
+				layer.alert("对不起，您的信用评级过低不可以申请")
+			}
+		}
+	})
+	if(flag!=1){
+		return
+	}
 	var selects = $table.bootstrapTable('getSelections');
 	window.location.href = basePath+"/loan/applyLoan.html?id="+selects[0].id
 }

@@ -111,6 +111,24 @@ function initPage(){
 }
 function initEvent(){
 	$("#add").on("click",function(){
+		var flag=0;
+		$.ajax({
+			type:"POST",
+			url:basePath+"/analysis/checkCreditRate",
+			async : false,
+			dataType: 'text',
+			success:function(data){
+				if(data=='true'){
+					flag=1;
+				}else{
+					flag=0;
+					layer.alert("对不起，您的信用评级过低不可以申请")
+				}
+			}
+		})
+		if(flag!=1){
+			return
+		}
 		window.location.href = basePath+"/loan/newLoan.html"
 	})
 	$("#edit").on("click",function(){

@@ -161,7 +161,7 @@ public class UserController {
 			System.out.println("保存失败");
 			e.printStackTrace();
 		}
-		return "setting/uphead";
+		return "redirect:../index.html";
 	}
 	
 }

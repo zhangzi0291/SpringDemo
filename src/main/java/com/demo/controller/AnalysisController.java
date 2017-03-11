@@ -52,4 +52,21 @@ public class AnalysisController {
 		List<Map<String, String>> map=sysService.getRepayment(user.getId().toString());
 		return map;
 	}
+	
+	/**
+	 * 
+	  * 检查当前用户信用评级
+	  *@date 2017年3月11日 下午6:29:43
+	  *@author zxn
+	 */
+	@RequestMapping("checkCreditRate")
+	@ResponseBody
+	public String checkCreditRate(HttpServletRequest request){
+		SysUser user = ServletApplicationObject.getUser(request);
+		String creditRate = user.getCreditRate();
+		if (Double.parseDouble(creditRate)>0) {
+			return "true";
+		}
+		return "false";
+	}
 }

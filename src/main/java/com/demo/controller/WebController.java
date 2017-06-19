@@ -22,11 +22,6 @@ import com.geccocrawler.gecco.request.HttpGetRequest;
 @Controller
 public class WebController {
 	
-	private GeccoEngine ge;
-	
-	@Resource(name="springPipelineFactory")
-	private PipelineFactory springPipelineFactory;
-	
 	@RequestMapping("index.html")
 	public String index(){
 		return "index";
@@ -50,5 +45,13 @@ public class WebController {
 	@ResponseBody
 	public String setMenu(HttpServletRequest request,Page page){
 		return null;
+	}
+	@RequestMapping("login.html")
+	public String loginHtml(){
+	    return "base/login";
+	}
+	@RequestMapping("register.html")
+	public String registerHtml(){
+	    return "base/register";
 	}
 }

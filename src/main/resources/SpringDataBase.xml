@@ -13,56 +13,6 @@
 	http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd ">
 	
-	<context:component-scan base-package="com.demo"/>
-	<context:component-scan base-package="com.geccocrawler.gecco.spring" />
-
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/jsp/"></property>
-		<property name="suffix" value=".jsp"></property>
-	</bean>
-	<!--  不拦截静态文件  -->
-	<mvc:resources location="/" mapping="/**/*.html"/>
-	<mvc:resources location="/" mapping="/**/*.js"/>
-	<mvc:resources location="/" mapping="/**/*.css"/>
-	<mvc:resources location="/" mapping="/**/*.png"/>
-	<mvc:resources location="/" mapping="/**/*.gif"/>
-	
-	<bean id="utf8Charset" class="java.nio.charset.Charset"  
-        factory-method="forName">  
-        <constructor-arg value="UTF-8"/>  
-    </bean>  
-    
-	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-
-	</bean>
-	
-	<mvc:default-servlet-handler/>
-	
-	<mvc:annotation-driven>
-		<mvc:message-converters>  
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">  
-                <constructor-arg ref="utf8Charset" />  
-            </bean>  
-        </mvc:message-converters>  
-	</mvc:annotation-driven>
-	
-	<mvc:interceptors> 
-		<!-- 		保存菜单信息		 -->
-		<mvc:interceptor>
-			<mvc:mapping path="/setMenu"/>
-			<bean class="com.demo.interceptor.MenuInterceptor" />	
-		</mvc:interceptor>
- 	</mvc:interceptors>
-	
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="classpath:config/properties/MyMessage" />	
-	</bean>
-	
-	<bean id="localeResolver"
-		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
-		
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
 		<property name="locations">  
 			<list>  
@@ -131,12 +81,6 @@
 <!-- 	    <property name="maxUploadSize" value="524288000"/> -->
 <!-- 	    <property name="maxInMemorySize" value="102400" /> -->
 <!-- 	</bean> -->
-	<bean id="multipartResolver"
-    class="com.demo.listener.CustomMultipartResolver">
-        <property name="defaultEncoding" value="utf-8"></property>  
-	    <property name="maxUploadSize" value="524288000"/>
-	    <property name="maxInMemorySize" value="102400" />
-	</bean>
-	
+
 	
 </beans>

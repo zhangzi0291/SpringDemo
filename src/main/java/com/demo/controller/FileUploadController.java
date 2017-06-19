@@ -16,7 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 @Controller
 public class FileUploadController {
     
-    @RequestMapping("upload.html")
+    @RequestMapping("upload/upload.html")
     public String uploadhtml(){
         return "upload/upload";
     }

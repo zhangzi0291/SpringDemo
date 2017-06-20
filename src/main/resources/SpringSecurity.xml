@@ -33,9 +33,9 @@
 	
     <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="myUserDetailService"><!-- 注入我们自己实现的myUserDetailService -->
-            <password-encoder hash="md5"> <!-- 配置密码加密以及加盐值 -->
-                <salt-source ref="saltSelf" />
-            </password-encoder>
+<!--             <password-encoder hash="md5"> 配置密码加密以及加盐值 -->
+<!--                 <salt-source ref="saltSelf" /> -->
+<!--             </password-encoder> -->
         </authentication-provider>
     </authentication-manager>
 	

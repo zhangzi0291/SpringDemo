@@ -1,27 +1,32 @@
 package com.demo.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.base.Page;
 import com.demo.util.SqLiteUtil;
-import com.demo.util.StringUtil;
-import com.geccocrawler.gecco.GeccoEngine;
-import com.geccocrawler.gecco.pipeline.PipelineFactory;
-import com.geccocrawler.gecco.request.HttpGetRequest;
 
 @Controller
 public class WebController {
 	
+    @Resource
+    private AuthenticationManager authenticationManager;
+    @Resource
+    private SessionAuthenticationStrategy sas;
+    
 	@RequestMapping("index.html")
 	public String index(){
 		return "index";
@@ -54,4 +59,13 @@ public class WebController {
 	public String registerHtml(){
 	    return "base/register";
 	}
+	@RequestMapping("test")
+	@ResponseBody
+	public void tset(HttpServletRequest request,HttpServletResponse response){
+ 	    UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken("username", "password");
+        Authentication authentication=authenticationManager.authenticate(token);
+        sas.onAuthentication(authentication, request, response);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+	}
+	
 }

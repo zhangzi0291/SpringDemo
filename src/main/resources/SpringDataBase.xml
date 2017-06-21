@@ -52,35 +52,23 @@
 <!--          关闭abanded连接时输出错误日志    -->
 <!--          <property name="logAbandoned" value="${logAbandoned}" /> -->
 <!-- 	</bean>   -->
-	
+<!-- JDBC 事务管理器 -->
 <!-- 	<bean id="transactionManager" -->
 <!-- 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
 <!-- 		<property name="dataSource" ref="dataSource"></property>	 -->
 <!-- 	</bean> -->
-	
+<!-- MyBatis 的 SqlSession 的工厂，并引用数据源，扫描 MyBatis 的配置文件 -->
 <!-- 	<bean id="sqlSessionFactory" -->
 <!-- 		class="org.mybatis.spring.SqlSessionFactoryBean"> -->
 <!-- 		<property name="dataSource" ref="dataSource"/> -->
-<!-- 		<property name="typeAliasesPackage" value="com.*.entity"/> -->
-<!-- 		<property name="mapperLocations" > -->
-<!-- 			<list> -->
-<!-- 				<value>classpath*:com/**/dao/**Mapper.xml</value> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 		<property name="mapperLocations" value="classpath*:com/filesystem/dao/**/**Mapper.xml"/> -->
+<!-- 		<property name="configLocation" value="classpath:mybatis-config.xml" /> -->
 <!-- 	</bean> -->
-	
+<!-- MyBatis 自动扫描加载 Sql 映射文件/接口 -->  
 <!-- 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"> -->
 <!-- 		<property name="basePackage" value="com.*.dao"/> -->
+<!-- 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property> -->
 <!-- 	</bean> -->
-	
-	<!--  文件上传相关  -->
-<!-- 	<bean id="multipartResolver" -->
-<!--     class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> -->
-<!--         <property name="defaultEncoding" value="utf-8"></property>   -->
-<!-- 	    <property name="maxUploadSize" value="524288000"/> -->
-<!-- 	    <property name="maxInMemorySize" value="102400" /> -->
-<!-- 	</bean> -->
-
+<!-- 启用支持 annotation 注解方式事务管理 -->
+<!--    	<tx:annotation-driven transaction-manager="transactionManager" /> -->
 	
 </beans>

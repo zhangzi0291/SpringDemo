@@ -76,5 +76,9 @@
 	    <property name="maxInMemorySize" value="102400" />
 	</bean>
 	
+	<!-- 	加载数据库配置 -->
+	<import resource="classpath*:SpringDataBase.xml"/>
+	<!-- 	加载权限配置 -->
+	<import resource="classpath*:SpringSecurity.xml"/>
 	
 </beans>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,12 +40,15 @@
       <div class="form-group has-feedback">
         <input type="password" class="form-control" placeholder="密码" id="password"
 		        name="password"
-        		data-easyform="char-normal;ajax:checklogin()"
+		        data-easyform="char-normal;ajax:checklogin()"
 				data-message="密码不能为空"
 				data-easytip="position:right;class:easy-blue;"
-				data-message-ajax="用户名或密码错误">
+				data-message-ajax="用户名或密码错误"		>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
+   	<c:if test="${not empty param.error}">
+		 <p class="login-box-msg red" >登陆失败</p>
+	</c:if>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">

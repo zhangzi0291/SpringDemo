@@ -28,6 +28,9 @@
 		margin: 0;
 		padding: 0;
 	}
+	.red{
+		color: red;	
+	}
 </style>
 <script type="text/javascript">
 	var basePath="${basePath}";

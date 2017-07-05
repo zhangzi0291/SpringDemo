@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,16 +18,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.demo.base.DaoException;
 import com.demo.base.Page;
+import com.demo.base.security.entity.SysUsers;
+import com.demo.base.security.entity.SysUsersExample;
+import com.demo.base.security.service.SysUsersService;
 import com.demo.util.SqLiteUtil;
+import com.demo.util.StringUtil;
 
 @Controller
 public class WebController {
 	
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
     private AuthenticationManager authenticationManager;
     @Resource
     private SessionAuthenticationStrategy sas;
+    @Resource
+    private SysUsersService sysUsersService;
     
 	@RequestMapping("index.html")
 	public String index(){
@@ -68,4 +78,60 @@ public class WebController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 	
+	@RequestMapping("checkusername")
+    @ResponseBody
+    public String checkusername(String username){
+        SysUsersExample example = new SysUsersExample();
+        SysUsersExample.Criteria criteria = example.createCriteria();
+        criteria.andUserNameEqualTo(username);
+        try {
+            List<SysUsers> userList = sysUsersService.selectByExample(example);
+            if(userList.size()>0){
+                SysUsers user = userList.get(0);
+                return user.getUserName();
+            }
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return "false";
+    }
+    @RequestMapping("checklogin")
+    @ResponseBody
+    public String checklogin(String username,String password){
+        SysUsersExample example = new SysUsersExample();
+        SysUsersExample.Criteria criteria = example.createCriteria();
+        criteria.andUserAccountEqualTo(username);
+        try {
+            String md5password = StringUtil.md5Encode(password);
+            criteria.andUserPasswordEqualTo(md5password);
+        } catch (Exception e1) {
+            logger.error("Exception ", e1);
+        }
+        try {
+            List<SysUsers> userList = sysUsersService.selectByExample(example);
+            if(userList.size()>0){
+                SysUsers user = userList.get(0);
+                return user.getUserName();
+            }
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return "false";
+    }
+    
+    @RequestMapping("checkregister")
+    @ResponseBody
+    public String checkregister(String username){
+        if("admin".equals(username)){
+            return username;
+        }
+        return "false";
+    }
+//    @RequestMapping("logout")
+//    public String logout(String username){
+//        if("admin".equals(username)){
+//            return username;
+//        }
+//        return "false";
+//    }
 }

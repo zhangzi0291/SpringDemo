@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.base.security.dao.SysResourcesDao" >
+  <resultMap id="BaseResultMap" type="com.demo.base.security.entity.SysResources" >
+    <result column="resource_id" property="resourceId" jdbcType="VARCHAR" />
+    <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
+    <result column="resource_desc" property="resourceDesc" jdbcType="VARCHAR" />
+    <result column="resource_type" property="resourceType" jdbcType="VARCHAR" />
+    <result column="resource_string" property="resourceString" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="issys" property="issys" jdbcType="INTEGER" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    resource_id, resource_name, resource_desc, resource_type, resource_string, priority, 
+    enabled, issys, module
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.base.security.entity.SysResourcesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_resources
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="page != null" >
+      limit #{page.pageSize} offset #{page.begin}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.demo.base.security.entity.SysResourcesExample" >
+    delete from sys_resources
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.base.security.entity.SysResources" >
+    insert into sys_resources (resource_id, resource_name, resource_desc, 
+      resource_type, resource_string, priority, 
+      enabled, issys, module
+      )
+    values (#{resourceId,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR}, #{resourceDesc,jdbcType=VARCHAR}, 
+      #{resourceType,jdbcType=VARCHAR}, #{resourceString,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
+      #{enabled,jdbcType=INTEGER}, #{issys,jdbcType=INTEGER}, #{module,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.base.security.entity.SysResources" >
+    insert into sys_resources
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        resource_id,
+      </if>
+      <if test="resourceName != null" >
+        resource_name,
+      </if>
+      <if test="resourceDesc != null" >
+        resource_desc,
+      </if>
+      <if test="resourceType != null" >
+        resource_type,
+      </if>
+      <if test="resourceString != null" >
+        resource_string,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="issys != null" >
+        issys,
+      </if>
+      <if test="module != null" >
+        module,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resourceId != null" >
+        #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceName != null" >
+        #{resourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceDesc != null" >
+        #{resourceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null" >
+        #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceString != null" >
+        #{resourceString,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="issys != null" >
+        #{issys,jdbcType=INTEGER},
+      </if>
+      <if test="module != null" >
+        #{module,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.base.security.entity.SysResourcesExample" resultType="java.lang.Integer" >
+    select count(*) from sys_resources
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_resources
+    <set >
+      <if test="record.resourceId != null" >
+        resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceName != null" >
+        resource_name = #{record.resourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceDesc != null" >
+        resource_desc = #{record.resourceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceType != null" >
+        resource_type = #{record.resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceString != null" >
+        resource_string = #{record.resourceString,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null" >
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
+      <if test="record.enabled != null" >
+        enabled = #{record.enabled,jdbcType=INTEGER},
+      </if>
+      <if test="record.issys != null" >
+        issys = #{record.issys,jdbcType=INTEGER},
+      </if>
+      <if test="record.module != null" >
+        module = #{record.module,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_resources
+    set resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      resource_name = #{record.resourceName,jdbcType=VARCHAR},
+      resource_desc = #{record.resourceDesc,jdbcType=VARCHAR},
+      resource_type = #{record.resourceType,jdbcType=VARCHAR},
+      resource_string = #{record.resourceString,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=INTEGER},
+      enabled = #{record.enabled,jdbcType=INTEGER},
+      issys = #{record.issys,jdbcType=INTEGER},
+      module = #{record.module,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

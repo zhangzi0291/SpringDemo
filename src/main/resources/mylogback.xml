@@ -86,6 +86,7 @@
 	<!--logger 模块-->  
 	<logger name="org" level="DEBUG" />
 	<logger name="com.demo" level="DEBUG" />
+	<logger name="org.springframework" level="DEBUG" />
 	<root level="DEBUG">
 		<appender-ref ref="ASYNC_stdout" /> 
 		<appender-ref ref="ASYNC_SizeAndTimeBasedRollingFile" />

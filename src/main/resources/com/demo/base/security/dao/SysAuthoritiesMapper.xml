@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.base.security.dao.SysAuthoritiesDao" >
+  <resultMap id="BaseResultMap" type="com.demo.base.security.entity.SysAuthorities" >
+    <result column="authority_id" property="authorityId" jdbcType="VARCHAR" />
+    <result column="authority_name" property="authorityName" jdbcType="VARCHAR" />
+    <result column="authority_desc" property="authorityDesc" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    authority_id, authority_name, authority_desc, enabled, module
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.base.security.entity.SysAuthoritiesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_authorities
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="page != null" >
+      limit #{page.pageSize} offset #{page.begin}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.demo.base.security.entity.SysAuthoritiesExample" >
+    delete from sys_authorities
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.base.security.entity.SysAuthorities" >
+    insert into sys_authorities (authority_id, authority_name, authority_desc, 
+      enabled, module)
+    values (#{authorityId,jdbcType=VARCHAR}, #{authorityName,jdbcType=VARCHAR}, #{authorityDesc,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=INTEGER}, #{module,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.base.security.entity.SysAuthorities" >
+    insert into sys_authorities
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="authorityId != null" >
+        authority_id,
+      </if>
+      <if test="authorityName != null" >
+        authority_name,
+      </if>
+      <if test="authorityDesc != null" >
+        authority_desc,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="module != null" >
+        module,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="authorityId != null" >
+        #{authorityId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityName != null" >
+        #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityDesc != null" >
+        #{authorityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="module != null" >
+        #{module,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.base.security.entity.SysAuthoritiesExample" resultType="java.lang.Integer" >
+    select count(*) from sys_authorities
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_authorities
+    <set >
+      <if test="record.authorityId != null" >
+        authority_id = #{record.authorityId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authorityName != null" >
+        authority_name = #{record.authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authorityDesc != null" >
+        authority_desc = #{record.authorityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enabled != null" >
+        enabled = #{record.enabled,jdbcType=INTEGER},
+      </if>
+      <if test="record.module != null" >
+        module = #{record.module,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_authorities
+    set authority_id = #{record.authorityId,jdbcType=VARCHAR},
+      authority_name = #{record.authorityName,jdbcType=VARCHAR},
+      authority_desc = #{record.authorityDesc,jdbcType=VARCHAR},
+      enabled = #{record.enabled,jdbcType=INTEGER},
+      module = #{record.module,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

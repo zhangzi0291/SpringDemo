@@ -118,7 +118,12 @@
              <artifactId>ojdbc14</artifactId> 
              <version>10.2.0.1.0</version> 
 		</dependency>
-		
+		<!-- 	postgresql -->
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>42.1.1</version>
+		</dependency>
 		<!-- log4j -->
 		<dependency>
 			<groupId>log4j</groupId>

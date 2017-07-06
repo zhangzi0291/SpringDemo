@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -51,7 +52,7 @@ public class CustomInvocationSecurityMetadataSourceService implements
 	        Map<String, Object> param = new HashMap<>();
 	        List<AuthoritiesResourcesDto> ardtoList = sysAuthoritiesResourcesDao.selectResourceAndAuthorities(param);
 	        for(AuthoritiesResourcesDto ardto : ardtoList){
-	            String url = ardto.getResourceString();
+	            String url = ardto.getResourceUrl();
 	            if (resourceMap.containsKey(url)) {
 	                Collection<ConfigAttribute> value = resourceMap.get(url);
 	                value.add(ca);
@@ -79,7 +80,7 @@ public class CustomInvocationSecurityMetadataSourceService implements
             Map<String, Object> param = new HashMap<>();
             List<AuthoritiesResourcesDto> ardtoList = sysAuthoritiesResourcesDao.selectResourceAndAuthorities(param);
             for(AuthoritiesResourcesDto ardto : ardtoList){
-                String url = ardto.getResourceString();
+                String url = ardto.getResourceUrl();
                 if (resourceMap.containsKey(url)) {
                     Collection<ConfigAttribute> value = resourceMap.get(url);
                     value.add(ca);
@@ -104,25 +105,20 @@ public class CustomInvocationSecurityMetadataSourceService implements
 			throws IllegalArgumentException {
 	    FilterInvocation filterInvocation = (FilterInvocation) object;
 		// object 是一个URL，被用户请求的url。
-		String url = filterInvocation.getRequestUrl();
-		
-        int firstQuestionMarkIndex = url.indexOf("?");
-
-        if (firstQuestionMarkIndex != -1) {
-            url = url.substring(0, firstQuestionMarkIndex);
-        }
 
 		Iterator<String> ite = resourceMap.keySet().iterator();
 
 		while (ite.hasNext()) {
 			String resURL = ite.next();
-			RequestMatcher  requestMatcher = new AntPathRequestMatcher(url);
+			RequestMatcher  requestMatcher = new AntPathRequestMatcher(resURL);
 			 if(requestMatcher.matches(filterInvocation.getHttpRequest())) {
 				return resourceMap.get(resURL);
 			}
 		}
-
-		return null;
+		//如果访问的url不在权限控制内可以访问
+		return  null;
+		//如果访问的url不在权限可访问的范围内报错
+//		throw new AccessDeniedException("权限不足");
 	}
 
 	@Override

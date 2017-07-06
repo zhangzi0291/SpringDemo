@@ -60,7 +60,7 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 				}
 			}
 		}
-		throw new AccessDeniedException("权限问题");
+		throw new AccessDeniedException("权限不足");
 	}
 	
 	public boolean supports( ConfigAttribute attribute ){

@@ -28,7 +28,7 @@
                 default-target-url="/index.html"
                 authentication-failure-url ="/login.html?error=error"
                 />
-                
+		<logout logout-url="/logout" logout-success-url="/logout.html" invalidate-session="true"/>
 		<custom-filter ref="customFilter" before="FILTER_SECURITY_INTERCEPTOR"/> 
 	</http>
 	

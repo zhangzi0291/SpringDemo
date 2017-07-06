@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.base.DaoException;
 import com.demo.base.Page;
+import com.demo.base.security.entity.SysResources;
 import com.demo.base.security.entity.SysUsers;
 import com.demo.base.security.entity.SysUsersExample;
+import com.demo.base.security.service.SysResourcesService;
 import com.demo.base.security.service.SysUsersService;
 import com.demo.util.SqLiteUtil;
 import com.demo.util.StringUtil;
@@ -36,6 +38,8 @@ public class WebController {
     private SessionAuthenticationStrategy sas;
     @Resource
     private SysUsersService sysUsersService;
+    @Resource
+    private SysResourcesService sysResourcesService;
     
 	@RequestMapping("index.html")
 	public String index(){
@@ -43,23 +47,19 @@ public class WebController {
 	}
 	@RequestMapping("getMenu")
 	@ResponseBody
-	public List<Map<String, String>> getMenu(HttpServletRequest request,Page page){
-		StringBuffer sql=new StringBuffer("select * from sys_menu where menu_pid='-1' ");
-		List menu1=SqLiteUtil.getRowValue(sql.toString());
-		for(int i=0;i<menu1.size();i++){
-			Map param=(Map) menu1.get(i);
-			String id=param.get("id").toString();
-			StringBuffer sql2=new StringBuffer("select * from sys_menu where menu_pid=");
-			sql2.append("'").append(id).append("'");
-			List<Map<String, String>>menu2=SqLiteUtil.getRowValue(sql2.toString());
-			param.put("child", menu2);
-		}
-		return menu1;
+	public List<SysResources> getMenu(HttpServletRequest request){
+		List<SysResources> menu = sysResourcesService.getMenu();
+		return menu;
 	}
 	@RequestMapping("setMenu")
 	@ResponseBody
-	public String setMenu(HttpServletRequest request,Page page){
-		return null;
+	public void setMenu(HttpServletRequest request, String menuName, String childName){
+        if(StringUtil.isNotEmpty(menuName)){
+            request.getSession().setAttribute("nowMenu", menuName);
+        }
+        if(StringUtil.isNotEmpty(childName)){
+            request.getSession().setAttribute("nowChild", childName);
+        }
 	}
 	@RequestMapping("login.html")
 	public String loginHtml(){
@@ -83,12 +83,12 @@ public class WebController {
     public String checkusername(String username){
         SysUsersExample example = new SysUsersExample();
         SysUsersExample.Criteria criteria = example.createCriteria();
-        criteria.andUserNameEqualTo(username);
+        criteria.andUserAccountEqualTo(username);
         try {
             List<SysUsers> userList = sysUsersService.selectByExample(example);
             if(userList.size()>0){
                 SysUsers user = userList.get(0);
-                return user.getUserName();
+                return user.getUserAccount();
             }
         } catch (DaoException e) {
             e.printStackTrace();
@@ -111,7 +111,7 @@ public class WebController {
             List<SysUsers> userList = sysUsersService.selectByExample(example);
             if(userList.size()>0){
                 SysUsers user = userList.get(0);
-                return user.getUserName();
+                return user.getUserAccount();
             }
         } catch (DaoException e) {
             e.printStackTrace();

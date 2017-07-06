@@ -1,8 +1,10 @@
 package com.demo.base.security.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SysResources implements Serializable {
+    
     private String resourceId;
 
     private String resourceName;
@@ -11,16 +13,15 @@ public class SysResources implements Serializable {
 
     private String resourceType;
 
-    private String resourceString;
+    private String resourceUrl;
 
-    private Integer priority;
+    private String parentId;
 
-    private Integer enabled;
+    private String orderNum;
 
-    private Integer issys;
+    private String iconName;
 
-    private String module;
-
+    private List<SysResources> child;
     private static final long serialVersionUID = 1L;
 
     public String getResourceId() {
@@ -55,43 +56,51 @@ public class SysResources implements Serializable {
         this.resourceType = resourceType == null ? null : resourceType.trim();
     }
 
-    public String getResourceString() {
-        return resourceString;
+    public String getResourceUrl() {
+        return resourceUrl;
     }
 
-    public void setResourceString(String resourceString) {
-        this.resourceString = resourceString == null ? null : resourceString.trim();
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl == null ? null : resourceUrl.trim();
     }
 
-    public Integer getPriority() {
-        return priority;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setPriority(Integer priority) {
-        this.priority = priority;
+    public void setParentId(String parentId) {
+        this.parentId = parentId == null ? null : parentId.trim();
     }
 
-    public Integer getEnabled() {
-        return enabled;
+    public String getOrderNum() {
+        return orderNum;
     }
 
-    public void setEnabled(Integer enabled) {
-        this.enabled = enabled;
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum == null ? null : orderNum.trim();
     }
 
-    public Integer getIssys() {
-        return issys;
+    public String getIconName() {
+        return iconName;
     }
 
-    public void setIssys(Integer issys) {
-        this.issys = issys;
+    public void setIconName(String iconName) {
+        this.iconName = iconName == null ? null : iconName.trim();
     }
 
-    public String getModule() {
-        return module;
+    public List<SysResources> getChild() {
+        return child;
     }
 
-    public void setModule(String module) {
-        this.module = module == null ? null : module.trim();
+    public void setChild(List<SysResources> child) {
+        this.child = child;
     }
+
+    @Override
+    public String toString() {
+        return "SysResources [resourceId=" + resourceId + ", resourceName=" + resourceName + ", resourceDesc="
+                + resourceDesc + ", resourceType=" + resourceType + ", resourceUrl=" + resourceUrl + ", parentId="
+                + parentId + ", orderNum=" + orderNum + ", iconName=" + iconName + ", child=" + child + "]";
+    }
+    
 }

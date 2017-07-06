@@ -18,9 +18,9 @@ public class AuthoritiesResourcesDto implements Serializable{
 
     private String resourceType;
 
-    private String resourceString;
+    private String resourceUrl;
 
-    private Integer priority;
+    private String parentId;
 
     public String getAuthorityId() {
         return authorityId;
@@ -78,20 +78,21 @@ public class AuthoritiesResourcesDto implements Serializable{
         this.resourceType = resourceType;
     }
 
-    public String getResourceString() {
-        return resourceString;
+    public String getResourceUrl() {
+        return resourceUrl;
     }
 
-    public void setResourceString(String resourceString) {
-        this.resourceString = resourceString;
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl;
     }
 
-    public Integer getPriority() {
-        return priority;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setPriority(Integer priority) {
-        this.priority = priority;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
+
 
 }

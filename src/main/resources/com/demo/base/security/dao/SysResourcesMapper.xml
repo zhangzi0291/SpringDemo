@@ -6,11 +6,9 @@
     <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
     <result column="resource_desc" property="resourceDesc" jdbcType="VARCHAR" />
     <result column="resource_type" property="resourceType" jdbcType="VARCHAR" />
-    <result column="resource_string" property="resourceString" jdbcType="VARCHAR" />
-    <result column="priority" property="priority" jdbcType="INTEGER" />
-    <result column="enabled" property="enabled" jdbcType="INTEGER" />
-    <result column="issys" property="issys" jdbcType="INTEGER" />
-    <result column="module" property="module" jdbcType="VARCHAR" />
+    <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,8 +69,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    resource_id, resource_name, resource_desc, resource_type, resource_string, priority, 
-    enabled, issys, module
+    resource_id, resource_name, resource_desc, resource_type, resource_url, parent_id, 
+    order_num
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.base.security.entity.SysResourcesExample" >
     select
@@ -99,13 +97,11 @@
   </delete>
   <insert id="insert" parameterType="com.demo.base.security.entity.SysResources" >
     insert into sys_resources (resource_id, resource_name, resource_desc, 
-      resource_type, resource_string, priority, 
-      enabled, issys, module
-      )
+      resource_type, resource_url, parent_id, 
+      order_num)
     values (#{resourceId,jdbcType=VARCHAR}, #{resourceName,jdbcType=VARCHAR}, #{resourceDesc,jdbcType=VARCHAR}, 
-      #{resourceType,jdbcType=VARCHAR}, #{resourceString,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
-      #{enabled,jdbcType=INTEGER}, #{issys,jdbcType=INTEGER}, #{module,jdbcType=VARCHAR}
-      )
+      #{resourceType,jdbcType=VARCHAR}, #{resourceUrl,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.demo.base.security.entity.SysResources" >
     insert into sys_resources
@@ -122,20 +118,14 @@
       <if test="resourceType != null" >
         resource_type,
       </if>
-      <if test="resourceString != null" >
-        resource_string,
+      <if test="resourceUrl != null" >
+        resource_url,
       </if>
-      <if test="priority != null" >
-        priority,
+      <if test="parentId != null" >
+        parent_id,
       </if>
-      <if test="enabled != null" >
-        enabled,
-      </if>
-      <if test="issys != null" >
-        issys,
-      </if>
-      <if test="module != null" >
-        module,
+      <if test="orderNum != null" >
+        order_num,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -151,20 +141,14 @@
       <if test="resourceType != null" >
         #{resourceType,jdbcType=VARCHAR},
       </if>
-      <if test="resourceString != null" >
-        #{resourceString,jdbcType=VARCHAR},
+      <if test="resourceUrl != null" >
+        #{resourceUrl,jdbcType=VARCHAR},
       </if>
-      <if test="priority != null" >
-        #{priority,jdbcType=INTEGER},
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="enabled != null" >
-        #{enabled,jdbcType=INTEGER},
-      </if>
-      <if test="issys != null" >
-        #{issys,jdbcType=INTEGER},
-      </if>
-      <if test="module != null" >
-        #{module,jdbcType=VARCHAR},
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -189,20 +173,14 @@
       <if test="record.resourceType != null" >
         resource_type = #{record.resourceType,jdbcType=VARCHAR},
       </if>
-      <if test="record.resourceString != null" >
-        resource_string = #{record.resourceString,jdbcType=VARCHAR},
+      <if test="record.resourceUrl != null" >
+        resource_url = #{record.resourceUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.priority != null" >
-        priority = #{record.priority,jdbcType=INTEGER},
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
       </if>
-      <if test="record.enabled != null" >
-        enabled = #{record.enabled,jdbcType=INTEGER},
-      </if>
-      <if test="record.issys != null" >
-        issys = #{record.issys,jdbcType=INTEGER},
-      </if>
-      <if test="record.module != null" >
-        module = #{record.module,jdbcType=VARCHAR},
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -215,11 +193,9 @@
       resource_name = #{record.resourceName,jdbcType=VARCHAR},
       resource_desc = #{record.resourceDesc,jdbcType=VARCHAR},
       resource_type = #{record.resourceType,jdbcType=VARCHAR},
-      resource_string = #{record.resourceString,jdbcType=VARCHAR},
-      priority = #{record.priority,jdbcType=INTEGER},
-      enabled = #{record.enabled,jdbcType=INTEGER},
-      issys = #{record.issys,jdbcType=INTEGER},
-      module = #{record.module,jdbcType=VARCHAR}
+      resource_url = #{record.resourceUrl,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=VARCHAR},
+      order_num = #{record.orderNum,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

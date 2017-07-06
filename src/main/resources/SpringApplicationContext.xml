@@ -44,13 +44,13 @@
         </mvc:message-converters>  
 	</mvc:annotation-driven>
 	
-	<!-- 		保存菜单信息		 -->
-	<mvc:interceptors> 
-		<mvc:interceptor>
-			<mvc:mapping path="/setMenu"/>
-			<bean class="com.demo.interceptor.MenuInterceptor" />	
-		</mvc:interceptor>
- 	</mvc:interceptors>
+	<!-- 		拦截器		 -->
+<!-- 	<mvc:interceptors>  -->
+<!-- 		 <mvc:interceptor> -->
+<!-- 			<mvc:mapping path="/setMenu"/> -->
+<!-- 			<bean class="com.demo.interceptor.MenuInterceptor" />	 -->
+<!-- 		</mvc:interceptor>  -->
+<!--  	</mvc:interceptors> -->
 	
 	<!-- 	国际化 -->
 	<bean id="messageSource"

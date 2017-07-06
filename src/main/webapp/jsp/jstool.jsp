@@ -39,20 +39,34 @@ $(function() {
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
-<%
-	if(session.getAttribute("user") != null) {
-%>
    	$.ajax({
    		type:"POST",
    		url:basePath+"/getMenu",
    		success:function(data){
    			for(var i=data.length-1;i>=0;i--){
+   				if(data[i].child.length==0){
+   					console.log(data[i].child.length)
+   					var topli=$("<li >")
+   					var a=$("<a >")
+   					var icon=$("<i class='fa '>")
+   					var span=$("<span>")
+   					if("${nowMenu}"==data[i].resourceName){
+   	   					topli.addClass("active")
+   	   				}
+   					span.text(data[i].resourceName)
+   					a.attr('href',"${basePath}/"+data[i].resourceUrl); 
+   					icon.append(span);
+   					a.append(icon);
+   					topli.append(a);
+   					$("#menu-header").after(topli);
+   					continue;
+   				}
    				var topli=$("<li class='treeview'>")
    				var a=$("<a href >")
    				var span=$("<span>")
    				var icon=$("<i class='fa fa-angle-left pull-right'>")
-   				span.text(data[i].menuName)
-   				if("${nowMenu}"==data[i].menuName){
+   				span.text(data[i].resourceName)
+   				if("${nowMenu}"==data[i].resourceName){
    					topli.addClass("active")
    				}
    				a.append(span);
@@ -62,8 +76,11 @@ $(function() {
    				for(var j=0;j<child.length;j++){
    					var li=$("<li>")
    					var a2=$("<a>")
-   					a2.attr("href","${basePath}/"+child[j].menuUrl);
-   					a2.text(child[j].menuName)
+   					a2.attr("href","${basePath}/"+child[j].resourceUrl);
+   					a2.text(child[j].resourceName)
+	   				if("${nowChild}"==child[j].resourceName){
+	   					li.addClass("active")
+	   				}
    					li.append(a2);
    					ul.append(li);
    				}
@@ -75,19 +92,19 @@ $(function() {
    	})
    	$("aside.main-sidebar > div > div.sidebar > ul ").on("click","li",function(){
    		var menuName = $(this).find("a").find("span").text();
+   		var childName = $(this).find(".treeview-menu").find("a").text();
    		$.ajax({
    			type:"POST",
    	   		url:basePath+"/setMenu",
    	   		data:{
-   	   			"menuName":menuName
+   	   			"menuName":menuName,
+   	   			"childName":childName,
    	   		},
    	   		success:function(data){
    	   			
    	   		}
    		})
    	})
-<%
-	}
-%>
+
 });
 </script>

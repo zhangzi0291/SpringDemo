@@ -15,8 +15,8 @@
     <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
     <result column="resource_desc" property="resourceDesc" jdbcType="VARCHAR" />
     <result column="resource_type" property="resourceType" jdbcType="VARCHAR" />
-    <result column="resource_string" property="resourceString" jdbcType="VARCHAR" />
-    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >

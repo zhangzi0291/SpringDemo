@@ -24,13 +24,33 @@
 	<link rel="stylesheet" href="${basePath }/css/AdminLTE/AdminLTE.min.css">
 	<link rel="stylesheet" href="${basePath }/css/AdminLTE/skins/_all-skins.min.css">
 <style>
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	.red{
-		color: red;	
-	}
+* {
+	margin: 0;
+	padding: 0;
+}
+.onclick {
+	cursor: pointer;
+}
+.red {
+	color: red;
+}
+footer {
+	margin-left: 230px;
+	color: white;
+}
+.hr-line-dashed {
+    border-top: 1px dashed #e7eaec;
+    color: #ffffff;
+    background-color: #ffffff;
+    height: 1px;
+    margin: 20px 0;
+}
+.align-left{
+	text-align:left;: 
+}
+.align-right{
+	text-align:right;: 
+}
 </style>
 <script type="text/javascript">
 	var basePath="${basePath}";

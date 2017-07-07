@@ -34,6 +34,8 @@ public class SysUsers implements CustomUserDetails,Serializable {
 
     private String subSystem;
 
+    private String userImg;
+    
 	private  Set<GrantedAuthority> authorities;
 	
     private static final long serialVersionUID = 1L;
@@ -113,6 +115,14 @@ public class SysUsers implements CustomUserDetails,Serializable {
         return subSystem;
     }
 
+    public String getUserImg() {
+        return userImg;
+    }
+    
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
+    }
+    
     public void setSubSystem(String subSystem) {
         this.subSystem = subSystem == null ? null : subSystem.trim();
     }
@@ -174,5 +184,6 @@ public class SysUsers implements CustomUserDetails,Serializable {
     public boolean isEnabled() {
         return enabled==1?true:false;
     }
+
 
 }

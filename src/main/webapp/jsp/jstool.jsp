@@ -22,30 +22,56 @@
 <script src="${basePath}/js/tableexport.js"></script>
 <script src="${basePath}/js/table.js"></script>
 <script type="text/javascript">
+Date.prototype.Format = function (fmt) { //author: meizz 
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+//设置页面高度，避免表格比外框高
+function resizeContent(){
+    var contentheight = $(".content").height()
+    var childheight =  $(".content").children().height();
+	if(contentheight<childheight){
+		$(".content").height(childheight+10);
+	}
+}
+
+function jumpPage(json){
+	if(json.method == undefined){
+		json.method = "GET"
+	}
+	var form = $("<form method='"+json.method+"'/>").attr("action", json.url)
+	delete json.url
+	delete json.method
+	for (key in json){
+		var input = $("<input type='hidden'>");
+		input.attr("name",key);
+		input.val(json[key]);
+		form.append(input);
+		console.log(input.val)
+	}
+	form.appendTo("body").submit().remove();
+}
 $(function() {  
+	resizeContent();
     FastClick.attach(document.body);  
-    Date.prototype.Format = function (fmt) { //author: meizz 
-        var o = {
-            "M+": this.getMonth() + 1, //月份 
-            "d+": this.getDate(), //日 
-            "h+": this.getHours(), //小时 
-            "m+": this.getMinutes(), //分 
-            "s+": this.getSeconds(), //秒 
-            "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-            "S": this.getMilliseconds() //毫秒 
-        };
-        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        return fmt;
-    }
+    //设置菜单
    	$.ajax({
    		type:"POST",
    		url:basePath+"/getMenu",
    		success:function(data){
    			for(var i=data.length-1;i>=0;i--){
    				if(data[i].child.length==0){
-   					console.log(data[i].child.length)
    					var topli=$("<li >")
    					var a=$("<a >")
    					var icon=$("<i class='fa '>")

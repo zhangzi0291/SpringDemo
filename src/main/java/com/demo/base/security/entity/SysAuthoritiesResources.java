@@ -9,8 +9,6 @@ public class SysAuthoritiesResources implements Serializable {
 
     private String resourceId;
 
-    private Integer enabled;
-
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -35,13 +33,5 @@ public class SysAuthoritiesResources implements Serializable {
 
     public void setResourceId(String resourceId) {
         this.resourceId = resourceId == null ? null : resourceId.trim();
-    }
-
-    public Integer getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Integer enabled) {
-        this.enabled = enabled;
     }
 }

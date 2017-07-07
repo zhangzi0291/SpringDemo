@@ -737,6 +737,76 @@ public class SysUsersExample implements Example {
             return (Criteria) this;
         }
 
+        public Criteria andUserImgIsNull() {
+            addCriterion("user_img is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgIsNotNull() {
+            addCriterion("user_img is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgEqualTo(String value) {
+            addCriterion("user_img =", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgNotEqualTo(String value) {
+            addCriterion("user_img <>", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgGreaterThan(String value) {
+            addCriterion("user_img >", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgGreaterThanOrEqualTo(String value) {
+            addCriterion("user_img >=", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgLessThan(String value) {
+            addCriterion("user_img <", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgLessThanOrEqualTo(String value) {
+            addCriterion("user_img <=", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgLike(String value) {
+            addCriterion("user_img like", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgNotLike(String value) {
+            addCriterion("user_img not like", value, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgIn(List<String> values) {
+            addCriterion("user_img in", values, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgNotIn(List<String> values) {
+            addCriterion("user_img not in", values, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgBetween(String value1, String value2) {
+            addCriterion("user_img between", value1, value2, "userImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgNotBetween(String value1, String value2) {
+            addCriterion("user_img not between", value1, value2, "userImg");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdLikeInsensitive(String value) {
             addCriterion("upper(user_id) like", value.toUpperCase(), "userId");
             return (Criteria) this;
@@ -774,6 +844,11 @@ public class SysUsersExample implements Example {
 
         public Criteria andSubSystemLikeInsensitive(String value) {
             addCriterion("upper(sub_system) like", value.toUpperCase(), "subSystem");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserImgLikeInsensitive(String value) {
+            addCriterion("upper(user_img) like", value.toUpperCase(), "userImg");
             return (Criteria) this;
         }
     }

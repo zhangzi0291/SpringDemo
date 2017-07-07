@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class StringUtil {
 	//phoneNum[0]移动，phoneNum[1]联通，phoneNum[2]电信
@@ -14,8 +15,7 @@ public class StringUtil {
 	
 	
 	public  static void main(String ... strings){
-	    
-	    
+	    System.out.println(getUUID());
 	}
 	/**
 	 * 
@@ -111,6 +111,12 @@ public class StringUtil {
             hexValue.append(Integer.toHexString(val));  
         }  
         return hexValue.toString();  
+	}
+	
+	public static String getUUID(){
+	    UUID uuid = UUID.randomUUID();
+	    String uuidstr = uuid.toString().replaceAll("-", "");
+	    return uuidstr;
 	}
 //	public static String[] split(String str,String regex){
 //	    String[] result = null; 

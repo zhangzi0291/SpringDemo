@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.demo.base.security.dao.SysUsersDao" >
   <resultMap id="BaseResultMap" type="com.demo.base.security.entity.SysUsers" >
-    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
@@ -11,6 +11,7 @@
     <result column="user_dept" property="userDept" jdbcType="VARCHAR" />
     <result column="user_duty" property="userDuty" jdbcType="VARCHAR" />
     <result column="sub_system" property="subSystem" jdbcType="VARCHAR" />
+    <result column="user_img" property="userImg" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="UsersRolesDto" type="com.demo.base.security.dto.UsersRolesDto" >
     <result column="user_id" property="userId" jdbcType="VARCHAR" />
@@ -92,7 +93,7 @@
   </sql>
   <sql id="Base_Column_List" >
     user_id, user_account, user_name, user_password, user_desc, enabled, user_dept, user_duty, 
-    sub_system
+    sub_system, user_img
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.base.security.entity.SysUsersExample" >
     select
@@ -111,6 +112,16 @@
       limit #{page.pageSize} offset #{page.begin}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_users
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_users
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.demo.base.security.entity.SysUsersExample" >
     delete from sys_users
     <if test="_parameter != null" >
@@ -120,12 +131,12 @@
   <insert id="insert" parameterType="com.demo.base.security.entity.SysUsers" >
     insert into sys_users (user_id, user_account, user_name, 
       user_password, user_desc, enabled, 
-      user_dept, user_duty, sub_system
-      )
+      user_dept, user_duty, sub_system, 
+      user_img)
     values (#{userId,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{userPassword,jdbcType=VARCHAR}, #{userDesc,jdbcType=VARCHAR}, #{enabled,jdbcType=INTEGER}, 
-      #{userDept,jdbcType=VARCHAR}, #{userDuty,jdbcType=VARCHAR}, #{subSystem,jdbcType=VARCHAR}
-      )
+      #{userDept,jdbcType=VARCHAR}, #{userDuty,jdbcType=VARCHAR}, #{subSystem,jdbcType=VARCHAR}, 
+      #{userImg,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.demo.base.security.entity.SysUsers" >
     insert into sys_users
@@ -157,6 +168,9 @@
       <if test="subSystem != null" >
         sub_system,
       </if>
+      <if test="userImg != null" >
+        user_img,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -185,6 +199,9 @@
       </if>
       <if test="subSystem != null" >
         #{subSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="userImg != null" >
+        #{userImg,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -224,6 +241,9 @@
       <if test="record.subSystem != null" >
         sub_system = #{record.subSystem,jdbcType=VARCHAR},
       </if>
+      <if test="record.userImg != null" >
+        user_img = #{record.userImg,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -239,10 +259,57 @@
       enabled = #{record.enabled,jdbcType=INTEGER},
       user_dept = #{record.userDept,jdbcType=VARCHAR},
       user_duty = #{record.userDuty,jdbcType=VARCHAR},
-      sub_system = #{record.subSystem,jdbcType=VARCHAR}
+      sub_system = #{record.subSystem,jdbcType=VARCHAR},
+      user_img = #{record.userImg,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.base.security.entity.SysUsers" >
+    update sys_users
+    <set >
+      <if test="userAccount != null" >
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userDesc != null" >
+        user_desc = #{userDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="userDept != null" >
+        user_dept = #{userDept,jdbcType=VARCHAR},
+      </if>
+      <if test="userDuty != null" >
+        user_duty = #{userDuty,jdbcType=VARCHAR},
+      </if>
+      <if test="subSystem != null" >
+        sub_system = #{subSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="userImg != null" >
+        user_img = #{userImg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.base.security.entity.SysUsers" >
+    update sys_users
+    set user_account = #{userAccount,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_desc = #{userDesc,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=INTEGER},
+      user_dept = #{userDept,jdbcType=VARCHAR},
+      user_duty = #{userDuty,jdbcType=VARCHAR},
+      sub_system = #{subSystem,jdbcType=VARCHAR},
+      user_img = #{userImg,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
   </update>
   <select id="loadUserRoles" parameterType="map" resultMap="SysAuthorities">
   	select a.*

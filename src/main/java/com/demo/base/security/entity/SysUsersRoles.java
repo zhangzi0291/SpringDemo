@@ -9,8 +9,6 @@ public class SysUsersRoles implements Serializable {
 
     private String roleId;
 
-    private Integer enabled;
-
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -35,13 +33,5 @@ public class SysUsersRoles implements Serializable {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId == null ? null : roleId.trim();
-    }
-
-    public Integer getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Integer enabled) {
-        this.enabled = enabled;
     }
 }

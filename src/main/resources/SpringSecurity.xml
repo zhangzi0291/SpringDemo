@@ -25,10 +25,11 @@
 		<csrf disabled="true"/>
 		<form-login
                 login-page="/login.html"
-                default-target-url="/index.html"
                 authentication-failure-url ="/login.html?error=error"
+                authentication-success-handler-ref="customAuthenticationSuccessHandler"
                 />
-		<logout logout-url="/logout" logout-success-url="/logout.html" invalidate-session="true"/>
+		<logout logout-url="/logout" logout-success-url="/jsp/base/logout.jsp" invalidate-session="true"/>
+		<session-management invalid-session-url="/jsp/base/timeout.jsp"/>
 		<custom-filter ref="customFilter" before="FILTER_SECURITY_INTERCEPTOR"/> 
 	</http>
 	

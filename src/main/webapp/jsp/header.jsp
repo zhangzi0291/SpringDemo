@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header class="main-header">
   <a href="#" class="logo">
     <!-- LOGO -->
@@ -14,16 +15,26 @@
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="" class="user-image" alt="User Image">
-            <span class="hidden-xs">Alexander Pierce</span>
+          	<c:if test="${not empty user.userImg  }">
+	            <img src="${basePath }/${user.userImg }" class="user-image" alt="User Image">
+          	</c:if>
+          	<c:if test="${empty user.userImg  }">
+	            <img src="${basePath }/img/user.png" class="user-image" alt="User Image">
+          	</c:if>
+            <span class="hidden-xs">${user.userAccount }</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header">
-              <img src="" class="img-circle" alt="User Image">
-              <p>
-                Alexander Pierce - Web Developer(user name)
-              </p>
+	          	<c:if test="${not empty user.userImg  }">
+		            <img src="${basePath }/${user.userImg }" class="img-circle" alt="User Image">
+	          	</c:if>
+	          	<c:if test="${empty user.userImg  }">
+		            <img src="${basePath }/img/user.png" class="img-circle" alt="User Image">
+	          	</c:if>
+				<p>
+	                ${user.userName }
+				</p>		
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
@@ -31,7 +42,7 @@
                 <a href="#" class="btn btn-default btn-flat">详情</a>
               </div>
               <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">注销</a>
+                <a href="${basePath }/logout" class="btn btn-default btn-flat">注销</a>
               </div>
             </li>
           </ul>

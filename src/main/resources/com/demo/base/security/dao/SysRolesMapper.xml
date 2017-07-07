@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.demo.base.security.dao.SysRolesDao" >
   <resultMap id="BaseResultMap" type="com.demo.base.security.entity.SysRoles" >
-    <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <id column="role_id" property="roleId" jdbcType="VARCHAR" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
     <result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
     <result column="enabled" property="enabled" jdbcType="INTEGER" />
@@ -86,6 +86,16 @@
       limit #{page.pageSize} offset #{page.begin}
     </if>
   </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_roles
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_roles
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.demo.base.security.entity.SysRolesExample" >
     delete from sys_roles
     <if test="_parameter != null" >
@@ -174,5 +184,31 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.base.security.entity.SysRoles" >
+    update sys_roles
+    <set >
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null" >
+        role_desc = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="module != null" >
+        module = #{module,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.base.security.entity.SysRoles" >
+    update sys_roles
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      role_desc = #{roleDesc,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=INTEGER},
+      module = #{module,jdbcType=VARCHAR}
+    where role_id = #{roleId,jdbcType=VARCHAR}
   </update>
 </mapper>

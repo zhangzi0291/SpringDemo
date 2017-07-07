@@ -57,5 +57,10 @@ public class Page{
 			sql.append(" limit ? offset ?");
 		}
 	}
-	
+	public Integer getPageSize(){
+	    return this.limit;
+	}
+	public Integer getBegin(){
+	    return this.offset;
+	}
 }

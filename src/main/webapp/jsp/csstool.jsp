@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	String basePath=request.getContextPath();
-	request.setAttribute("basePath", basePath);
-%>
 	<!-- Bootstrap 3.3.6 -->
 	<link rel="stylesheet" href="${basePath }/css/bootstrap/bootstrap.min.css">
 	<!-- Font Awesome -->
@@ -34,6 +30,12 @@
 .red {
 	color: red;
 }
+.warning {
+	color: #e08e0b;
+}
+.danger {
+	color: #d73925;
+}
 footer {
 	margin-left: 230px;
 	color: white;
@@ -50,6 +52,11 @@ footer {
 }
 .align-right{
 	text-align:right;: 
+}
+.tableIcon{
+	font-size: 1.3em;
+	margin-left:3px; 
+	margin-right:3px; 
 }
 </style>
 <script type="text/javascript">

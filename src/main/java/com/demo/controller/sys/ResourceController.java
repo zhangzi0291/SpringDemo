@@ -1,6 +1,6 @@
-package com.demo.controller;
+package com.demo.controller.sys;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,6 +132,52 @@ public class ResourceController {
         try {
             List<SysResources> list = sysResourcesService.selectByExample(example);
             return list;
+        } catch (DaoException e) {
+            logger.error("Exception ", e);
+        }
+        return null;
+    }
+    
+    @RequestMapping("getResource.json")
+    @ResponseBody
+    public List<SysResources> getResource(){
+        List<SysResources> parentList = new ArrayList<>();
+        {
+            SysResourcesExample example = new SysResourcesExample();
+            SysResourcesExample.Criteria criteria = example.createCriteria();
+            SysResourcesExample.Criteria criteria2 = example.createCriteria();
+            criteria.andParentIdIsNull();
+            criteria2.andParentIdEqualTo("-1");
+            example.or(criteria);
+            example.or(criteria2);
+            example.setOrderByClause(" order_num ");
+            try {
+                parentList = sysResourcesService.selectByExample(example);
+            } catch (DaoException e) {
+                logger.error("Exception ", e);
+            }
+        }
+        SysResourcesExample example = new SysResourcesExample();
+        SysResourcesExample.Criteria criteria = example.createCriteria();
+        criteria.andParentIdIsNotNull();
+        criteria.andParentIdNotEqualTo("-1");
+        example.setOrderByClause(" order_num ");
+        try {
+            List<SysResources> childList = sysResourcesService.selectByExample(example);
+            for(SysResources resource: childList){
+                SysResources presource = sysResourcesService.selectByPrimaryKey(resource.getParentId());
+                for(SysResources r:parentList){
+                    if(r.equals(presource)){
+                        if(r.getChild()==null){
+                            List<SysResources> clist = new ArrayList<>();
+                            clist.add(resource);
+                            r.setChild(clist);
+                        }
+                        r.getChild().add(resource);
+                    }
+                }
+            }
+            return parentList;
         } catch (DaoException e) {
             logger.error("Exception ", e);
         }

@@ -62,6 +62,17 @@ function jumpPage(json){
 	}
 	form.appendTo("body").submit().remove();
 }
+//初始化checkbox变成icheck
+function initCheckBox(){
+	$("input").each(function(index,element){
+		$(this).iCheck({
+		    checkboxClass: 'icheckbox_flat-blue',
+		    radioClass: 'iradio_flat-blue',
+		    increaseArea: '20%' // optional
+		  });
+	})
+}
+
 $(function() {  
 	resizeContent();
     FastClick.attach(document.body);  
@@ -131,6 +142,8 @@ $(function() {
    	   		}
    		})
    	})
-
+   	$(window).resize(function (){
+   		resizeContent();
+   	});
 });
 </script>

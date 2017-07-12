@@ -102,5 +102,22 @@ public class SysResources implements Serializable {
                 + resourceDesc + ", resourceType=" + resourceType + ", resourceUrl=" + resourceUrl + ", parentId="
                 + parentId + ", orderNum=" + orderNum + ", iconName=" + iconName + ", child=" + child + "]";
     }
-    
+    @Override
+    public int hashCode() {
+        Integer i = 0;
+        for(Character c:resourceId.toCharArray()){
+            i+=c;
+        }
+        return i;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SysResources) {
+            SysResources r = (SysResources) obj;
+            if(r.getResourceId().equals(this.resourceId)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

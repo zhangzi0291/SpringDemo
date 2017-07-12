@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.demo.base.BaseDao;
 import com.demo.base.security.dto.AuthoritiesResourcesDto;
-import com.demo.base.security.entity.SysAuthorities;
-import com.demo.base.security.entity.SysAuthoritiesExample;
+import com.demo.base.security.entity.SysAuthoritiesResources;
+import com.demo.base.security.entity.SysAuthoritiesResourcesExample;
 
 @Repository
-public interface SysAuthoritiesResourcesDao extends BaseDao<SysAuthorities, SysAuthoritiesExample> {
+public interface SysAuthoritiesResourcesDao extends BaseDao<SysAuthoritiesResources, SysAuthoritiesResourcesExample> {
     List<AuthoritiesResourcesDto> selectResourceAndAuthorities(Map<String, Object> map);
 }

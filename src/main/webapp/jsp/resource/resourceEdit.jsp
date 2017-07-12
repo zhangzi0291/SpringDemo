@@ -78,8 +78,8 @@
 	                    </div>
 						<div class="hr-line-dashed"></div>
 						<div class="align-right">
-							<button id="save" type="submit" class="btn btn-primary">保存</button>
-							<button id="back" type="button" class="btn btn-warning">返回</button>
+							<input id="save" type="submit" class="btn btn-primary" value="保存" >
+							<input id="back" type="button" class="btn btn-warning" value="返回">
 						</div>
 					</form>
 				</div>
@@ -97,9 +97,6 @@ $(function(){
 	$("#resourceType").change();
 })
 function initEvent(){
-	$("#search").on("click",function(){
-		$table.bootstrapTable('refresh');
-	})
 	$("#back").on("click",function(){
 		window.history.go(-1)
 	})

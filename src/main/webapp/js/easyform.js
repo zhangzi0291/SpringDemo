@@ -888,7 +888,7 @@ if (typeof(easy_load_options) == "undefined")
             position: "right",          //top, left, bottom, right
             disappear: "other",       	//self, other, lost-focus, none, N seconds, out
             speed: "fast",
-            class: "easy-white",
+            class: "easy-blue",
             arrow: "bottom",          	//top, left, bottom, right 自动，手动配置无效
             onshow: null,               //事件
             onclose: null,               //事件

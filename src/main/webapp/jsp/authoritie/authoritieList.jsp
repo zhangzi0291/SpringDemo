@@ -21,7 +21,7 @@
 		<div class="col-xs-12">
 			<div class="box">
 				<div class="box-header">
-					<div class="box-title">资源管理</div>
+					<div class="box-title">权限管理</div>
 				</div>
 				<div class="box-body">
 					<table id = 'table'  cellspacing="0"></table>
@@ -33,14 +33,14 @@
 <div id="toolbar">
 	<form class="form-inline" role="form">
 		<div class="form-group">
-			<label for="resourceName" >资源名称：</label><input id="resourceName" class="form-control" />
+			<label for="authorityName" >权限名称：</label><input id="authorityName" class="form-control" />
 		</div>
 		<div class="form-group">
-			<label for="resourceType" >资源类型：</label>
-			<select id="resourceType" class="form-control">
+			<label for="enabled" >是否启用：</label>
+			<select id="enabled" class="form-control">
 				<option value="">全部</option>
-				<option value="url">链接</option>
-				<option value="action">动作</option>
+				<option value="1">是</option>
+				<option value="0">否</option>
 			</select>
 		</div>
 		<button id="search" class="btn btn-primary" type="button">搜索</button>
@@ -74,7 +74,7 @@ function initEvent(){
 	})
 	$("#add").on("click",function(){
 		jumpPage({
-			url:basePath+"/resource/add.html",
+			url:basePath+"/authoritie/add.html",
 		})
 	})
 	$("#edit").on("click",function(){
@@ -82,14 +82,14 @@ function initEvent(){
 		if(row.length != 1){
 			layer.msg("请选择一条记录")
 		}
-		if(row[0].resourceId==undefined){
+		if(row[0].authorityId==undefined){
 			layer.msg("跳转错误")
 			return;
 		}
 		jumpPage({
 			method:"POST",	
-			url:basePath+"/resource/edit.html",
-			resourceId:row[0].resourceId
+			url:basePath+"/authoritie/edit.html",
+			authorityId:row[0].authorityId
 		})
 	})
 	$("#del").on("click",function(){
@@ -102,11 +102,11 @@ function initEvent(){
 			},function(index){
 				var ids =[]; 
 				for (var i in rows){
-					ids.push(rows[i].resourceId)
+					ids.push(rows[i].authorityId)
 				}
 				$.ajax({
 					type:"POST",
-					url:basePath+"/resource/del.json ",
+					url:basePath+"/authoritie/del.json ",
 					data:{
 						ids:ids
 					},
@@ -133,37 +133,33 @@ function initEvent(){
 }
 function initTable(){
 	tableOption = getOption({
-		url:basePath+"/resource/list.json",
+		url:basePath+"/authoritie/list.json",
 		queryParams:function (params) {
-			params.resourceName=$("#resourceName").val()
-			params.resourceType=$("#resourceType").val()
+			params.authorityName=$("#authorityName").val()
+			params.enabled=$("#enabled").val()
 			return params;
 		},
 		columns:
 			[	
 			   { title : "check",   checkbox:true, },
-// 			   { title : "资源ID",   field: "resourceId", },
-			   { title : "资源名称",  field : "resourceName", 
+// 			   { title : "权限ID",   field: "resourceId", },
+			   { title : "权限名称",  field : "authorityName", 
 //		 		"formatter":function(value){
 //		 		   return "<a href='pokeDetail?name="+value+"'>"+value+"</a>"
 //		 	   }
 			   },
-			   { title : "资源类型", field : "resourceType",  },
-			   { title : "资源路径",  field : "resourceUrl",  },
-			   { title : "是否父节点",  field : "parentId",  
+			   { title : "备注", field : "authorityDesc",  },
+			   { title : "是否启用",  field : "enabled",  
 				   "formatter":function(value){
 			 		   if(value==undefined){
 			 			   return "-"
-			 		   }else if(value=="-1"){
+			 		   }else if(value=="1"){
 			 			   return "是"
 			 		   }else{
 			 			   return "否"
 			 		   }
 			 	   }
 			   },
-			   { title : "排序号", field : "orderNum" },
-			   { title : "ICON",   field : "iconName"},
-			   { title : "备注", field : "resourceDesc",  },
 			   { title: '操作', field: 'Id11', align: 'center', width: '100px',
 					formatter: function (value, row, index) {
 						var html = "<span ><a href='#'><i class='fa fa-edit tableIcon warning'></i></a></span>"

@@ -3,8 +3,12 @@
 <html>
 <head>
 <meta charset="UTF-8" />
+<script src="plugins/jQuery/jquery-2.2.3.min.js "></script>
+<script src="plugins/layer/layer.js"></script>
+<script type="text/javascript">
+	layer.load(2)
+</script>
 </head>
-<body>
-<h2>Hello World!</h2>
+<body onload="javascript:window.location=' ${basePath}/index.html' " ;>
 </body>
 </html>

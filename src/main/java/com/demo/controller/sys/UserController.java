@@ -36,7 +36,7 @@ public class UserController {
     
     @RequestMapping("list.html")
     public String listHtml(){
-        return "user/userList";
+        return "sys/user/userList";
     }
     
     @RequestMapping("list.json")
@@ -64,7 +64,7 @@ public class UserController {
     
     @RequestMapping("add.html")
     public String addHtml(){
-        return "user/userAdd";
+        return "sys/user/userAdd";
     }
     
     @RequestMapping("add.json")
@@ -98,7 +98,7 @@ public class UserController {
         } catch (DaoException e) {
             logger.error("Exception ", e);
         }
-        return "user/userEdit";
+        return "sys/user/userEdit";
     }
     @RequestMapping("edit.json")
     @Transactional

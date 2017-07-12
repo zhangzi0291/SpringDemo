@@ -32,7 +32,7 @@ public class ResourceController {
     
     @RequestMapping("list.html")
     public String listHtml(){
-        return "resource/resourceList";
+        return "sys/resource/resourceList";
     }
     
     @RequestMapping("list.json")
@@ -63,7 +63,7 @@ public class ResourceController {
     
     @RequestMapping("add.html")
     public String addHtml(){
-        return "resource/resourceAdd";
+        return "sys/resource/resourceAdd";
     }
     @RequestMapping("add.json")
     public String addJson(Map<String, Object> map, SysResources resources){
@@ -90,7 +90,7 @@ public class ResourceController {
         } catch (DaoException e) {
             logger.error("Exception ", e);
         }
-        return "resource/resourceEdit";
+        return "sys/resource/resourceEdit";
     }
     @RequestMapping("edit.json")
     public String editJson(Map<String, Object> map, SysResources resources){

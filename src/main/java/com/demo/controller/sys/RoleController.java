@@ -38,7 +38,7 @@ public class RoleController {
     
     @RequestMapping("list.html")
     public String listHtml(){
-        return "role/roleList";
+        return "sys/role/roleList";
     }
     
     @RequestMapping("list.json")
@@ -69,7 +69,7 @@ public class RoleController {
     
     @RequestMapping("add.html")
     public String addHtml(){
-        return "role/roleAdd";
+        return "sys/role/roleAdd";
     }
     
     @RequestMapping("add.json")
@@ -103,7 +103,7 @@ public class RoleController {
         } catch (DaoException e) {
             logger.error("Exception ", e);
         }
-        return "role/roleEdit";
+        return "sys/role/roleEdit";
     }
     @RequestMapping("edit.json")
     @Transactional

@@ -37,7 +37,7 @@ public class AuthoritieController {
     
     @RequestMapping("list.html")
     public String listHtml(){
-        return "authoritie/authoritieList";
+        return "sys/authoritie/authoritieList";
     }
     
     @RequestMapping("list.json")
@@ -68,7 +68,7 @@ public class AuthoritieController {
     
     @RequestMapping("add.html")
     public String addHtml(){
-        return "authoritie/authoritieAdd";
+        return "sys/authoritie/authoritieAdd";
     }
     
     @RequestMapping("add.json")
@@ -102,7 +102,7 @@ public class AuthoritieController {
         } catch (DaoException e) {
             logger.error("Exception ", e);
         }
-        return "authoritie/authoritieEdit";
+        return "sys/authoritie/authoritieEdit";
     }
     @RequestMapping("edit.json")
     @Transactional

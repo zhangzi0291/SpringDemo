@@ -100,8 +100,8 @@ function initEvent(){
 				html +='  <div class="box-body">                                                                                           '
 				html +='    <div class="row">                                                                                              '
 				for(var j in data[i].child){
-					html +='      <div class="col-md-6">                                                                                       '
-					html +='<input type="checkbox" name="resourceIds" value="'+data[i].child[j].resourceId+'" /> '+data[i].child[j].resourceName
+					html +='      <div class="col-md-6">       '
+					html +='<input type="checkbox" name="resourceIds" value="'+data[i].child[j].resourceId+'" data-message="至少选择一个"/> '+data[i].child[j].resourceName
 					html +='      </div>                  '
 				}
 				html +='    </div>                                                                                                         '

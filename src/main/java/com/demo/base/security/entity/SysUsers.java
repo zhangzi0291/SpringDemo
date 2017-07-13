@@ -26,8 +26,8 @@ public class SysUsers implements CustomUserDetails,Serializable {
 
     private String userDesc;
 
-    private Integer enabled;
-
+    private Integer enable;
+    
     private String userDept;
 
     private String userDuty;
@@ -38,12 +38,21 @@ public class SysUsers implements CustomUserDetails,Serializable {
     
 	private  Set<GrantedAuthority> authorities;
 	
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 12312321L;
 
 	public SysUsers(){
         
     }
     public SysUsers(SysUsers user, Collection<GrantedAuthority> authorities){
+        this.userId = user.getUserId();
+        this.userAccount = user.getUserAccount();
+        this.userName = user.getUserName();
+        this.userPassword = user.getUserPassword();
+        this.enable = user.getEnable();
+        this.userDept = user.getUserDept();
+        this.userDuty = user.getUserDuty();
+        this.subSystem = user.getSubSystem();
+        this.userImg = user.getUserImg();
         this.authorities = Collections.unmodifiableSet(sortAuthorities(authorities));
     }
 	
@@ -87,14 +96,14 @@ public class SysUsers implements CustomUserDetails,Serializable {
         this.userDesc = userDesc == null ? null : userDesc.trim();
     }
 
-//    public boolean getEnabled() {
-//        return enabled==1?true:false;
-//    }
-
-    public void setEnabled(Integer enabled) {
-        this.enabled = enabled;
+    public Integer getEnable() {
+        return enable;
     }
-
+    
+    public void setEnable(Integer enable) {
+        this.enable = enable;
+    }
+    
     public String getUserDept() {
         return userDept;
     }
@@ -180,9 +189,10 @@ public class SysUsers implements CustomUserDetails,Serializable {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+    
     @Override
     public boolean isEnabled() {
-        return enabled==1?true:false;
+        return enable==1?true:false;
     }
 
 

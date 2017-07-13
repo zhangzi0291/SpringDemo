@@ -7,7 +7,7 @@
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
     <result column="user_desc" property="userDesc" jdbcType="VARCHAR" />
-    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="enable" property="enable" jdbcType="INTEGER" />
     <result column="user_dept" property="userDept" jdbcType="VARCHAR" />
     <result column="user_duty" property="userDuty" jdbcType="VARCHAR" />
     <result column="sub_system" property="subSystem" jdbcType="VARCHAR" />
@@ -92,7 +92,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_id, user_account, user_name, user_password, user_desc, enabled, user_dept, user_duty, 
+    user_id, user_account, user_name, user_password, user_desc, enable, user_dept, user_duty, 
     sub_system, user_img
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.base.security.entity.SysUsersExample" >
@@ -130,11 +130,11 @@
   </delete>
   <insert id="insert" parameterType="com.demo.base.security.entity.SysUsers" >
     insert into sys_users (user_id, user_account, user_name, 
-      user_password, user_desc, enabled, 
+      user_password, user_desc, enable, 
       user_dept, user_duty, sub_system, 
       user_img)
     values (#{userId,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{userPassword,jdbcType=VARCHAR}, #{userDesc,jdbcType=VARCHAR}, #{enabled,jdbcType=INTEGER}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userDesc,jdbcType=VARCHAR}, #{enable,jdbcType=INTEGER}, 
       #{userDept,jdbcType=VARCHAR}, #{userDuty,jdbcType=VARCHAR}, #{subSystem,jdbcType=VARCHAR}, 
       #{userImg,jdbcType=VARCHAR})
   </insert>
@@ -156,8 +156,8 @@
       <if test="userDesc != null" >
         user_desc,
       </if>
-      <if test="enabled != null" >
-        enabled,
+      <if test="enable != null" >
+        enable,
       </if>
       <if test="userDept != null" >
         user_dept,
@@ -188,8 +188,8 @@
       <if test="userDesc != null" >
         #{userDesc,jdbcType=VARCHAR},
       </if>
-      <if test="enabled != null" >
-        #{enabled,jdbcType=INTEGER},
+      <if test="enable != null" >
+        #{enable,jdbcType=INTEGER},
       </if>
       <if test="userDept != null" >
         #{userDept,jdbcType=VARCHAR},
@@ -229,8 +229,8 @@
       <if test="record.userDesc != null" >
         user_desc = #{record.userDesc,jdbcType=VARCHAR},
       </if>
-      <if test="record.enabled != null" >
-        enabled = #{record.enabled,jdbcType=INTEGER},
+      <if test="record.enable != null" >
+        enable = #{record.enable,jdbcType=INTEGER},
       </if>
       <if test="record.userDept != null" >
         user_dept = #{record.userDept,jdbcType=VARCHAR},
@@ -256,7 +256,7 @@
       user_name = #{record.userName,jdbcType=VARCHAR},
       user_password = #{record.userPassword,jdbcType=VARCHAR},
       user_desc = #{record.userDesc,jdbcType=VARCHAR},
-      enabled = #{record.enabled,jdbcType=INTEGER},
+      enable = #{record.enable,jdbcType=INTEGER},
       user_dept = #{record.userDept,jdbcType=VARCHAR},
       user_duty = #{record.userDuty,jdbcType=VARCHAR},
       sub_system = #{record.subSystem,jdbcType=VARCHAR},
@@ -280,8 +280,8 @@
       <if test="userDesc != null" >
         user_desc = #{userDesc,jdbcType=VARCHAR},
       </if>
-      <if test="enabled != null" >
-        enabled = #{enabled,jdbcType=INTEGER},
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=INTEGER},
       </if>
       <if test="userDept != null" >
         user_dept = #{userDept,jdbcType=VARCHAR},
@@ -304,7 +304,7 @@
       user_name = #{userName,jdbcType=VARCHAR},
       user_password = #{userPassword,jdbcType=VARCHAR},
       user_desc = #{userDesc,jdbcType=VARCHAR},
-      enabled = #{enabled,jdbcType=INTEGER},
+      enable = #{enable,jdbcType=INTEGER},
       user_dept = #{userDept,jdbcType=VARCHAR},
       user_duty = #{userDuty,jdbcType=VARCHAR},
       sub_system = #{subSystem,jdbcType=VARCHAR},

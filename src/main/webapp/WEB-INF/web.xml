@@ -51,10 +51,19 @@
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
 <!-- 		获取request等对象用,之后可以自动注入	 -->
+	<listener>
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
-	
+     <listener>
+    	  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+ 	 </listener>
+ 
+	 <context-param>
+    	 <param-name>contextConfigLocation</param-name>
+     	<param-value>classpath:SpringApplicationContext.xml</param-value>
+ 	</context-param>
 	<welcome-file-list>
 		<welcome-file>
 			index.jsp
@@ -62,11 +71,11 @@
 	</welcome-file-list>
 	<error-page>  
 	    <error-code>404</error-code>  
-	    <location>/jsp/base/404.jsp</location>  
+	    <location>/404.html</location>  
 	</error-page>  
 	<error-page>  
 	    <error-code>500</error-code>  
-	    <location>/jsp/base/500.jsp</location>  
+	    <location>/500.html</location>  
 	</error-page>  
 	
 	

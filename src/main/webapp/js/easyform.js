@@ -137,7 +137,7 @@ if (typeof(easy_load_options) == "undefined")
             $this._load();
 
             //改写 submit 的属性，便于控制
-            this.submit_button = this.form.find("input:submit");
+            this.submit_button = this.form.find("input:submit").length>0?this.form.find("input:submit"):this.form.find("button[type=submit]");
             this.submit_button.each(function ()
             {
                 var button = $(this);
@@ -459,7 +459,7 @@ if (typeof(easy_load_options) == "undefined")
                     msg = $(this.input).data("message");
                 }
 
-                msg = !msg ? "格式错误" : msg;
+                msg = !msg ? "不能为空" : msg;
 
                 if (true === this.options.easytip)
                 {
@@ -508,6 +508,8 @@ if (typeof(easy_load_options) == "undefined")
                 if (!!r && typeof(r["null"]) != "undefined")
                 {
                     return ei._success();
+                }else if( !!r && typeof(r["equal"]) != "undefined" && $(r["equal"]).val()==""){
+                	return ei._success();
                 }
                 else
                 {
@@ -683,7 +685,10 @@ if (typeof(easy_load_options) == "undefined")
             "equal": function (ei, v, p)
             {
                 var pair = $(p);
-                if (0 == pair.length || pair.val() != v)
+                if (0 == pair.val().length&&v.length == 0){
+                	return ei._success_rule("equal");
+                }
+                if (0 == pair.length || pair.val() != v  )
                 {
                     return ei._error("equal");
                 }
@@ -885,7 +890,7 @@ if (typeof(easy_load_options) == "undefined")
         this.defaults = {
             left: 0,
             top: 0,
-            position: "right",          //top, left, bottom, right
+            position: "top",          //top, left, bottom, right
             disappear: "other",       	//self, other, lost-focus, none, N seconds, out
             speed: "fast",
             class: "easy-blue",

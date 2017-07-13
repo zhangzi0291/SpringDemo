@@ -25,56 +25,70 @@
 					<div class="box-title">新增用户</div>
 				</div>
 				<div class="box-body">
-					<form action="${basePath }/role/add.json" method="post" class="form-horizontal">
+					<form action="${basePath }/user/add.json" method="post" class="form-horizontal">
 						<c:if test="${not empty error}">
 							<div class="red">${error }</div>
 						</c:if>
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="userAccount">用户账号</label>
 	                        <div class="col-sm-10">
-	                        	<input type="text" class="form-control" name="userAccount">
+	                        	<input type="text" class="form-control" name="userAccount"  id="userAccount"
+	                        		data-easyform="char-normal;real-time;ajax:checkuser()"
+									data-message-char-normal="用户账号是英文字母或数字"
+									data-message-ajax="用户已存在!">
 	                        </div>
 	                    </div>
 						<div class="form-group" >
 							<label class="col-sm-2 control-label" for="userPassword">密码</label>
 	                        <div class="col-sm-10">
-	                        	<input type="password" class="form-control" name="userPassword" id="userPassword">
+	                        	<input type="password" class="form-control" name="userPassword" id="userPassword" 
+	                        		data-easyform="length:4 16;char-normal;"
+									data-message-length="长度为4-16">
 	                        </div>
 	                    </div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="reUserPassword">重复密码</label>
 	                        <div class="col-sm-10">
-	                        	<input type="password" class="form-control" name="reUserPassword" id="reUserPassword">
+	                        	<input type="password" class="form-control" name="reUserPassword" id="reUserPassword" 
+	                        		data-easyform="equal:#userPassword;"
+									data-message-equal="密码不一致">
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+							<label class="col-sm-2 control-label">是否启用</label>
+	                        <div class="col-sm-10">
+	                        	<input type="radio" name="enable" value="1" >是 &nbsp;&nbsp;
+	                        	<input type="radio" name="enable" value="0" checked>否
 	                        </div>
 	                    </div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="userName">用户名称</label>
 	                        <div class="col-sm-10">
-	                        	<input type="text" class="form-control" name="userName">
+	                        	<input type="text" class="form-control" name="userName" data-easyform="real-time;">
 	                        </div>
 	                    </div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="userDept">公司</label>
 	                        <div class="col-sm-10">
-	                        	<input type="text" class="form-control" name="userDept">
+	                        	<input type="text" class="form-control" name="userDept" data-easyform="null;">
 	                        </div>
 	                    </div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="userDuty">职业</label>
 	                        <div class="col-sm-10">
-	                        	<input type="text" class="form-control" name="userDuty" >
+	                        	<input type="text" class="form-control" name="userDuty" data-easyform="null;">
 	                        </div>
 	                    </div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label" for="userDept">备注</label>
+							<label class="col-sm-2 control-label" for="userDesc">备注</label>
 	                        <div class="col-sm-10">
-	                        	<input type="text" class="form-control" name="userDept">
+	                        	<input type="text" class="form-control" name="userDesc" data-easyform="null;">
 	                        </div>
 	                    </div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="file">上传头像</label>
 	                        <div class="col-sm-10">
-	                        	<input type="file" class="form-control" name="file">
+	                        	<input type="file" class="form-control" name="file" data-easyform="null;">
 	                        </div>
 	                    </div>
 						<div class="form-group">
@@ -106,14 +120,7 @@ $(function(){
 	initEvent();
 })
 function initEvent(){
-	var reUserPasswordTip = $("#userPassword").easytip({position:top});
-	reUserPasswordTip.show("daa");
-	$("#reUserPassword").on("blur",function(){
-		var password = $("#userPassword").val();
-		if(password!=""){
-			reUserPasswordTip.show("d");
-		}
-	})
+	$("form").easyform();
 	$("#back").on("click",function(){
 		window.history.go(-1)
 	})
@@ -129,7 +136,7 @@ function initEvent(){
 				html +='  		<div class="box-body">                                                                                           '
 				html +='    		<div class="row">                                                                                              '
 				html +='				<div class="col-md-12">  '
-				html +='				<input type="checkbox" name="roleIds" value="'+data[i].roleId+'" /> '+data[i].roleName
+				html +='				<input type="checkbox" name="roleIds" value="'+data[i].roleId+'" data-message="至少选择一个"/> '+data[i].roleName
 				html +='				</div>                                                                                                         '
 				html +='			</div>                                                                                                         '
 				html +='		</div>                                                                                                           '
@@ -142,6 +149,24 @@ function initEvent(){
 		}
 	})
 }
-
+function checkuser(){
+	$.ajax({
+		type: "POST",
+		url:basePath+"/checkusername" ,
+		data:"username="+$("#userAccount").val(),
+		dateType:"json",
+		success: function(date){
+			console.log("success")
+			if(date=="false"){
+				$("#userAccount").trigger("easyform-ajax", true);
+			}else{
+				$("#userAccount").trigger("easyform-ajax", false);
+			}
+		},
+		error:function(){
+			console.log("error")
+		}
+	})
+}
 </script>
 </html>

@@ -21,6 +21,7 @@
 	<http pattern="/**/login.html" security="none"/>
 	<http pattern="/**/*register*" security="none"/>
 	<http pattern="/*check*" security="none"/>
+	<http pattern="/*menu*" security="none"/>
 <!--     <http pattern="/**/*" security="none"/> -->
 	<http auto-config="false" use-expressions="true" >
 		<csrf disabled="true"/>

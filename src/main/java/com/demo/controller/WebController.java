@@ -45,6 +45,14 @@ public class WebController {
 	public String index(){
 		return "index";
 	}
+	@RequestMapping("404.html")
+	public String h404(){
+	    return "base/404";
+	}
+	@RequestMapping("500.html")
+	public String h500(){
+	    return "base/500";
+	}
 	@RequestMapping("getMenu")
 	@ResponseBody
 	public List<SysResources> getMenu(HttpServletRequest request){

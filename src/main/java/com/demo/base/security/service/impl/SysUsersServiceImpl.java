@@ -38,9 +38,12 @@ public class SysUsersServiceImpl extends BaseServiceImpl<SysUsers, SysUsersExamp
         Map<String, Object> param = new HashMap<>();
         param.put("username", username);
         List<SysAuthorities> salist = dao.loadUserRoles(param);
+        int i = 0;
+        System.out.println(salist.size());
         for (SysAuthorities sa : salist) {
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority(sa.getAuthorityName());
             auths.add(authority);
+            System.out.println(i++);
         }
         return auths;
     }

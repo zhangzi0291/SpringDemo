@@ -172,6 +172,7 @@ public class ResourceController {
                             List<SysResources> clist = new ArrayList<>();
                             clist.add(resource);
                             r.setChild(clist);
+                            continue;
                         }
                         r.getChild().add(resource);
                     }

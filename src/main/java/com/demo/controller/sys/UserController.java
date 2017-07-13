@@ -52,7 +52,6 @@ public class UserController {
         try {
             List<SysUsers> list = sysUsersService.selectByExample(example);
             Integer count = sysUsersService.countByExample(example);
-            
             result.put("rows", list);
             result.put("total", count);
             return result;
@@ -69,16 +68,23 @@ public class UserController {
     
     @RequestMapping("add.json")
     @Transactional
-    public String addJson(Map<String, Object> map, SysUsers user,@RequestParam("authorityIds") List<String> authorityIds){
+    public String addJson(Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds){
         try {
             String userId = StringUtil.getUUID();
             user.setUserId(userId);
+            if(StringUtil.isNotEmpty(user.getPassword())){
+                try {
+                    user.setUserPassword(StringUtil.md5Encode(user.getPassword()));
+                } catch (Exception e) {
+                    logger.error("Exception ", e);
+                }
+            }
             Integer num = sysUsersService.insertSelective(user);
             if(num==0){
                 throw new DaoException();
             }
             num = 0;
-            num = sysUsersRolesService.saveUsersRoles(userId, authorityIds);
+            num = sysUsersRolesService.saveUsersRoles(userId, roleIds);
             if(num==0){
                 throw new DaoException();
             }
@@ -91,25 +97,45 @@ public class UserController {
     }
     
     @RequestMapping("edit.html")
-    public String editHtml(Map<String, Object> map, String roleId){
+    public String editHtml(Map<String, Object> map, String userId){
         try {
-            SysUsers auth = sysUsersService.selectByPrimaryKey(roleId);
-            map.put("info", auth);
+            SysUsers user = sysUsersService.selectByPrimaryKey(userId);
+            map.put("info", user);
         } catch (DaoException e) {
             logger.error("Exception ", e);
         }
         return "sys/user/userEdit";
     }
+    /**
+      * 一句话描述这个方法的作用
+      *@param map
+      *@param user
+      *@param roleIds
+      *@return 
+      *@date 2017年7月13日 上午11:18:31
+      *@author zxn
+      */
+    
+    
     @RequestMapping("edit.json")
     @Transactional
-    public String editJson(Map<String, Object> map, SysUsers user,@RequestParam("authorityIds") List<String> authorityIds){
+    public String editJson(Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds){
         try {
+            if(StringUtil.isNotEmpty(user.getPassword())){
+                try {
+                    user.setUserPassword(StringUtil.md5Encode(user.getPassword()));
+                } catch (Exception e) {
+                    logger.error("Exception ", e);
+                }
+            }else{
+                user.setUserPassword(null);
+            }
             Integer num = sysUsersService.updateByPrimaryKeySelective(user);
             if(num==0){
                 throw new DaoException();
             }
             num = 0;
-            num = sysUsersRolesService.updateUsersRoles(user.getUserId(), authorityIds);
+            num = sysUsersRolesService.updateUsersRoles(user.getUserId(), roleIds);
             if(num==0){
                 throw new DaoException();
             }
@@ -137,9 +163,9 @@ public class UserController {
     
     @RequestMapping("getUserRoles.json")
     @ResponseBody
-    public List<SysUsersRoles> getUsersRoles(String roleId ){
+    public List<SysUsersRoles> getUsersRoles(String userId ){
         try {
-            List<SysUsersRoles> list = sysUsersRolesService.getUsersRoles(roleId);
+            List<SysUsersRoles> list = sysUsersRolesService.getUsersRoles(userId);
             return list;
         } catch (DaoException e) {
             logger.error("Exception ", e);

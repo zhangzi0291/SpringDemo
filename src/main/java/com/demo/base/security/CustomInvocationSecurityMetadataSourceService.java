@@ -1,30 +1,24 @@
 package com.demo.base.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.demo.base.security.dao.SysAuthoritiesDao;
 import com.demo.base.security.dao.SysAuthoritiesResourcesDao;
 import com.demo.base.security.dao.SysResourcesDao;
-import com.demo.base.security.dto.AuthoritiesResourcesDto;
-import com.demo.base.security.entity.SysAuthorities;
-import com.demo.base.security.entity.SysAuthoritiesExample;
 
 /**
  * 最核心的地方，就是提供某个资源对应的权限定义，即getAttributes方法返回的结果。 此类在初始化时，应该取到所有资源及其对应角色的定义。
@@ -34,7 +28,7 @@ import com.demo.base.security.entity.SysAuthoritiesExample;
 public class CustomInvocationSecurityMetadataSourceService implements
 		FilterInvocationSecurityMetadataSource {
     private static CustomInvocationSecurityMetadataSourceService  customInvocationSecurityMetadataSourceService ;  
-	private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
+//	private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
 	@Resource
 	private SysResourcesDao sysResourcesDao;
 	@Resource
@@ -42,7 +36,7 @@ public class CustomInvocationSecurityMetadataSourceService implements
 	@Resource
 	private SysAuthoritiesResourcesDao sysAuthoritiesResourcesDao;
 	
-	@PostConstruct
+	/*@PostConstruct
 	public void init() {
 	    SysAuthoritiesExample saExample = new SysAuthoritiesExample();
 	    List<SysAuthorities> salist = sysAuthoritiesDao.selectByExample(saExample);
@@ -51,8 +45,13 @@ public class CustomInvocationSecurityMetadataSourceService implements
 	        ConfigAttribute ca = new SecurityConfig(sa.getAuthorityName());
 	        Map<String, Object> param = new HashMap<>();
 	        List<AuthoritiesResourcesDto> ardtoList = sysAuthoritiesResourcesDao.selectResourceAndAuthorities(param);
-	        for(AuthoritiesResourcesDto ardto : ardtoList){
+//	        for(AuthoritiesResourcesDto ardto : ardtoList){
+	        for(int i = 0; i<ardtoList.size(); i++){
+	            AuthoritiesResourcesDto ardto = ardtoList.get(i);
 	            String url = ardto.getResourceUrl();
+                if(StringUtil.isEmpty(url)){
+                    continue;
+                }
 	            if (resourceMap.containsKey(url)) {
 	                Collection<ConfigAttribute> value = resourceMap.get(url);
 	                value.add(ca);
@@ -64,11 +63,12 @@ public class CustomInvocationSecurityMetadataSourceService implements
 	            }
 	        }
 	    }
-	}
+	    System.out.println();
+	}*/
 	public CustomInvocationSecurityMetadataSourceService() {
-        loadResourceDefine();
+//        loadResourceDefine();
     }
-	private void loadResourceDefine() {
+	/*private void loadResourceDefine() {
 	    if(sysResourcesDao==null){
 	        return ;
 	    }
@@ -79,8 +79,13 @@ public class CustomInvocationSecurityMetadataSourceService implements
             ConfigAttribute ca = new SecurityConfig(sa.getAuthorityName());
             Map<String, Object> param = new HashMap<>();
             List<AuthoritiesResourcesDto> ardtoList = sysAuthoritiesResourcesDao.selectResourceAndAuthorities(param);
-            for(AuthoritiesResourcesDto ardto : ardtoList){
+//          for(AuthoritiesResourcesDto ardto : ardtoList){
+            for(int i = 0; i<ardtoList.size(); i++){
+                AuthoritiesResourcesDto ardto = ardtoList.get(i);
                 String url = ardto.getResourceUrl();
+                if(StringUtil.isEmpty(url)){
+                    continue;
+                }
                 if (resourceMap.containsKey(url)) {
                     Collection<ConfigAttribute> value = resourceMap.get(url);
                     value.add(ca);
@@ -92,7 +97,7 @@ public class CustomInvocationSecurityMetadataSourceService implements
                 }
             }
         }
-	}
+	}*/
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
 
@@ -105,7 +110,9 @@ public class CustomInvocationSecurityMetadataSourceService implements
 			throws IllegalArgumentException {
 	    FilterInvocation filterInvocation = (FilterInvocation) object;
 		// object 是一个URL，被用户请求的url。
-
+	    WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+	    ServletContext servletContext = webApplicationContext.getServletContext();
+	    Map<String, Collection<ConfigAttribute>> resourceMap = (Map<String, Collection<ConfigAttribute>>) servletContext.getAttribute("resourceMap");
 		Iterator<String> ite = resourceMap.keySet().iterator();
 
 		while (ite.hasNext()) {

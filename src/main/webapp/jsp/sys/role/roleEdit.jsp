@@ -94,7 +94,7 @@ function initEvent(){
 				html +='  		<div class="box-body">                                                                                           '
 				html +='    		<div class="row">                                                                                              '
 				html +='				<div class="col-md-12">  '
-				html +='				<input type="checkbox" name="authorityIds" value="'+data[i].authorityId+'" /> '+data[i].authorityName
+				html +='				<input type="checkbox" name="authorityIds" value="'+data[i].authorityId+'" data-message="至少选择一个"/> '+data[i].authorityName
 				html +='				</div>                                                                                                         '
 				html +='			</div>                                                                                                         '
 				html +='		</div>                                                                                                           '

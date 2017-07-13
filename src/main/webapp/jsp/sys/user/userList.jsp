@@ -33,16 +33,12 @@
 <div id="toolbar">
 	<form class="form-inline" role="form">
 		<div class="form-group">
-			<label for="roleName" >用户名称：</label><input id="roleName" class="form-control" />
+			<label for="roleName" >用户账号：</label><input id="userAccount" class="form-control" />
 		</div>
 		<div class="form-group">
-			<label for="enabled" >是否启用：</label>
-			<select id="enabled" class="form-control">
-				<option value="">全部</option>
-				<option value="1">是</option>
-				<option value="0">否</option>
-			</select>
+			<label for="roleName" >用户名称：</label><input id="userName" class="form-control" />
 		</div>
+
 		<button id="search" class="btn btn-primary" type="button">搜索</button>
 	</form>
 	<div class="btn-toolbar" role="toolbar">
@@ -136,7 +132,7 @@ function initTable(){
 		url:basePath+"/user/list.json",
 		queryParams:function (params) {
 			params.userName=$("#userName").val()
-			params.enabled=$("#enabled").val()
+			params.userAccount=$("#userAccount").val()
 			return params;
 		},
 		columns:
@@ -147,6 +143,17 @@ function initTable(){
 			   { title : "公司",  field : "userDept",},
 			   { title : "职业",  field : "userDuty",},
 			   { title : "备注", field : "userDesc",  },
+			   { title : "是否启用",  field : "enable",  
+				   "formatter":function(value){
+			 		   if(value==undefined){
+			 			   return "-"
+			 		   }else if(value=="1"){
+			 			   return "是"
+			 		   }else{
+			 			   return "否"
+			 		   }
+			 	   }
+			   },
 			   { title: '操作', field: 'Id11', align: 'center', width: '100px',
 					formatter: function (value, row, index) {
 						var html = "<span ><a href='#'><i class='fa fa-edit tableIcon warning'></i></a></span>"

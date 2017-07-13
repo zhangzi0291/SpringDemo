@@ -41,7 +41,6 @@ AbstractAuthenticationTargetUrlRequestHandler implements AuthenticationSuccessHa
         try {
             SysUsers user = sysUsersService.findByUserAccount(authentication.getName());
             request.getSession().setAttribute("user", user);
-            request.getSession().setAttribute("title", "平台");
         } catch (Exception e) {
             logger.error("Exception ", e);
         } 

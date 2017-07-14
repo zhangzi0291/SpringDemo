@@ -12,4 +12,5 @@ public interface SysAuthoritiesResourcesService extends BaseService<SysAuthoriti
     Integer updateAuthoritiesResources(String authorityId,List<String> resourceIds) throws DaoException;
     List<SysAuthoritiesResources> getAuthoritiesResources(String authorityId) throws DaoException;
     Integer delAuthoritiesResources(String authorityId) throws DaoException;
+    Integer delAuthoritiesResourcesByResourceId(String resourceId) throws DaoException;
 }

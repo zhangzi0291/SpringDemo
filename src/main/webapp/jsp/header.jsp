@@ -16,7 +16,7 @@
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
           	<c:if test="${not empty user.userImg  }">
-	            <img src="${basePath }/${user.userImg }" class="user-image" alt="User Image">
+	            <img src="${basePath }/uploadfile/user/${user.userImg }" class="user-image" alt="User Image">
           	</c:if>
           	<c:if test="${empty user.userImg  }">
 	            <img src="${basePath }/img/user.png" class="user-image" alt="User Image">
@@ -27,7 +27,7 @@
             <!-- User image -->
             <li class="user-header">
 	          	<c:if test="${not empty user.userImg  }">
-		            <img src="${basePath }/${user.userImg }" class="img-circle" alt="User Image">
+		            <img src="${basePath }/uploadfile/user/${user.userImg }" class="img-circle" alt="User Image">
 	          	</c:if>
 	          	<c:if test="${empty user.userImg  }">
 		            <img src="${basePath }/img/user.png" class="img-circle" alt="User Image">
@@ -39,7 +39,7 @@
             <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat">详情</a>
+                <a href="${basePath }/user/edit.html?userId=${user.userId}" class="btn btn-default btn-flat">详情</a>
               </div>
               <div class="pull-right">
                 <a href="${basePath }/logout" class="btn btn-default btn-flat">注销</a>

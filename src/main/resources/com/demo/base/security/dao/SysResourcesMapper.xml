@@ -259,4 +259,17 @@
       icon_name = #{iconName,jdbcType=VARCHAR}
     where resource_id = #{resourceId,jdbcType=VARCHAR}
   </update>
+  <select id="selectByUserAccount" parameterType="map" resultMap="BaseResultMap">
+  	select * from sys_resources res
+	LEFT JOIN sys_authorities_resources ar on ar.resource_id = res.resource_id
+	LEFT JOIN sys_authorities a on a.authority_id = ar.authority_id and a.enabled=1
+	LEFT JOIN sys_roles_authorities ra on a.authority_id = ra.authority_id
+	LEFT JOIN sys_roles r on r.role_id = ra.role_id and r.enabled=1
+	LEFT JOIN sys_users_roles ur on r.role_id = ur.role_id
+	LEFT JOIN sys_users u on ur.user_id= u.user_id and u.enable=1
+	where res.resource_type = 'url'
+	<if test="userAccount != null" >
+		and u.user_account = #{userAccount,jdbcType=VARCHAR}
+	</if>
+  </select>
 </mapper>

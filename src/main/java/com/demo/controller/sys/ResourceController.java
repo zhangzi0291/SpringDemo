@@ -19,6 +19,7 @@ import com.demo.base.Page;
 import com.demo.base.security.entity.SysResources;
 import com.demo.base.security.entity.SysResourcesExample;
 import com.demo.base.security.service.SysResourcesService;
+import com.demo.base.security.service.SysRolesAuthoritiesService;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -29,6 +30,8 @@ public class ResourceController {
     
     @Resource
     private SysResourcesService sysResourcesService;
+    @Resource
+    private SysRolesAuthoritiesService sysRolesAuthoritiesService;
     
     @RequestMapping("list.html")
     public String listHtml(){
@@ -113,6 +116,7 @@ public class ResourceController {
         Integer num = 0;
         for(int i=0;i<ids.size();i++){
             try {
+                sysRolesAuthoritiesService.delRolesAuthoritiesByAuthorityId(ids.get(i));
                 num+=sysResourcesService.deleteByPrimaryKey(ids.get(i));
             } catch (DaoException e) {
                 logger.error("Exception ", e);

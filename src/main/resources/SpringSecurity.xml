@@ -22,6 +22,10 @@
 	<http pattern="/**/*register*" security="none"/>
 	<http pattern="/*check*" security="none"/>
 	<http pattern="/*menu*" security="none"/>
+	<http pattern="/404.html" security="none"/>
+	<http pattern="/500.html" security="none"/>
+	<http pattern="/timeout.html" security="none"/>
+	<http pattern="/logout.html" security="none"/>
 <!--     <http pattern="/**/*" security="none"/> -->
 	<http auto-config="false" use-expressions="true" >
 		<csrf disabled="true"/>
@@ -30,8 +34,8 @@
                 authentication-failure-url ="/login.html?error=error"
                 authentication-success-handler-ref="customAuthenticationSuccessHandler"
                 />
-		<logout logout-url="/logout" logout-success-url="/jsp/base/logout.jsp" invalidate-session="true"/>
-		<session-management invalid-session-url="/jsp/base/timeout.jsp"/>
+		<logout logout-url="/logout" logout-success-url="/logout.html" />
+		<session-management invalid-session-url="/timeout.html" />
 		<custom-filter ref="customFilter" before="FILTER_SECURITY_INTERCEPTOR"/> 
 	</http>
 	

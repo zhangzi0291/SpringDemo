@@ -25,7 +25,7 @@
 					<div class="box-title">新增用户</div>
 				</div>
 				<div class="box-body">
-					<form action="${basePath }/user/add.json" method="post" class="form-horizontal">
+					<form action="${basePath }/user/add.json" method="post" class="form-horizontal" enctype="multipart/form-data" >
 						<c:if test="${not empty error}">
 							<div class="red">${error }</div>
 						</c:if>

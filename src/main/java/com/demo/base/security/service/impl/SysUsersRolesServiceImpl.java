@@ -73,4 +73,14 @@ public class SysUsersRolesServiceImpl extends BaseServiceImpl<SysUsersRoles, Sys
         num = dao.deleteByExample(example);
         return num;
     }
+
+    @Override
+    public Integer delUsersRolesByRole(String roleId) throws DaoException {
+        Integer num = 0;
+        SysUsersRolesExample example = new SysUsersRolesExample();
+        SysUsersRolesExample.Criteria criteria = example.createCriteria();
+        criteria.andRoleIdEqualTo(roleId);
+        num += dao.deleteByExample(example);
+        return num;
+    }
 }

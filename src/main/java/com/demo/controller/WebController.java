@@ -45,6 +45,10 @@ public class WebController {
 	public String index(){
 		return "index";
 	}
+	@RequestMapping("403.html")
+	public String h403(){
+	    return "base/403";
+	}
 	@RequestMapping("404.html")
 	public String h404(){
 	    return "base/404";
@@ -53,10 +57,19 @@ public class WebController {
 	public String h500(){
 	    return "base/500";
 	}
+	@RequestMapping("timeout.html")
+	public String timeout(){
+	    return "base/timeout";
+	}
+	@RequestMapping("logout.html")
+	public String logout(){
+	    return "base/logout";
+	}
 	@RequestMapping("getMenu")
 	@ResponseBody
 	public List<SysResources> getMenu(HttpServletRequest request){
-		List<SysResources> menu = sysResourcesService.getMenu();
+	    SysUsers user  = (SysUsers) request.getSession().getAttribute("user");
+		List<SysResources> menu = sysResourcesService.getMenu(user.getUserAccount());
 		return menu;
 	}
 	@RequestMapping("setMenu")

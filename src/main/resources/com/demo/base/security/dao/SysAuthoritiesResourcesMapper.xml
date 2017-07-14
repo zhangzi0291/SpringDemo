@@ -197,5 +197,9 @@
   		sys_authorities_resources a
   		left join sys_resources b on a.resource_id = b.resource_id
   		left join sys_authorities c on a.authority_id = c.authority_id
+  		where 1=1
+   		<if test="authorityName != null" >
+  			and authority_name = #{authorityName,jdbcType=VARCHAR}
+      	</if>
   </select>
 </mapper>

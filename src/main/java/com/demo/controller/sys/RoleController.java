@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,13 @@ import com.demo.base.security.entity.SysRoles;
 import com.demo.base.security.entity.SysRolesAuthorities;
 import com.demo.base.security.entity.SysRolesAuthoritiesExample;
 import com.demo.base.security.entity.SysRolesExample;
+import com.demo.base.security.entity.SysUsers;
+import com.demo.base.security.entity.SysUsersRoles;
 import com.demo.base.security.service.SysRolesAuthoritiesService;
 import com.demo.base.security.service.SysRolesService;
+import com.demo.base.security.service.SysUsersRolesService;
 import com.demo.util.StringUtil;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 @Controller
 @RequestMapping("role")
@@ -35,6 +40,8 @@ public class RoleController {
     private SysRolesService sysRolesService;
     @Resource
     private SysRolesAuthoritiesService sysRolesAuthoritiesService;
+    @Resource
+    private SysUsersRolesService sysUsersRolesService;
     
     @RequestMapping("list.html")
     public String listHtml(){
@@ -127,10 +134,11 @@ public class RoleController {
     }
     @RequestMapping("del.json")
     @ResponseBody
-    public String delJson(Map<String, Object> map, @RequestParam("ids[]") List<String >ids ){
+    public String delJson(HttpServletRequest request, Map<String, Object> map, @RequestParam("ids[]") List<String >ids ){
         Integer num = 0;
         try {
             for(int i=0;i<ids.size();i++){
+                sysUsersRolesService.delUsersRolesByRole(ids.get(i));
                 num+=sysRolesService.deleteByPrimaryKey(ids.get(i));
                 sysRolesAuthoritiesService.delRolesAuthorities(ids.get(i));
             }

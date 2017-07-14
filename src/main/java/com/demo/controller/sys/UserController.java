@@ -1,11 +1,15 @@
 package com.demo.controller.sys;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.omg.PortableServer.POAManagerOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.demo.base.DaoException;
 import com.demo.base.Page;
@@ -22,6 +27,8 @@ import com.demo.base.security.entity.SysUsersExample;
 import com.demo.base.security.entity.SysUsersRoles;
 import com.demo.base.security.service.SysUsersRolesService;
 import com.demo.base.security.service.SysUsersService;
+import com.demo.util.GlobalConstants;
+import com.demo.util.PropertiesConfig;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -45,6 +52,7 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         SysUsersExample example = new SysUsersExample();
         SysUsersExample.Criteria criteria = example.createCriteria();
+        criteria.andUserAccountNotEqualTo("admin");
         if(StringUtil.isNotEmpty(user.getUserName())){
             criteria.andUserNameLike("%"+user.getUserName()+"%");
         }
@@ -68,7 +76,27 @@ public class UserController {
     
     @RequestMapping("add.json")
     @Transactional
-    public String addJson(Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds){
+    public String addJson(HttpServletRequest request,Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds, 
+            @RequestParam(value="file",required=false) CommonsMultipartFile file){
+        String fileName = file.getOriginalFilename();
+        if(StringUtil.isNotEmpty(fileName)){
+            try {
+                String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+//                String path = PropertiesConfig.getProperties(GlobalConstants.USER_IMG_SAVE_PATH) + File.separator + user.getUserId() + "." +fileType;
+                String path = request.getSession().getServletContext().getRealPath("/")+"uploadfile/user/" + File.separator + user.getUserId() + "." +fileType;
+                File newFile = new File(path);
+                if(!newFile.exists()){
+                    newFile.getParentFile().mkdirs();
+                }
+                file.transferTo(newFile);
+                user.setUserImg(user.getUserId()+"."+fileType);
+            } catch (Exception e) {
+                map.put("error", "保存失败，文件保存失败");
+                map.put("info", user);
+                logger.error("Exception ", e);
+                return "sys/user/userAdd";
+            }
+        }
         try {
             String userId = StringUtil.getUUID();
             user.setUserId(userId);
@@ -91,7 +119,7 @@ public class UserController {
         } catch (DaoException e) {
             map.put("error", "保存失败  "+e.getMessage());
             logger.error("Exception ", e);
-            return "redirect:add.html";
+            return "sys/user/userAdd";
         }
         return "redirect:list.html";
     }
@@ -119,7 +147,27 @@ public class UserController {
     
     @RequestMapping("edit.json")
     @Transactional
-    public String editJson(Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds){
+    public String editJson(HttpServletRequest request, Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds, 
+        @RequestParam(value="file",required=false) CommonsMultipartFile file){
+        String fileName = file.getOriginalFilename();
+        if(StringUtil.isNotEmpty(fileName)){
+            try {
+                String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+//                String path = PropertiesConfig.getProperties(GlobalConstants.USER_IMG_SAVE_PATH) + File.separator + user.getUserId() + "." +fileType;
+                String path = request.getSession().getServletContext().getRealPath("/")+"uploadfile/user/" + File.separator + user.getUserId() + "." +fileType;
+                File newFile = new File(path);
+                if(!newFile.exists()){
+                    newFile.getParentFile().mkdirs();
+                }
+                file.transferTo(newFile);
+                user.setUserImg(user.getUserId()+"."+fileType);
+            } catch (Exception e) {
+                map.put("error", "保存失败，文件保存失败");
+                map.put("info", user);
+                logger.error("Exception ", e);
+                return "sys/user/userEdit";
+            }
+        }
         try {
             if(StringUtil.isNotEmpty(user.getPassword())){
                 try {
@@ -141,8 +189,9 @@ public class UserController {
             }
         } catch (DaoException e) {
             map.put("error", "保存失败，"+e.getMessage());
+            map.put("info", user);
             logger.error("Exception ", e);
-            return "redirect:add.html";
+            return "sys/user/userEdit";
         }
         return "redirect:list.html";
     }

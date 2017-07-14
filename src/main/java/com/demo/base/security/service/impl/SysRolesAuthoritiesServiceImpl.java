@@ -77,4 +77,14 @@ public class SysRolesAuthoritiesServiceImpl extends BaseServiceImpl<SysRolesAuth
         return num;
     }
     
+    @Override
+    public Integer delRolesAuthoritiesByAuthorityId(String authorityId) throws DaoException {
+        Integer num = 0;
+        SysRolesAuthoritiesExample example = new SysRolesAuthoritiesExample();
+        SysRolesAuthoritiesExample.Criteria criteria = example.createCriteria();
+        criteria.andAuthorityIdEqualTo(authorityId);
+        num = dao.deleteByExample(example);
+        return num;
+    }
+    
 }

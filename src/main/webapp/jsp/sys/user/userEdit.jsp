@@ -25,7 +25,7 @@
 					<div class="box-title">编辑用户</div>
 				</div>
 					<div class="box-body">
-					<form action="${basePath }/user/edit.json" method="post" class="form-horizontal">
+					<form action="${basePath }/user/edit.json" method="post" class="form-horizontal" enctype="multipart/form-data" >
 						<c:if test="${not empty error}">
 							<div class="red">${error }</div>
 						</c:if>
@@ -33,7 +33,7 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="userAccount">用户账号</label>
 	                        <div class="col-sm-10">
-	                        	<input type="text" class="form-control" name="userAccount"  id="userAccount" value="${info.userAccount }" disabled
+	                        	<input type="text" class="form-control" name="userAccount"  id="userAccount" value="${info.userAccount }" readonly 
 	                        		data-easyform="char-normal;real-time;"
 									data-message-char-normal="用户账号是英文字母或数字"
 									data-message-ajax="用户已存在!">

@@ -80,4 +80,14 @@ public class SysAuthoritiesResourcesServiceImpl extends BaseServiceImpl<SysAutho
         return num;
     }
 
+    @Override
+    public Integer delAuthoritiesResourcesByResourceId(String resourceId) throws DaoException {
+        Integer num = 0;
+        SysAuthoritiesResourcesExample example = new SysAuthoritiesResourcesExample();
+        SysAuthoritiesResourcesExample.Criteria criteria = example.createCriteria();
+        criteria.andResourceIdEqualTo(resourceId);
+        num = dao.deleteByExample(example);
+        return num;
+    }
+
 }

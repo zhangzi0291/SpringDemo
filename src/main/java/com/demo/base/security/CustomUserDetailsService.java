@@ -23,6 +23,7 @@ import com.demo.base.security.dao.SysAuthoritiesResourcesDao;
 import com.demo.base.security.dao.SysUsersDao;
 import com.demo.base.security.entity.SysUsers;
 import com.demo.base.security.service.SysUsersService;
+import com.demo.util.StringUtil;
 
 
 
@@ -48,7 +49,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throws UsernameNotFoundException, DataAccessException {
 		Collection<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 //		//得到用户的权限
-		auths = sysUsersService.loadUserAuthoritiesByName( username );
+		if(username.equals("admin")){
+		    auths = sysUsersService.loadUserAuthoritiesByName( null );
+		}else{
+		    auths = sysUsersService.loadUserAuthoritiesByName( username );
+		}
 //		//根据用户名取得一个SysUsers对象，以获取该用户的其他信息。
         try {
             SysUsers user = sysUsersService.findByUserAccount( username );

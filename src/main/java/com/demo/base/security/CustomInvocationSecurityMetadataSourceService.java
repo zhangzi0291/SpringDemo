@@ -36,68 +36,6 @@ public class CustomInvocationSecurityMetadataSourceService implements
 	@Resource
 	private SysAuthoritiesResourcesDao sysAuthoritiesResourcesDao;
 	
-	/*@PostConstruct
-	public void init() {
-	    SysAuthoritiesExample saExample = new SysAuthoritiesExample();
-	    List<SysAuthorities> salist = sysAuthoritiesDao.selectByExample(saExample);
-	    resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-	    for(SysAuthorities sa : salist){
-	        ConfigAttribute ca = new SecurityConfig(sa.getAuthorityName());
-	        Map<String, Object> param = new HashMap<>();
-	        List<AuthoritiesResourcesDto> ardtoList = sysAuthoritiesResourcesDao.selectResourceAndAuthorities(param);
-//	        for(AuthoritiesResourcesDto ardto : ardtoList){
-	        for(int i = 0; i<ardtoList.size(); i++){
-	            AuthoritiesResourcesDto ardto = ardtoList.get(i);
-	            String url = ardto.getResourceUrl();
-                if(StringUtil.isEmpty(url)){
-                    continue;
-                }
-	            if (resourceMap.containsKey(url)) {
-	                Collection<ConfigAttribute> value = resourceMap.get(url);
-	                value.add(ca);
-	                resourceMap.put(url, value);
-	            }else {
-	                Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
-	                atts.add(ca);
-	                resourceMap.put(url, atts);
-	            }
-	        }
-	    }
-	    System.out.println();
-	}*/
-	public CustomInvocationSecurityMetadataSourceService() {
-//        loadResourceDefine();
-    }
-	/*private void loadResourceDefine() {
-	    if(sysResourcesDao==null){
-	        return ;
-	    }
-	    SysAuthoritiesExample saExample = new SysAuthoritiesExample();
-        List<SysAuthorities> salist = sysAuthoritiesDao.selectByExample(saExample);
-        resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-        for(SysAuthorities sa : salist){
-            ConfigAttribute ca = new SecurityConfig(sa.getAuthorityName());
-            Map<String, Object> param = new HashMap<>();
-            List<AuthoritiesResourcesDto> ardtoList = sysAuthoritiesResourcesDao.selectResourceAndAuthorities(param);
-//          for(AuthoritiesResourcesDto ardto : ardtoList){
-            for(int i = 0; i<ardtoList.size(); i++){
-                AuthoritiesResourcesDto ardto = ardtoList.get(i);
-                String url = ardto.getResourceUrl();
-                if(StringUtil.isEmpty(url)){
-                    continue;
-                }
-                if (resourceMap.containsKey(url)) {
-                    Collection<ConfigAttribute> value = resourceMap.get(url);
-                    value.add(ca);
-                    resourceMap.put(url, value);
-                }else {
-                    Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
-                    atts.add(ca);
-                    resourceMap.put(url, atts);
-                }
-            }
-        }
-	}*/
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
 

@@ -8,5 +8,5 @@ import com.demo.base.security.entity.SysResourcesExample;
 
 public interface SysResourcesService extends BaseService<SysResources, SysResourcesExample>{
     
-    List<SysResources> getMenu();
+    List<SysResources> getMenu(String userAccount);
 }

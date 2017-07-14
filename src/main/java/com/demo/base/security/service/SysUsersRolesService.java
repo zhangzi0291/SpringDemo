@@ -12,4 +12,5 @@ public interface SysUsersRolesService extends BaseService<SysUsersRoles, SysUser
     Integer updateUsersRoles(String userId,List<String > authorityIds) throws DaoException;
     List<SysUsersRoles> getUsersRoles(String userId) throws DaoException;
     Integer delUsersRoles(String userId) throws DaoException;
+    Integer delUsersRolesByRole(String roleId) throws DaoException;
 }

@@ -21,6 +21,7 @@ import com.demo.base.security.entity.SysAuthoritiesExample;
 import com.demo.base.security.entity.SysAuthoritiesResources;
 import com.demo.base.security.service.SysAuthoritiesResourcesService;
 import com.demo.base.security.service.SysAuthoritiesService;
+import com.demo.base.security.service.SysRolesAuthoritiesService;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -33,7 +34,8 @@ public class AuthoritieController {
     private SysAuthoritiesService sysAuthoritiesService;
     @Resource
     private SysAuthoritiesResourcesService sysAuthoritiesResourcesService;
-    
+    @Resource
+    private SysRolesAuthoritiesService sysRolesAuthoritiesService;
     
     @RequestMapping("list.html")
     public String listHtml(){
@@ -130,8 +132,9 @@ public class AuthoritieController {
         Integer num = 0;
         try {
             for(int i=0;i<ids.size();i++){
-                   num+=sysAuthoritiesService.deleteByPrimaryKey(ids.get(i));
-                   sysAuthoritiesResourcesService.delAuthoritiesResources(ids.get(i));
+               sysRolesAuthoritiesService.delRolesAuthoritiesByAuthorityId(ids.get(i));
+               num+=sysAuthoritiesService.deleteByPrimaryKey(ids.get(i));
+               sysAuthoritiesResourcesService.delAuthoritiesResources(ids.get(i));
             }
         } catch (DaoException e) {
             logger.error("Exception ", e);

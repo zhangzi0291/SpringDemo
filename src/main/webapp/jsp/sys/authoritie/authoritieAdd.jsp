@@ -102,6 +102,17 @@ function initEvent(){
 				for(var j in data[i].child){
 					html +='      <div class="col-md-6">       '
 					html +='<input type="checkbox" name="resourceIds" value="'+data[i].child[j].resourceId+'" data-message="至少选择一个"/> '+data[i].child[j].resourceName
+					if(data[i].child[j].child !=undefined){
+					html +='<div class="box box-default">'
+					html +='<div class="box-body row">'
+						for(var k=0;k<data[i].child[j].child.length;k++){
+							html +='      <div class="col-md-6">       '
+							html +='<input type="checkbox" name="resourceIds" value="'+data[i].child[j].child[k].resourceId+'" data-message="至少选择一个"/> '+data[i].child[j].child[k].resourceName
+							html +='      </div>                  '
+						}
+					html +='</div>'
+					html +='</div>'
+					}
 					html +='      </div>                  '
 				}
 				html +='    </div>                                                                                                         '

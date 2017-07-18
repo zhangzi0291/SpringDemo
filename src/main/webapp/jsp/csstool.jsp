@@ -14,7 +14,10 @@
 	<link rel="stylesheet" href="${basePath }/plugins/bootstrap-table/bootstrap-table.css">
 	<!-- iCheck -->
 	<link rel="stylesheet" href="${basePath }/plugins/iCheck/all.css">
-	
+	<!-- 	Bootstrap treeview -->
+	<link rel="stylesheet" href="${basePath }/plugins/bootstrap-treeview/bootstrap-treeview.min.css">
+	<!-- 	jQuery ContextMenu -->
+	<link rel="stylesheet" href="${basePath }/plugins/jquery-contextMenu/jquery.contextMenu.css">
 	<link rel="stylesheet" href="${basePath }/css/easyform.css">
 	  <!-- AdminLTE style -->
 	<link rel="stylesheet" href="${basePath }/css/AdminLTE/AdminLTE.min.css">

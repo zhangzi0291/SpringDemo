@@ -27,6 +27,7 @@ import com.demo.base.security.entity.SysUsersRoles;
 import com.demo.base.security.service.SysRolesAuthoritiesService;
 import com.demo.base.security.service.SysRolesService;
 import com.demo.base.security.service.SysUsersRolesService;
+import com.demo.listener.StartupListener;
 import com.demo.util.StringUtil;
 import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
@@ -42,6 +43,9 @@ public class RoleController {
     private SysRolesAuthoritiesService sysRolesAuthoritiesService;
     @Resource
     private SysUsersRolesService sysUsersRolesService;
+    @Resource
+    private StartupListener startupListener;
+    
     
     @RequestMapping("list.html")
     public String listHtml(){
@@ -99,6 +103,7 @@ public class RoleController {
             logger.error("Exception ", e);
             return "redirect:add.html";
         }
+        startupListener.loadResourceDefine();
         return "redirect:list.html";
     }
     
@@ -130,6 +135,7 @@ public class RoleController {
             logger.error("Exception ", e);
             return "redirect:add.html";
         }
+        startupListener.loadResourceDefine();
         return "redirect:list.html";
     }
     @RequestMapping("del.json")

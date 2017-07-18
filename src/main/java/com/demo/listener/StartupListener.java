@@ -48,7 +48,7 @@ public class StartupListener implements ServletContextAware, InitializingBean{
         
     }
 
-    private Map<String, Collection<ConfigAttribute>> loadResourceDefine() {
+    public Map<String, Collection<ConfigAttribute>> loadResourceDefine() {
         Map<String, Collection<ConfigAttribute>> resourceMap = null;
         SysAuthoritiesExample saExample = new SysAuthoritiesExample();
         SysAuthoritiesExample.Criteria saCriteria = saExample.createCriteria();
@@ -58,7 +58,7 @@ public class StartupListener implements ServletContextAware, InitializingBean{
         for(SysAuthorities sa : salist){
             ConfigAttribute ca = new SecurityConfig(sa.getAuthorityName());
             Map<String, Object> param = new HashMap<>();
-            param.put("authorityName", sa.getAuthorityName());
+//            param.put("authorityName", sa.getAuthorityName());
             List<AuthoritiesResourcesDto> ardtoList = sysAuthoritiesResourcesDao.selectResourceAndAuthorities(param);
 //          for(AuthoritiesResourcesDto ardto : ardtoList){
             for(int i = 0; i<ardtoList.size(); i++){
@@ -74,6 +74,8 @@ public class StartupListener implements ServletContextAware, InitializingBean{
                 }else {
                     Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
                     atts.add(ca);
+                    ConfigAttribute admin = new SecurityConfig("超级管理员");
+                    atts.add(admin);
                     resourceMap.put(url, atts);
                 }
             }

@@ -24,35 +24,24 @@
 					<div class="box-title">资源管理</div>
 				</div>
 				<div class="box-body">
-					<table id = 'table'  cellspacing="0"></table>
+<!-- 					<table id = 'table'  cellspacing="0"></table> -->
+					<div id="toolbar">
+						<form class="form-inline" role="form">
+						</form>
+						<div class="btn-toolbar" role="toolbar">
+							<div class="btn-group">
+								<button id="add" class="btn btn-primary">新增</button>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div id = 'tree'  cellspacing="0"></div>
 				</div>
 			</div>
 		</div>
 	</section>
 </div>
-<div id="toolbar">
-	<form class="form-inline" role="form">
-		<div class="form-group">
-			<label for="resourceName" >资源名称：</label><input id="resourceName" class="form-control" />
-		</div>
-		<div class="form-group">
-			<label for="resourceType" >资源类型：</label>
-			<select id="resourceType" class="form-control">
-				<option value="">全部</option>
-				<option value="url">链接</option>
-				<option value="action">动作</option>
-			</select>
-		</div>
-		<button id="search" class="btn btn-primary" type="button">搜索</button>
-	</form>
-	<div class="btn-toolbar" role="toolbar">
-		<div class="btn-group">
-			<button id="add" class="btn btn-primary">新增</button>
-			<button id="edit" class="btn btn-warning">修改</button>
-			<button id="del" class="btn btn-danger">删除</button>
-		</div>
-	</div>
-</div>
+
 <jsp:include page="/jsp/footer.jsp" flush="true"/>
 </body>
 <jsp:include page="/jsp/jstool.jsp" flush="true"/>
@@ -75,21 +64,6 @@ function initEvent(){
 	$("#add").on("click",function(){
 		jumpPage({
 			url:basePath+"/resource/add.html",
-		})
-	})
-	$("#edit").on("click",function(){
-		var row = $table.bootstrapTable('getSelections');
-		if(row.length != 1){
-			layer.msg("请选择一条记录")
-		}
-		if(row[0].resourceId==undefined){
-			layer.msg("跳转错误")
-			return;
-		}
-		jumpPage({
-			method:"POST",	
-			url:basePath+"/resource/edit.html",
-			resourceId:row[0].resourceId
 		})
 	})
 	$("#del").on("click",function(){
@@ -132,49 +106,101 @@ function initEvent(){
 	})
 }
 function initTable(){
-	tableOption = getOption({
-		url:basePath+"/resource/list.json",
-		queryParams:function (params) {
-			params.resourceName=$("#resourceName").val()
-			params.resourceType=$("#resourceType").val()
-			return params;
-		},
-		columns:
-			[	
-			   { title : "check",   checkbox:true, },
-// 			   { title : "资源ID",   field: "resourceId", },
-			   { title : "资源名称",  field : "resourceName", 
-//		 		"formatter":function(value){
-//		 		   return "<a href='pokeDetail?name="+value+"'>"+value+"</a>"
-//		 	   }
-			   },
-			   { title : "资源类型", field : "resourceType",  },
-			   { title : "资源路径",  field : "resourceUrl",  },
-			   { title : "是否父节点",  field : "parentId",  
-				   "formatter":function(value){
-			 		   if(value==undefined){
-			 			   return "-"
-			 		   }else if(value=="-1"){
-			 			   return "是"
-			 		   }else{
-			 			   return "否"
-			 		   }
-			 	   }
-			   },
-			   { title : "排序号", field : "orderNum" },
-			   { title : "ICON",   field : "iconName"},
-			   { title : "备注", field : "resourceDesc",  },
-			   { title: '操作', field: 'Id11', align: 'center', width: '100px',
-					formatter: function (value, row, index) {
-						var html = "<span ><a href='#'><i class='fa fa-edit tableIcon warning'></i></a></span>"
-						html += "<span><a  href='#'><i class='fa  fa-trash tableIcon danger'></i></a></span>"
-			          return html;
-			        }
-			   }
-		  	]
-	})
-	$table=$("#table").bootstrapTable(tableOption);
-// 	$table.bootstrapTable('hideColumn', 'resourceId');
+	
+	var tree = $('#tree').treeview({
+	    data: getTree(),
+	    showTags:true,
+	    showBorder: true,
+	    onSearchComplete: function(){
+	    	resizeContent();
+	    }
+	});
+	function getTree() {
+	    var data = []
+	    $.ajax({
+	    	type:"post",
+	    	url:basePath+"/resource/getResource.json",
+	    	async:false,
+	    	success:function(json){
+			    for(var i in json){
+			        data.push(setTree(json[i]))
+			    }	    		
+	    	}
+	    })
+	    return data;
+	}
+	function setTree(res){
+	    res.nodes = res.child
+	    res.text = res.resourceName +"  "+ res.resourceUrl
+	   	res.tag ="<div class='row'>"
+		    +"<span class='col-md-3'>"+res.resourceName+"</span>"
+		    +"<span class='col-md-3'>"+res.resourceType+"</span>"
+		    +"<span class='col-md-3'>"+res.resourceUrl+"</span>"
+		    +"<span class='col-md-3'>"+res.orderNum+"</span>"
+		    +"</div>"
+	    res.state= {
+ 	        //checked: true,
+	        // disabled: true,
+	        expanded: false,
+	        //selected: true
+	    }
+	    for(i in res.child){
+	        setTree(res.child[i])
+	    }
+	    return res;
+	}
+
+	$.contextMenu({
+        selector: 'li.node-tree', 
+        items: {
+            "edit": {name: "编辑", icon: "edit", callback:function(){
+                var nodeId = $(this).data("nodeid");
+                var nodeData = tree.treeview('getNode', nodeId);
+                if(nodeData.resourceId==undefined){
+        			layer.msg("跳转错误")
+        			return;
+        		}
+                jumpPage({
+        			method:"POST",	
+        			url:basePath+"/resource/edit.html",
+        			resourceId:nodeData.resourceId
+        		})
+            }},
+            "delete": {name: "删除", icon: "delete", callback:function(){
+                var nodeId = $(this).data("nodeid");
+                var nodeData = tree.treeview('getNode', nodeId);
+                layer.confirm('确定要删除？', {
+	  				  btn: ['是','否'] //按钮
+	  			},function(index){
+	  				var ids =[]; 
+  					ids.push(nodeData.resourceId)
+	  				$.ajax({
+	  					type:"POST",
+	  					url:basePath+"/resource/del.json ",
+	  					data:{
+	  						ids:ids
+	  					},
+	  					success:function(data){
+	  						console.log(data)
+	  						if(data>0){
+	  							layer.msg("删除成功")
+	  						}else{
+	  							layer.msg("删除失败")
+	  						}
+	  						$table.bootstrapTable('refresh');
+	  						layer.close(index)
+	  					},
+	  					error:function(){
+	  						layer.msg("服务异常，删除失败")
+	  						layer.close(index)
+	  					}
+	  				})
+	  			},
+	  			function(){})
+            }},
+        }
+	});
+	
 }
 
 </script>

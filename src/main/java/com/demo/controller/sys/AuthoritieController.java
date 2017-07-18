@@ -22,6 +22,7 @@ import com.demo.base.security.entity.SysAuthoritiesResources;
 import com.demo.base.security.service.SysAuthoritiesResourcesService;
 import com.demo.base.security.service.SysAuthoritiesService;
 import com.demo.base.security.service.SysRolesAuthoritiesService;
+import com.demo.listener.StartupListener;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -36,6 +37,8 @@ public class AuthoritieController {
     private SysAuthoritiesResourcesService sysAuthoritiesResourcesService;
     @Resource
     private SysRolesAuthoritiesService sysRolesAuthoritiesService;
+    @Resource
+    private StartupListener startupListener;
     
     @RequestMapping("list.html")
     public String listHtml(){
@@ -93,6 +96,7 @@ public class AuthoritieController {
             logger.error("Exception ", e);
             return "redirect:add.html";
         }
+        startupListener.loadResourceDefine();
         return "redirect:list.html";
     }
     
@@ -124,6 +128,7 @@ public class AuthoritieController {
             logger.error("Exception ", e);
             return "redirect:add.html";
         }
+        startupListener.loadResourceDefine();
         return "redirect:list.html";
     }
     @RequestMapping("del.json")

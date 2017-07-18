@@ -82,16 +82,22 @@ $(function () {
     radioClass: 'iradio_square-blue',
     increaseArea: '20%' // optional
   });
+  
   initEvent()
   
 });
 function initEvent(){
-	$("#loginForm").easyform()
+	var easyform = $("#loginForm").easyform()
 	$("#login").on("click",function(){
 	 var username = $("#username").val()
 	 var password = $("#password").val()
 	 var remember = $("#remember").val()
 	})
+	$('body').keydown(function(e){
+		if(e.keyCode==13){
+			easyform.submit(true)
+		}
+	});
 }
 
 

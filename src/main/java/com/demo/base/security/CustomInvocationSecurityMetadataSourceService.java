@@ -6,7 +6,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -15,10 +19,13 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.demo.base.security.dao.SysAuthoritiesDao;
 import com.demo.base.security.dao.SysAuthoritiesResourcesDao;
 import com.demo.base.security.dao.SysResourcesDao;
+import com.demo.base.security.entity.SysUsers;
 
 /**
  * 最核心的地方，就是提供某个资源对应的权限定义，即getAttributes方法返回的结果。 此类在初始化时，应该取到所有资源及其对应角色的定义。
@@ -27,8 +34,7 @@ import com.demo.base.security.dao.SysResourcesDao;
 @Service
 public class CustomInvocationSecurityMetadataSourceService implements
 		FilterInvocationSecurityMetadataSource {
-    private static CustomInvocationSecurityMetadataSourceService  customInvocationSecurityMetadataSourceService ;  
-//	private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
+    private Logger logger  = LoggerFactory.getLogger(this.getClass());
 	@Resource
 	private SysResourcesDao sysResourcesDao;
 	@Resource
@@ -56,14 +62,23 @@ public class CustomInvocationSecurityMetadataSourceService implements
 		while (ite.hasNext()) {
 			String resURL = ite.next();
 			RequestMatcher  requestMatcher = new AntPathRequestMatcher(resURL);
-			 if(requestMatcher.matches(filterInvocation.getHttpRequest())) {
+			if(requestMatcher.matches(filterInvocation.getHttpRequest())) {
 				return resourceMap.get(resURL);
 			}
+			try {
+                HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+                SysUsers user = (SysUsers) request.getSession().getAttribute("user");
+                if(user.getUserAccount().equals("admin")){
+                    return resourceMap.get(resURL);
+                }
+            } catch (Exception e) {
+                logger.error("Exception ", e);
+            }
 		}
 		//如果访问的url不在权限控制内可以访问
-		return  null;
+//		return  null;
 		//如果访问的url不在权限可访问的范围内报错
-//		throw new AccessDeniedException("权限不足");
+		throw new AccessDeniedException("权限不足");
 	}
 
 	@Override

@@ -103,22 +103,34 @@ function initEvent(){
 		var resourceType= $("#resourceType").val()
 		var parentIdDiv = $("select[name=parentId]").parent().parent()
 		$("select[name=parentId]").val("")
+// 		setOption()
 		if(resourceType=="url"){
-			parentIdDiv.show()
-			setOption()
+// 			parentIdDiv.show()
+			setOption("-1","url")
 		}else{
-			parentIdDiv.hide()
-			var parentId = $("select[name=parentId]")
-			var option = $("<option>")
-			option.html("")
-			option.val("")
-			parentId.append(option)
+// 			parentIdDiv.hide()
+// 			var parentId = $("select[name=parentId]")
+// 			var option = $("<option>")
+// 			option.html("")
+// 			option.val("")
+// 			parentId.append(option)
+			setOption()
 		}
 	})
-	function setOption(){
+	function setOption(parentId,type){
+		if(parentId == undefined){
+			parentId == "";
+		}
+		if(type == undefined){
+			type == "";
+		}
 		$.ajax({
 			type:"POST",
 			url:basePath+"/resource/getParentId.json ",
+			data:{
+				parentId:parentId,
+				type:type,
+			},
 			success:function(data){
 				var parentId = $("select[name=parentId]")
 				parentId.empty();

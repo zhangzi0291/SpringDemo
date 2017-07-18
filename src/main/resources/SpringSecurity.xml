@@ -21,7 +21,7 @@
 	<http pattern="/**/login.html" security="none"/>
 	<http pattern="/**/*register*" security="none"/>
 	<http pattern="/*check*" security="none"/>
-	<http pattern="/*menu*" security="none"/>
+	<http pattern="/*Menu" security="none"/>
 	<http pattern="/404.html" security="none"/>
 	<http pattern="/500.html" security="none"/>
 	<http pattern="/timeout.html" security="none"/>

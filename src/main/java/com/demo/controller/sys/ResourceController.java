@@ -20,6 +20,7 @@ import com.demo.base.security.entity.SysResources;
 import com.demo.base.security.entity.SysResourcesExample;
 import com.demo.base.security.service.SysResourcesService;
 import com.demo.base.security.service.SysRolesAuthoritiesService;
+import com.demo.listener.StartupListener;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -32,6 +33,9 @@ public class ResourceController {
     private SysResourcesService sysResourcesService;
     @Resource
     private SysRolesAuthoritiesService sysRolesAuthoritiesService;
+    @Resource
+    private StartupListener startupListener;
+    
     
     @RequestMapping("list.html")
     public String listHtml(){
@@ -82,6 +86,7 @@ public class ResourceController {
             logger.error("Exception ", e);
             return "redirect:add.html";
         }
+        startupListener.loadResourceDefine();
         return "redirect:list.html";
     }
     
@@ -108,6 +113,7 @@ public class ResourceController {
             logger.error("Exception ", e);
             return "redirect:add.html";
         }
+        startupListener.loadResourceDefine();
         return "redirect:list.html";
     }
     @RequestMapping("del.json")
@@ -127,11 +133,15 @@ public class ResourceController {
     
     @RequestMapping("getParentId.json")
     @ResponseBody
-    public List<SysResources> getParentId(){
+    public List<SysResources> getParentId(String parentId,String type){
         SysResourcesExample example = new SysResourcesExample();
         SysResourcesExample.Criteria criteria = example.createCriteria();
-        criteria.andResourceTypeEqualTo("url");
-        criteria.andParentIdEqualTo("-1");
+        if(StringUtil.isNotEmpty(type)){
+            criteria.andResourceTypeEqualTo(type);
+        }
+        if(StringUtil.isNotEmpty(parentId)){
+            criteria.andParentIdEqualTo(parentId);
+        }
         example.setOrderByClause(" order_num ");
         try {
             List<SysResources> list = sysResourcesService.selectByExample(example);
@@ -157,35 +167,38 @@ public class ResourceController {
             example.setOrderByClause(" order_num ");
             try {
                 parentList = sysResourcesService.selectByExample(example);
+                for(SysResources sr : parentList){
+                    setChild(sr);
+                }
             } catch (DaoException e) {
                 logger.error("Exception ", e);
             }
         }
+        return parentList;
+    }
+    
+    private SysResources setChild(SysResources parent){
         SysResourcesExample example = new SysResourcesExample();
         SysResourcesExample.Criteria criteria = example.createCriteria();
         criteria.andParentIdIsNotNull();
-        criteria.andParentIdNotEqualTo("-1");
+        criteria.andParentIdEqualTo(parent.getResourceId());
         example.setOrderByClause(" order_num ");
         try {
             List<SysResources> childList = sysResourcesService.selectByExample(example);
             for(SysResources resource: childList){
-                SysResources presource = sysResourcesService.selectByPrimaryKey(resource.getParentId());
-                for(SysResources r:parentList){
-                    if(r.equals(presource)){
-                        if(r.getChild()==null){
-                            List<SysResources> clist = new ArrayList<>();
-                            clist.add(resource);
-                            r.setChild(clist);
-                            continue;
-                        }
-                        r.getChild().add(resource);
-                    }
+                setChild(resource);
+                if(parent.getChild()==null){
+                    List<SysResources> clist = new ArrayList<>();
+                    clist.add(resource);
+                    parent.setChild(clist);
+                    continue;
                 }
+                parent.getChild().add(resource);
             }
-            return parentList;
-        } catch (DaoException e) {
+            
+        } catch (Exception e) {
             logger.error("Exception ", e);
         }
-        return null;
+        return parent;
     }
 }

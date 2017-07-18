@@ -15,6 +15,11 @@
 <script src="${basePath}/plugins/bootstrap-table/bootstrap-table.js"></script>
 <script src="${basePath}/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="${basePath}/plugins/bootstrap-table/extensions/export/bootstrap-table-export.min.js"></script>
+<!-- 	Bootstrap treeview -->
+<script src="${basePath }/plugins/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+<!-- 	jQuery ContextMenu -->
+<script src="${basePath }/plugins/jquery-contextMenu/jquery.contextMenu.js"></script>
+
 <script src="${basePath}/js/easyform.js"></script>
 
 <script src="${basePath}/plugins/app.js"></script>
@@ -29,8 +34,8 @@ Date.prototype.Format = function (fmt) { //author: meizz
         "h+": this.getHours(), //小时 
         "m+": this.getMinutes(), //分 
         "s+": this.getSeconds(), //秒 
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-        "S": this.getMilliseconds() //毫秒 
+		"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+		"S": this.getMilliseconds() //毫秒 
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)

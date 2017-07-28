@@ -1,7 +1,6 @@
 package com.demo.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -10,22 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.base.DaoException;
-import com.demo.base.Page;
 import com.demo.base.security.entity.SysResources;
 import com.demo.base.security.entity.SysUsers;
 import com.demo.base.security.entity.SysUsersExample;
 import com.demo.base.security.service.SysResourcesService;
 import com.demo.base.security.service.SysUsersService;
-import com.demo.util.SqLiteUtil;
+import com.demo.dao.impl.RedisDao;
+import com.demo.entity.Progress;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -40,6 +36,8 @@ public class WebController {
     private SysUsersService sysUsersService;
     @Resource
     private SysResourcesService sysResourcesService;
+    @Resource
+    private RedisDao redisDao;
     
 	@RequestMapping("index.html")
 	public String index(){
@@ -93,10 +91,9 @@ public class WebController {
 	@RequestMapping("test")
 	@ResponseBody
 	public void tset(HttpServletRequest request,HttpServletResponse response){
- 	    UsernamePasswordAuthenticationToken token=new UsernamePasswordAuthenticationToken("username", "password");
-        Authentication authentication=authenticationManager.authenticate(token);
-        sas.onAuthentication(authentication, request, response);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+	    Progress p = new Progress();
+	    p.setItems(11111111);
+	    redisDao.setValue("ab", "sdfsdafdsafdaf");
 	}
 	
 	@RequestMapping("checkusername")

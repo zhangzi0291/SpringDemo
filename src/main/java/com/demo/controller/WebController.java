@@ -36,8 +36,6 @@ public class WebController {
     private SysUsersService sysUsersService;
     @Resource
     private SysResourcesService sysResourcesService;
-    @Resource
-    private RedisDao redisDao;
     
 	@RequestMapping("index.html")
 	public String index(){
@@ -67,6 +65,9 @@ public class WebController {
 	@ResponseBody
 	public List<SysResources> getMenu(HttpServletRequest request){
 	    SysUsers user  = (SysUsers) request.getSession().getAttribute("user");
+	    if(user == null){
+	        return null;
+	    }
 		List<SysResources> menu = sysResourcesService.getMenu(user.getUserAccount());
 		return menu;
 	}
@@ -90,10 +91,8 @@ public class WebController {
 	}
 	@RequestMapping("test")
 	@ResponseBody
-	public void tset(HttpServletRequest request,HttpServletResponse response){
-	    Progress p = new Progress();
-	    p.setItems(11111111);
-	    redisDao.setValue("ab", "sdfsdafdsafdaf");
+	public String tset(HttpServletRequest request,HttpServletResponse response){
+	    return "test-data";
 	}
 	
 	@RequestMapping("checkusername")

@@ -39,6 +39,9 @@
 .danger {
 	color: #d73925;
 }
+.primary {
+	color: #3c8dbc;
+}
 footer {
 	margin-left: 230px;
 	color: white;

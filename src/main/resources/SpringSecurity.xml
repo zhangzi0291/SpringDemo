@@ -24,6 +24,7 @@
 	<http pattern="/*Menu" security="none"/>
 	<http pattern="/404.html" security="none"/>
 	<http pattern="/500.html" security="none"/>
+	<http pattern="/test" security="none"/>
 	<http pattern="/timeout.html" security="none"/>
 	<http pattern="/logout.html" security="none"/>
 <!--     <http pattern="/**/*" security="none"/> -->

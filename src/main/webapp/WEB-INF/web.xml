@@ -50,7 +50,7 @@
 		<param-value>classpath:mylogback.xml</param-value>
 	</context-param>
 	<listener>
-		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
 	</listener>
 <!-- 		获取request等对象用,之后可以自动注入	 -->
 	<listener>

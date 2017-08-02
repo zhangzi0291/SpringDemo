@@ -79,7 +79,9 @@
 	<import resource="classpath*:SpringDataBase.xml"/>
 	<!-- 	加载权限配置 -->
 	<import resource="classpath*:SpringSecurity.xml"/>
-	<!-- 	加载redis配置 -->
-<!-- 	<import resource="classpath*:SpringRedis.xml"/> -->
+	<!-- 	加载Redis配置 -->
+	<import resource="classpath*:SpringRedis.xml"/>
+	<!-- 	加载Quartz配置 -->
+	<import resource="classpath*:SpringQuartz.xml"/>
 	
 </beans>

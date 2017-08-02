@@ -43,6 +43,12 @@ function getOption(option){
 	if (option.onLoadError != undefined) {
 		tableoption.onLoadError = option.onLoadError;
 	}
+	if (option.sidePagination != undefined) {
+		tableoption.sidePagination = option.sidePagination;
+	}
+	if (option.search != undefined) {
+		tableoption.search = option.search;
+	}
 	
 	return tableoption
 }

@@ -1,7 +1,6 @@
 package com.demo.controller.sys;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.omg.PortableServer.POAManagerOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,14 +19,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.demo.base.DaoException;
 import com.demo.base.Page;
-import com.demo.base.security.entity.SysRolesAuthorities;
 import com.demo.base.security.entity.SysUsers;
 import com.demo.base.security.entity.SysUsersExample;
 import com.demo.base.security.entity.SysUsersRoles;
 import com.demo.base.security.service.SysUsersRolesService;
 import com.demo.base.security.service.SysUsersService;
-import com.demo.util.GlobalConstants;
-import com.demo.util.PropertiesConfig;
 import com.demo.util.StringUtil;
 
 @Controller

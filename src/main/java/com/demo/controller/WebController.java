@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,8 +21,9 @@ import com.demo.base.security.entity.SysUsers;
 import com.demo.base.security.entity.SysUsersExample;
 import com.demo.base.security.service.SysResourcesService;
 import com.demo.base.security.service.SysUsersService;
-import com.demo.dao.impl.RedisDao;
-import com.demo.entity.Progress;
+import com.demo.ip.entity.SysIp;
+import com.demo.ip.service.IpService;
+import com.demo.util.HttpUtil;
 import com.demo.util.StringUtil;
 
 @Controller
@@ -36,9 +38,20 @@ public class WebController {
     private SysUsersService sysUsersService;
     @Resource
     private SysResourcesService sysResourcesService;
+    @Resource
+    private IpService ipService;
     
 	@RequestMapping("index.html")
-	public String index(){
+	public String index(HttpServletRequest request){
+	    SysIp ipinfo = new SysIp();
+        ipinfo.setIpAddress(HttpUtil.getIpAddress(request));
+        ipinfo.setRemark("跳转首页");
+        ipinfo.setUpdateTime(new Date());
+        try {
+            ipService.insertSelective(ipinfo);
+        } catch (DaoException e) {
+            logger.error("Exception ", e);
+        }
 		return "index";
 	}
 	@RequestMapping("403.html")
@@ -82,7 +95,16 @@ public class WebController {
         }
 	}
 	@RequestMapping("login.html")
-	public String loginHtml(){
+	public String loginHtml(HttpServletRequest request){
+	    SysIp ipinfo = new SysIp();
+	    ipinfo.setIpAddress(HttpUtil.getIpAddress(request));
+	    ipinfo.setRemark("跳转登陆页面");
+	    ipinfo.setUpdateTime(new Date());
+	    try {
+            ipService.insertSelective(ipinfo);
+        } catch (DaoException e) {
+            logger.error("Exception ", e);
+        }
 	    return "base/login";
 	}
 	@RequestMapping("register.html")

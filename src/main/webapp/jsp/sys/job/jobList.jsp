@@ -147,7 +147,7 @@ function initEvent(){
 					},
 					success:function(data){
 						console.log(data)
-						if(data>0){
+						if(data.length==0){
 							layer.msg("删除成功")
 						}else{
 							layer.msg("删除失败")

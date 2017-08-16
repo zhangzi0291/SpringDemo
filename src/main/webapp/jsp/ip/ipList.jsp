@@ -97,6 +97,7 @@ function initTable(){
 		columns:[	
 			   { "title" : "check",   checkbox:true, },
 			   { "title" : "访问IP",   "field": "ipAddress", },
+			   { "title" : "访问用户",   "field": "userName", },
 			   { "title" : "访问时间",  "field" : "updateTime", sortable:true,
 				   "formatter":function(value,row){
 					   return new Date(value).Format("yyyy-MM-dd hh:mm:ss")

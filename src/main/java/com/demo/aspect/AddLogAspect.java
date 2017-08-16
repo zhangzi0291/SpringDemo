@@ -13,6 +13,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.demo.base.DaoException;
+import com.demo.base.security.entity.SysUsers;
 import com.demo.ip.entity.SysIp;
 import com.demo.ip.service.IpService;
 import com.demo.util.HttpUtil;
@@ -69,12 +71,18 @@ public class AddLogAspect {
      * @param joinPoint
      *            切点
      */
-    @After("@annotation(com.demo.aspect.AddLog)")
+    @Before("@annotation(com.demo.aspect.AddLog)")
     public void after(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         SysIp ipinfo = new SysIp();
         ipinfo.setIpAddress(HttpUtil.getIpAddress(request));
         ipinfo.setUpdateTime(new Date());
+        try {
+            SysUsers user = (SysUsers) request.getSession().getAttribute("user");
+            ipinfo.setUserName(user.getUserAccount());
+        } catch (Exception e) {
+            logger.error("Exception ", e);
+        }
         try {
             String value = (getControllerMethodDescription(joinPoint).get("value")).toString();
             ipinfo.setRemark(value);

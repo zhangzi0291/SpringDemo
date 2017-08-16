@@ -50,6 +50,7 @@ public class IpController {
             criteria.andUpdateTimeBetween(date1, date2);
         }
         example.setPage(page);
+        example.setOrderByClause(" update_time desc ");
         try {
             List<SysIp> list = ipService.selectByExample(example);
             int count = ipService.countByExample(example);

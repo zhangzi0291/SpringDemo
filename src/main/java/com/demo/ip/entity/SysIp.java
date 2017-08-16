@@ -12,6 +12,8 @@ public class SysIp implements Serializable {
 
     private Date updateTime;
 
+    private String userName;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -46,10 +48,11 @@ public class SysIp implements Serializable {
         this.updateTime = updateTime;
     }
 
-    @Override
-    public String toString() {
-        return "SysIp [id=" + id + ", ipAddress=" + ipAddress + ", remark=" + remark + ", updateTime=" + updateTime
-                + "]";
+    public String getUserName() {
+        return userName;
     }
-    
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
 }

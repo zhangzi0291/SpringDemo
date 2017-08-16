@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.demo.aspect.AddLog;
 import com.demo.base.DaoException;
 import com.demo.base.Page;
 import com.demo.base.security.entity.SysUsers;
@@ -37,6 +38,7 @@ public class UserController {
     private SysUsersRolesService sysUsersRolesService;
     
     @RequestMapping("list.html")
+    @AddLog("跳转用户列表页面")
     public String listHtml(){
         return "sys/user/userList";
     }
@@ -65,12 +67,14 @@ public class UserController {
     }
     
     @RequestMapping("add.html")
+    @AddLog("跳转新增用户页面")
     public String addHtml(){
         return "sys/user/userAdd";
     }
     
     @RequestMapping("add.json")
     @Transactional
+    @AddLog("新增用户")
     public String addJson(HttpServletRequest request,Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds, 
             @RequestParam(value="file",required=false) CommonsMultipartFile file){
         String fileName = file.getOriginalFilename();
@@ -120,6 +124,7 @@ public class UserController {
     }
     
     @RequestMapping("edit.html")
+    @AddLog("跳转编辑用户页面")
     public String editHtml(Map<String, Object> map, String userId){
         try {
             SysUsers user = sysUsersService.selectByPrimaryKey(userId);
@@ -142,6 +147,7 @@ public class UserController {
     
     @RequestMapping("edit.json")
     @Transactional
+    @AddLog("编辑用户")
     public String editJson(HttpServletRequest request, Map<String, Object> map, SysUsers user,@RequestParam("roleIds") List<String> roleIds, 
         @RequestParam(value="file",required=false) CommonsMultipartFile file){
         String fileName = file.getOriginalFilename();
@@ -192,6 +198,7 @@ public class UserController {
     }
     @RequestMapping("del.json")
     @ResponseBody
+    @AddLog("删除用户")
     public String delJson(Map<String, Object> map, @RequestParam("ids[]") List<String >ids ){
         Integer num = 0;
         try {

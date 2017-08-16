@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.demo.aspect.AddLog;
 import com.demo.entity.Ticket.TicketsInfo;
 import com.demo.util.DateUtil;
 import com.demo.util.HttpUtil;
@@ -33,6 +34,7 @@ public class TrainTicketsController {
     }
 
     @RequestMapping("list.html")
+    @AddLog("跳转查票页面")
     public String listHtml(){
         return "ticket/ticketList";
     }

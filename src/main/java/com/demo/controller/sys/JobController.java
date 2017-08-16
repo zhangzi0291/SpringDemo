@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.demo.aspect.AddLog;
 import com.demo.base.DaoException;
 import com.demo.base.Page;
 import com.demo.base.Enum.JobState;
@@ -52,6 +53,7 @@ public class JobController {
     }
     
     @RequestMapping("list.html")
+    @AddLog("跳转任务列表页面")
     public String listHtml(){
         return "sys/job/jobList";
     }
@@ -75,10 +77,12 @@ public class JobController {
     }
     
     @RequestMapping("add.html")
+    @AddLog("跳转任务添加页面")
     public String addHtml(){
         return "sys/job/jobAdd";
     }
     @RequestMapping("add.json")
+    @AddLog("新增任务")
     public String addJson(Map<String, Object> map, SysJob job){
         try {
             String result = jobService.addJob(job);
@@ -93,6 +97,7 @@ public class JobController {
     }
     
     @RequestMapping("edit.html")
+    @AddLog("跳转任务编辑页面")
     public String editHtml(Map<String, Object> map, Integer jobId){
         try {
             SysJob job = jobService.selectByPrimaryKey(jobId);
@@ -103,6 +108,7 @@ public class JobController {
         return "sys/job/jobEdit";
     }
     @RequestMapping("edit.json")
+    @AddLog("编辑任务")
     public String editJson(Map<String, Object> map, SysJob job){
         try {
             String result = jobService.updateJob(job);
@@ -119,6 +125,7 @@ public class JobController {
     
     @RequestMapping("del.json")
     @ResponseBody
+    @AddLog("删除任务")
     public List<String> delJson(Map<String, Object> map, @RequestParam("ids[]") List<Integer >ids ){
         List<String> errorlist = jobService.removeJob(ids);
         return errorlist;
@@ -126,6 +133,7 @@ public class JobController {
     
     @RequestMapping("stopJob")
     @ResponseBody
+    @AddLog("停止任务")
     public String stopJob (Integer jobId){
        try {
            SysJob job =  jobService.selectByPrimaryKey(jobId);
@@ -138,6 +146,7 @@ public class JobController {
     }
     @RequestMapping("startJob")
     @ResponseBody
+    @AddLog("开始任务")
     public String startJob (Integer jobId){
         try {
             SysJob job =  jobService.selectByPrimaryKey(jobId);

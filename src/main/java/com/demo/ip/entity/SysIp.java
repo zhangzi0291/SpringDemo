@@ -45,4 +45,11 @@ public class SysIp implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "SysIp [id=" + id + ", ipAddress=" + ipAddress + ", remark=" + remark + ", updateTime=" + updateTime
+                + "]";
+    }
+    
 }

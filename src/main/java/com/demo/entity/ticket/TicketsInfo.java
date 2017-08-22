@@ -1,4 +1,4 @@
-package com.demo.entity.Ticket;
+package com.demo.entity.ticket;
 
 import java.util.List;
 import java.util.Map;

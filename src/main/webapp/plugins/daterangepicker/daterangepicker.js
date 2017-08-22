@@ -436,10 +436,12 @@
         //
 
         if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+        	//不要一开始展示
+            //this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
             this.element.trigger('change');
         } else if (this.element.is('input') && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format));
+        	//不要一开始展示
+            //this.element.val(this.startDate.format(this.locale.format));
             this.element.trigger('change');
         }
 

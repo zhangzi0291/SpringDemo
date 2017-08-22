@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.ticket.OrderTicketsDao" >
+  <resultMap id="BaseResultMap" type="com.demo.entity.ticket.OrderTickets" >
+    <id column="ordertickets_id" property="orderticketsId" jdbcType="INTEGER" />
+    <result column="order_user" property="orderUser" jdbcType="VARCHAR" />
+    <result column="from_station" property="fromStation" jdbcType="VARCHAR" />
+    <result column="to_station" property="toStation" jdbcType="VARCHAR" />
+    <result column="order_date" property="orderDate" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="email_address" property="emailAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ordertickets_id, order_user, from_station, to_station, order_date, update_time, email_address
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.entity.ticket.OrderTicketsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_ordertickets
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="page != null" >
+      limit #{page.pageSize} offset #{page.begin}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_ordertickets
+    where ordertickets_id = #{orderticketsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_ordertickets
+    where ordertickets_id = #{orderticketsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.demo.entity.ticket.OrderTicketsExample" >
+    delete from sys_ordertickets
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.ticket.OrderTickets" >
+    insert into sys_ordertickets (ordertickets_id, order_user, from_station, 
+      to_station, order_date, update_time, 
+      email_address)
+    values (#{orderticketsId,jdbcType=INTEGER}, #{orderUser,jdbcType=VARCHAR}, #{fromStation,jdbcType=VARCHAR}, 
+      #{toStation,jdbcType=VARCHAR}, #{orderDate,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{emailAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.ticket.OrderTickets" >
+    insert into sys_ordertickets
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderticketsId != null" >
+        ordertickets_id,
+      </if>
+      <if test="orderUser != null" >
+        order_user,
+      </if>
+      <if test="fromStation != null" >
+        from_station,
+      </if>
+      <if test="toStation != null" >
+        to_station,
+      </if>
+      <if test="orderDate != null" >
+        order_date,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="emailAddress != null" >
+        email_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderticketsId != null" >
+        #{orderticketsId,jdbcType=INTEGER},
+      </if>
+      <if test="orderUser != null" >
+        #{orderUser,jdbcType=VARCHAR},
+      </if>
+      <if test="fromStation != null" >
+        #{fromStation,jdbcType=VARCHAR},
+      </if>
+      <if test="toStation != null" >
+        #{toStation,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null" >
+        #{orderDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="emailAddress != null" >
+        #{emailAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.entity.ticket.OrderTicketsExample" resultType="java.lang.Integer" >
+    select count(*) from sys_ordertickets
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_ordertickets
+    <set >
+      <if test="record.orderticketsId != null" >
+        ordertickets_id = #{record.orderticketsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderUser != null" >
+        order_user = #{record.orderUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromStation != null" >
+        from_station = #{record.fromStation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toStation != null" >
+        to_station = #{record.toStation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderDate != null" >
+        order_date = #{record.orderDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.emailAddress != null" >
+        email_address = #{record.emailAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_ordertickets
+    set ordertickets_id = #{record.orderticketsId,jdbcType=INTEGER},
+      order_user = #{record.orderUser,jdbcType=VARCHAR},
+      from_station = #{record.fromStation,jdbcType=VARCHAR},
+      to_station = #{record.toStation,jdbcType=VARCHAR},
+      order_date = #{record.orderDate,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      email_address = #{record.emailAddress,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.ticket.OrderTickets" >
+    update sys_ordertickets
+    <set >
+      <if test="orderUser != null" >
+        order_user = #{orderUser,jdbcType=VARCHAR},
+      </if>
+      <if test="fromStation != null" >
+        from_station = #{fromStation,jdbcType=VARCHAR},
+      </if>
+      <if test="toStation != null" >
+        to_station = #{toStation,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null" >
+        order_date = #{orderDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="emailAddress != null" >
+        email_address = #{emailAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ordertickets_id = #{orderticketsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.ticket.OrderTickets" >
+    update sys_ordertickets
+    set order_user = #{orderUser,jdbcType=VARCHAR},
+      from_station = #{fromStation,jdbcType=VARCHAR},
+      to_station = #{toStation,jdbcType=VARCHAR},
+      order_date = #{orderDate,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      email_address = #{emailAddress,jdbcType=VARCHAR}
+    where ordertickets_id = #{orderticketsId,jdbcType=INTEGER}
+  </update>
+</mapper>

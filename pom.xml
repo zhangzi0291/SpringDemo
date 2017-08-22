@@ -319,6 +319,14 @@
 	    <version>2.3.0</version>
 	</dependency>
 <!--  		quartz		 -->
+
+	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.6.0</version>
+	</dependency>
+
+	
   </dependencies>
   
 

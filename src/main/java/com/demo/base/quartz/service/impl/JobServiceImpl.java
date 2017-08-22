@@ -133,6 +133,7 @@ public class JobServiceImpl extends BaseServiceImpl<SysJob, SysJobExample> imple
             return "job 表达式异常";
         }
         job.setJobStatus(JobState.RUN.toString());
+        job.setJobStarttime(new Date());
         dao.updateByPrimaryKeySelective(job);
         return "";
     }

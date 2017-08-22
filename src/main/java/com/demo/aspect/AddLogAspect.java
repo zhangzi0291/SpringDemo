@@ -81,7 +81,6 @@ public class AddLogAspect {
             SysUsers user = (SysUsers) request.getSession().getAttribute("user");
             ipinfo.setUserName(user.getUserAccount());
         } catch (Exception e) {
-            logger.error("Exception ", e);
         }
         try {
             String value = (getControllerMethodDescription(joinPoint).get("value")).toString();
@@ -100,6 +99,12 @@ public class AddLogAspect {
     public void afterThrowing(JoinPoint joinPoint, Exception ex) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         SysIp ipinfo = new SysIp();
+        try {
+            SysUsers user = (SysUsers) request.getSession().getAttribute("user");
+            ipinfo.setUserName(user.getUserAccount());
+        } catch (Exception e) {
+            logger.error("Exception ", e);
+        }
         ipinfo.setIpAddress(HttpUtil.getIpAddress(request));
         ipinfo.setUpdateTime(new Date());
         String methonName = joinPoint.getSignature().getName();

@@ -4,9 +4,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.demo.base.BaseDao;
-import com.demo.base.BaseServiceImpl;
-import com.demo.base.DaoException;
+import com.demo.base.dao.BaseDao;
+import com.demo.base.exception.DaoException;
+import com.demo.base.service.impl.BaseServiceImpl;
 import com.demo.ip.dao.SysIpDao;
 import com.demo.ip.entity.SysIp;
 import com.demo.ip.entity.SysIpExample;

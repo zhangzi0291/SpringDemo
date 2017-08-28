@@ -16,8 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.demo.base.DaoException;
 import com.demo.base.Page;
+import com.demo.base.exception.DaoException;
 import com.demo.ip.entity.SysIp;
 import com.demo.ip.entity.SysIpExample;
 import com.demo.ip.service.IpService;

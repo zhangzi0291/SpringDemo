@@ -21,14 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
-import com.demo.base.BaseDao;
-import com.demo.base.BaseServiceImpl;
-import com.demo.base.DaoException;
 import com.demo.base.Enum.JobState;
+import com.demo.base.dao.BaseDao;
+import com.demo.base.exception.DaoException;
 import com.demo.base.quartz.dao.SysJobDao;
 import com.demo.base.quartz.entity.SysJob;
 import com.demo.base.quartz.entity.SysJobExample;
 import com.demo.base.quartz.service.JobService;
+import com.demo.base.service.impl.BaseServiceImpl;
 
 @Service("jobService")
 public class JobServiceImpl extends BaseServiceImpl<SysJob, SysJobExample> implements JobService{

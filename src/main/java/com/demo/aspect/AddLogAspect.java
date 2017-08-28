@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.demo.base.DaoException;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.entity.SysUsers;
 import com.demo.ip.entity.SysIp;
 import com.demo.ip.service.IpService;

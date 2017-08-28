@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.demo.base.DaoException;
 import com.demo.base.Page;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.entity.SysResources;
 import com.demo.base.security.entity.SysResourcesExample;
 import com.demo.base.security.service.SysResourcesService;

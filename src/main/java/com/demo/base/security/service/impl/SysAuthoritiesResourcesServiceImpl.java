@@ -9,13 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.demo.base.BaseDao;
-import com.demo.base.BaseServiceImpl;
-import com.demo.base.DaoException;
+import com.demo.base.dao.BaseDao;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.dao.SysAuthoritiesResourcesDao;
 import com.demo.base.security.entity.SysAuthoritiesResources;
 import com.demo.base.security.entity.SysAuthoritiesResourcesExample;
 import com.demo.base.security.service.SysAuthoritiesResourcesService;
+import com.demo.base.service.impl.BaseServiceImpl;
 import com.demo.util.StringUtil;
 
 @Service("SysAuthoritiesResourcesService")

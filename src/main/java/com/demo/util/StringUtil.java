@@ -77,6 +77,14 @@ public class StringUtil {
 		return list;
 	}
 	
+	/**
+	 * 
+	  * 获取num位的随机字符串
+	  *@param num
+	  *@return 
+	  *@date 2017年8月25日 上午9:30:50
+	  *@author zxn
+	 */
 	public static String getRdStr(int num){
 		String[] s={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0",
 				"1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S",
@@ -88,6 +96,15 @@ public class StringUtil {
 		return str;
  	}
 	
+	/**
+	 * 
+	  * md5加密
+	  *@param str
+	  *@return
+	  *@throws Exception 
+	  *@date 2017年8月25日 上午9:29:47
+	  *@author zxn
+	 */
 	public static String md5Encode(String str) throws Exception{
 	    MessageDigest md5 = null;  
         try{  
@@ -113,11 +130,90 @@ public class StringUtil {
         return hexValue.toString();  
 	}
 	
+	/**
+	 * 
+	  * 获取32位uuid（没有 -）
+	  *@return 
+	  *@date 2017年8月25日 上午9:29:30
+	  *@author zxn
+	 */
 	public static String getUUID(){
 	    UUID uuid = UUID.randomUUID();
 	    String uuidstr = uuid.toString().replaceAll("-", "");
 	    return uuidstr;
 	}
+	
+	/**
+     * 
+      * 下划线装驼峰
+      *@param s
+      *@return 
+      *@date 2017年8月25日 上午9:28:01
+      *@author zxn
+     */
+    public String underlineToCamel(String s){
+        int len = s.length();
+        StringBuffer sb = new StringBuffer(len);
+        for(int i=0;i<len;i++){
+            char c = s.charAt(i);
+            if( c == '_'){
+                i++;
+                sb.append(Character.toUpperCase(s.charAt(i)));
+                continue;
+            }
+            sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
+    /**
+     * 
+      * 驼峰转下划线
+      *@param s
+      *@return 
+      *@date 2017年8月25日 上午9:28:15
+      *@author zxn
+     */
+    public String camelToUnderline(String s){
+        int len = s.length();
+        StringBuffer sb = new StringBuffer(len);
+        for(int i=0;i<len;i++){
+            char c = s.charAt(i);
+            if( c == Character.toUpperCase(c)){
+                sb.append("_");
+                sb.append(Character.toLowerCase(s.charAt(i)));
+                continue;
+            }
+            sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * 
+      * 下划线装首字母大写驼峰
+      *@param s
+      *@return 
+      *@date 2017年8月25日 上午9:28:01
+      *@author zxn
+     */
+    public String underlineToUpperCamel(String s){
+        int len = s.length();
+        StringBuffer sb = new StringBuffer(len);
+        for(int i=0;i<len;i++){
+            char c = s.charAt(i);
+            if(i==0){
+                sb.append(Character.toUpperCase(s.charAt(i)));
+                continue;
+            }
+            if( c == '_'){
+                i++;
+                sb.append(Character.toUpperCase(s.charAt(i)));
+                continue;
+            }
+            sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
 //	public static String[] split(String str,String regex){
 //	    String[] result = null; 
 //	    String[] array = str.split(regex);

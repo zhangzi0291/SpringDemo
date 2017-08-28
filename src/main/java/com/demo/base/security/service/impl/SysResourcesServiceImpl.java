@@ -9,13 +9,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.demo.base.BaseDao;
-import com.demo.base.BaseServiceImpl;
-import com.demo.base.DaoException;
+import com.demo.base.dao.BaseDao;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.dao.SysResourcesDao;
 import com.demo.base.security.entity.SysResources;
 import com.demo.base.security.entity.SysResourcesExample;
 import com.demo.base.security.service.SysResourcesService;
+import com.demo.base.service.impl.BaseServiceImpl;
 
 @Service("sysResourcesService")
 public class SysResourcesServiceImpl extends BaseServiceImpl<SysResources, SysResourcesExample> implements SysResourcesService {

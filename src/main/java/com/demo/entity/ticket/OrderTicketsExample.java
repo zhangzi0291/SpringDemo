@@ -8,6 +8,7 @@ import com.demo.base.Example;
 import com.demo.base.Page;
 
 public class OrderTicketsExample implements Example {
+    
     protected String orderByClause;
 
     protected boolean distinct;

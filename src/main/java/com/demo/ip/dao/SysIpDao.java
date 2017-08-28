@@ -1,6 +1,6 @@
 package com.demo.ip.dao;
 
-import com.demo.base.BaseDao;
+import com.demo.base.dao.BaseDao;
 import com.demo.ip.entity.SysIp;
 import com.demo.ip.entity.SysIpExample;
 

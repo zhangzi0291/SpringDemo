@@ -11,15 +11,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import com.demo.base.BaseDao;
-import com.demo.base.BaseServiceImpl;
-import com.demo.base.DaoException;
+import com.demo.base.dao.BaseDao;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.dao.SysUsersDao;
 import com.demo.base.security.dto.UsersRolesDto;
 import com.demo.base.security.entity.SysAuthorities;
 import com.demo.base.security.entity.SysUsers;
 import com.demo.base.security.entity.SysUsersExample;
 import com.demo.base.security.service.SysUsersService;
+import com.demo.base.service.impl.BaseServiceImpl;
 
 @Service("sysUsersService")
 public class SysUsersServiceImpl extends BaseServiceImpl<SysUsers, SysUsersExample> implements SysUsersService{

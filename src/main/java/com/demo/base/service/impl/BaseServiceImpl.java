@@ -1,4 +1,4 @@
-package com.demo.base;
+package com.demo.base.service.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -9,6 +9,13 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.demo.base.Example;
+import com.demo.base.Page;
+import com.demo.base.PageList;
+import com.demo.base.dao.BaseDao;
+import com.demo.base.exception.DaoException;
+import com.demo.base.service.BaseService;
 
 /**
  * 公用的Service实现类，继承实现类的要传递2个泛型类型，第一个是实体Bean类型，第二个是查询Bean类型。

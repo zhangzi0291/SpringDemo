@@ -6,13 +6,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.demo.base.BaseDao;
-import com.demo.base.BaseServiceImpl;
-import com.demo.base.DaoException;
+import com.demo.base.dao.BaseDao;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.dao.SysUsersRolesDao;
 import com.demo.base.security.entity.SysUsersRoles;
 import com.demo.base.security.entity.SysUsersRolesExample;
 import com.demo.base.security.service.SysUsersRolesService;
+import com.demo.base.service.impl.BaseServiceImpl;
 
 @Service("SysUsersRolesService")
 public class SysUsersRolesServiceImpl extends BaseServiceImpl<SysUsersRoles, SysUsersRolesExample>implements SysUsersRolesService{

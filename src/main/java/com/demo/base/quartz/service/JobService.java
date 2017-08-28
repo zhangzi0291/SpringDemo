@@ -2,9 +2,9 @@ package com.demo.base.quartz.service;
 
 import java.util.List;
 
-import com.demo.base.BaseService;
 import com.demo.base.quartz.entity.SysJob;
 import com.demo.base.quartz.entity.SysJobExample;
+import com.demo.base.service.BaseService;
 
 public interface JobService extends BaseService<SysJob, SysJobExample>{
 

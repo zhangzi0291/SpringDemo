@@ -2,10 +2,10 @@ package com.demo.base.security.service;
 
 import java.util.List;
 
-import com.demo.base.BaseService;
-import com.demo.base.DaoException;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.entity.SysRolesAuthorities;
 import com.demo.base.security.entity.SysRolesAuthoritiesExample;
+import com.demo.base.service.BaseService;
 
 public interface SysRolesAuthoritiesService extends BaseService<SysRolesAuthorities, SysRolesAuthoritiesExample>{
     Integer saveRolesAuthorities(String roleId,List<String > authorityIds) throws DaoException;

@@ -16,7 +16,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.demo.base.DaoException;
+import com.demo.base.exception.DaoException;
 import com.demo.controller.TrainTicketsController;
 import com.demo.entity.ticket.OrderTickets;
 import com.demo.entity.ticket.OrderTicketsExample;

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.demo.base.BaseDao;
+import com.demo.base.dao.BaseDao;
 import com.demo.base.security.dto.AuthoritiesResourcesDto;
 import com.demo.base.security.entity.SysAuthoritiesResources;
 import com.demo.base.security.entity.SysAuthoritiesResourcesExample;

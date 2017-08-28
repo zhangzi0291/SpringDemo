@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.demo.aspect.AddLog;
-import com.demo.base.DaoException;
 import com.demo.base.Page;
+import com.demo.base.exception.DaoException;
 import com.demo.base.security.entity.SysUsers;
 import com.demo.base.security.entity.SysUsersExample;
 import com.demo.base.security.entity.SysUsersRoles;

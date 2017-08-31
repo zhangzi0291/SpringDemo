@@ -145,13 +145,13 @@ public class StringUtil {
 	
 	/**
      * 
-      * 下划线装驼峰
+      * 下划线转驼峰
       *@param s
       *@return 
       *@date 2017年8月25日 上午9:28:01
       *@author zxn
      */
-    public String underlineToCamel(String s){
+    public static String underlineToCamel(String s){
         int len = s.length();
         StringBuffer sb = new StringBuffer(len);
         for(int i=0;i<len;i++){
@@ -173,7 +173,7 @@ public class StringUtil {
       *@date 2017年8月25日 上午9:28:15
       *@author zxn
      */
-    public String camelToUnderline(String s){
+    public static String camelToUnderline(String s){
         int len = s.length();
         StringBuffer sb = new StringBuffer(len);
         for(int i=0;i<len;i++){
@@ -196,9 +196,12 @@ public class StringUtil {
       *@date 2017年8月25日 上午9:28:01
       *@author zxn
      */
-    public String underlineToUpperCamel(String s){
+    public static String underlineToUpperCamel(String s){
         int len = s.length();
         StringBuffer sb = new StringBuffer(len);
+        if(s.indexOf("_")==-1){
+            return s;
+        }
         for(int i=0;i<len;i++){
             char c = s.charAt(i);
             if(i==0){

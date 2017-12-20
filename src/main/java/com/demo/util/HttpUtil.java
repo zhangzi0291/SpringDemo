@@ -178,7 +178,7 @@ public class HttpUtil {
 	public static boolean isConnect(String url){
 		Map<String, List<String>> map =sendHead(url);
     	for(Entry<String,  List<String>> e :map.entrySet()){
-    		if(e.getValue().contains("HTTP/1.1 200 OK")){
+    		if(e.getValue().contains("200")||e.getValue().contains("OK")){
     			return true;
     		}
     	}

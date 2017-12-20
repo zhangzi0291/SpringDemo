@@ -95,7 +95,7 @@ public class AddLogAspect {
     public void controllerAspect() {  
     }  
     
-    @AfterThrowing(pointcut="within(com.demo..*)",throwing="ex")
+//    @AfterThrowing(pointcut="within(com.demo..*)",throwing="ex")
     public void afterThrowing(JoinPoint joinPoint, Exception ex) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         SysIp ipinfo = new SysIp();

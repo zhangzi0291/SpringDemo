@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.BoAttachUrlDao" >
+	<resultMap id="BaseResultMap" type="com.demo.entity.BoAttachUrl" >
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="attach_url" property="attachUrl" jdbcType="VARCHAR" />
+		<result column="attach_status" property="attachStatus" jdbcType="VARCHAR" />
+		<result column="attach_email" property="attachEmail" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="example" >
+              <choose >
+                <when test="example.noValue" >
+                  and ${example.condition}
+                </when>
+                <when test="example.singleValue" >
+                  and ${example.condition} #{example.value}
+                </when>
+                <when test="example.betweenValue" >
+                  and ${example.condition} #{example.value} and #{example.secondValue}
+                </when>
+                <when test="example.listValue" >
+                  and ${example.condition}
+                  <foreach collection="example.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="example" >
+              <choose >
+                <when test="example.noValue" >
+                  and ${example.condition}
+                </when>
+                <when test="example.singleValue" >
+                  and ${example.condition} #{example.value}
+                </when>
+                <when test="example.betweenValue" >
+                  and ${example.condition} #{example.value} and #{example.secondValue}
+                </when>
+                <when test="example.listValue" >
+                  and ${example.condition}
+                  <foreach collection="example.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    	id,
+    	attach_url,
+    	attach_status,
+    	attach_email
+  </sql>
+  
+ <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.demo.entity.BoAttachUrlExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bo_attach_url
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="page != null" >
+      limit #{page.limit} offset #{page.offset}*#{page.limit}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bo_attach_url
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bo_attach_url
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.demo.entity.BoAttachUrlExample" >
+    delete from bo_attach_url
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.BoAttachUrl" >
+    insert into bo_attach_url (
+    	id,
+    	attach_url,
+    	attach_status,
+    	attach_email
+    )
+    values (
+    	#{id,jdbcType=INTEGER},
+    	#{attachUrl,jdbcType=VARCHAR},
+    	#{attachStatus,jdbcType=VARCHAR},
+    	attach_email
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.BoAttachUrl" >
+    insert into bo_attach_url
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="attachUrl != null" >
+        attach_url,
+      </if>
+      <if test="attachStatus != null" >
+        attach_status,
+      </if>
+      <if test="attachEmail != null" >
+        attach_email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+   	  <if test="id != null" >
+        #{ id,jdbcType=INTEGER},
+      </if>
+   	  <if test="attachUrl != null" >
+        #{ attachUrl,jdbcType=VARCHAR},
+      </if>
+   	  <if test="attachStatus != null" >
+        #{ attachStatus,jdbcType=VARCHAR},
+      </if>
+   	  <if test="attachEmail != null" >
+        #{ attachEmail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.entity.BoAttachUrlExample" resultType="java.lang.Integer" >
+    select count(*) from bo_attach_url
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bo_attach_url
+    <set>
+	   	  <if test="record.id != null" >
+	        id = #{record.id,jdbcType=INTEGER},
+	      </if>
+	   	  <if test="record.attachUrl != null" >
+	        attach_url = #{record.attachUrl,jdbcType=VARCHAR},
+	      </if>
+	   	  <if test="record.attachStatus != null" >
+	        attach_status = #{record.attachStatus,jdbcType=VARCHAR},
+	      </if>
+	   	  <if test="record.attachEmail != null" >
+	        attach_email = #{record.attachEmail,jdbcType=VARCHAR},
+	      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bo_attach_url
+    set 
+	        id = #{record.id,jdbcType=INTEGER},
+	        attach_url = #{record.attachUrl,jdbcType=VARCHAR},
+	        attach_status = #{record.attachStatus,jdbcType=VARCHAR},
+	        attach_email = #{record.attachEmail,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.BoAttachUrl" >
+    update bo_attach_url
+    <set>
+   	  <if test="attachUrl != null" >
+        attach_url = #{ attachUrl,jdbcType=VARCHAR},
+      </if>
+   	  <if test="attachStatus != null" >
+        attach_status = #{ attachStatus,jdbcType=VARCHAR},
+      </if>
+   	  <if test="attachEmail != null" >
+        attach_email = #{ attachEmail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.BoAttachUrl" >
+    update bo_attach_url
+    set 
+        attach_url = #{ attachUrl,jdbcType=VARCHAR},
+        attach_status = #{ attachStatus,jdbcType=VARCHAR},
+        attach_email = #{ attachEmail,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

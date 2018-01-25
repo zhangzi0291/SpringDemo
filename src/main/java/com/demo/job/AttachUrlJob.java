@@ -40,13 +40,12 @@ public class AttachUrlJob implements Job{
         try {
             BoAttachUrlExample example = new BoAttachUrlExample();
             BoAttachUrlExample.Criteria criteria = example.createCriteria();
+            criteria.andAttachStatusEqualTo("1");
             List<BoAttachUrl> list = boAttachUrlService.selectByExample(example);
             for(BoAttachUrl attachUrl : list) {
-                if(attachUrl.getAttachStatus().equals("1")) {
-                    if(!HttpUtil.isConnect(attachUrl.getAttachUrl())) {
-                        String info = attachUrl.getAttachUrl() + " 服务器挂啦";
-                        MailUtil.sendMail(attachUrl.getAttachEmail(), "服务器挂啦", info);
-                    }
+                if(!HttpUtil.isConnect(attachUrl.getAttachUrl())) {
+                    String info = attachUrl.getAttachUrl() + " 服务器挂啦";
+                    MailUtil.sendMail(attachUrl.getAttachEmail(), "服务器挂啦", info);
                 }
             }
         } catch (UnsupportedEncodingException | DaoException | MessagingException e) {

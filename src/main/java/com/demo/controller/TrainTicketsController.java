@@ -161,7 +161,7 @@ public class TrainTicketsController {
         if (date == null || startStation == null || endStation == null || date.length() == 0
                 || startStation.length() == 0 || endStation.length() == 0) {
         }
-        final String  URL = "https://kyfw.12306.cn/otn/leftTicket/query";
+        final String  URL = "https://kyfw.12306.cn/otn/leftTicket/queryZ";
         String from_station ="";
         String to_station ="";
         String queryDate = date;

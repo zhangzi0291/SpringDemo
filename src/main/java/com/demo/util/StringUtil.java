@@ -178,12 +178,12 @@ public class StringUtil {
         StringBuffer sb = new StringBuffer(len);
         for(int i=0;i<len;i++){
             char c = s.charAt(i);
-            if( c == Character.toUpperCase(c)){
+            if(i!=0 && c == Character.toUpperCase(c)){
                 sb.append("_");
                 sb.append(Character.toLowerCase(s.charAt(i)));
                 continue;
             }
-            sb.append(s.charAt(i));
+            sb.append(Character.toLowerCase(s.charAt(i)));
         }
         return sb.toString();
     }

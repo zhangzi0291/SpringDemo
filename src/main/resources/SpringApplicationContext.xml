@@ -59,13 +59,13 @@
 <!--  	</mvc:interceptors> -->
 	
 	<!-- 	国际化 -->
-	<bean id="messageSource"
+<!-- 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="classpath:config/properties/MyMessage" />	
 	</bean>
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
-		
+		 -->
 
 	
 	<!--  文件上传相关  -->
